@@ -1,0 +1,36 @@
+{
+  "type": "object",
+  "additionalProperties": true,
+  "properties" : {
+    "neo4j_version": {
+      "type": "string"
+    },
+    "batch": {
+      "type": "string"
+    },
+    "cypher": {
+      "type": "string"
+    },
+    "extensions": {
+      "type": "object"
+    },
+    "extensions_info": {
+      "type": "string"
+    },
+    "node": {
+      "type": "string"
+    },
+    "node_index": {
+      "type": "string"
+    },
+    "reference_node": {
+      "type": "string"
+    },
+    "relationship_index": {
+      "type": "string"
+    },
+    "relationship_types": {
+      "type": "string"
+    }
+  }
+}

@@ -1,0 +1,12 @@
+<!-- BEGIN_INCLUDE(neo4j:config-no-auth) -->
+<neo4j:config />
+<!-- END_INCLUDE(neo4j:config-no-auth) -->
+
+<!-- BEGIN_INCLUDE(neo4j:config-auth) -->
+<neo4j:config user="a_user" password="@_p@$$w0rd" />
+<!-- END_INCLUDE(neo4j:config-auth) -->
+
+
+<!-- BEGIN_INCLUDE(neo4j:getServiceRoot) -->
+<neo4j:get-service-root />
+<!-- END_INCLUDE(neo4j:getServiceRoot) -->
