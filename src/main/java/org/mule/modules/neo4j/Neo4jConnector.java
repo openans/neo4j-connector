@@ -57,6 +57,12 @@ public abstract class Neo4jConnector
     @Optional
     private String password;
 
+    @RestHeaderParam("X-Stream")
+    @Configurable
+    @Optional
+    @Default("true")
+    private boolean streaming;
+
     @RestHeaderParam("Authorization")
     private String authorization;
 
@@ -77,6 +83,11 @@ public abstract class Neo4jConnector
     {
         final byte[] credentialBytes = (StringUtils.trimToEmpty(user) + ":" + StringUtils.trimToEmpty(password)).getBytes();
         authorization = "Basic " + new String(Base64.encodeBase64(credentialBytes));
+    }
+
+    public String getAuthorization()
+    {
+        return authorization;
     }
 
     public String getUser()
@@ -111,8 +122,19 @@ public abstract class Neo4jConnector
         this.baseUri = baseUri;
     }
 
-    public String getAuthorization()
+    // non-JavaBean accessor required by DevKit: http://www.mulesoft.org/jira/browse/DEVKIT-365
+    public boolean getStreaming()
     {
-        return authorization;
+        return streaming;
+    }
+
+    public boolean isStreaming()
+    {
+        return streaming;
+    }
+
+    public void setStreaming(final boolean streaming)
+    {
+        this.streaming = streaming;
     }
 }
