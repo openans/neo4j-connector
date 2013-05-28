@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties" : {
+    "query": {
+      "type": "string"
+    },
+    "params": {
+      "type": "object",
+      "additionalProperties": false
+    }
+  }
+}

@@ -20,6 +20,9 @@ import org.mule.api.annotations.rest.HttpMethod;
 import org.mule.api.annotations.rest.RestCall;
 import org.mule.api.annotations.rest.RestExceptionOn;
 import org.mule.api.annotations.rest.RestHeaderParam;
+import org.mule.api.annotations.rest.RestQueryParam;
+import org.mule.modules.neo4j.model.CypherQuery;
+import org.mule.modules.neo4j.model.CypherQueryResult;
 import org.mule.modules.neo4j.model.ServiceRoot;
 import org.mule.util.StringUtils;
 
@@ -57,6 +60,9 @@ public abstract class Neo4jConnector
     @Optional
     private String password;
 
+    /**
+     * Should streaming be used when communicating with the Neo4j server.
+     */
     @RestHeaderParam("X-Stream")
     @Configurable
     @Optional
@@ -75,9 +81,27 @@ public abstract class Neo4jConnector
      * @throws IOException if anything goes wrong with the operation.
      */
     @Processor
-    // FIXME de-hardcode this value
+    // FIXME de-hardcode the uri
     @RestCall(uri = "http://localhost:7474/db/data", method = HttpMethod.GET, contentType = "application/json", exceptions = {@RestExceptionOn(expression = "#[message.inboundProperties['http.status'] != 200]")})
     public abstract ServiceRoot getServiceRoot() throws IOException;
+
+    /**
+     * Run a cypher query.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:runCypherQuery}
+     * 
+     * @param includeStatistics defines if meta data about the query must be returned
+     * @param profile defines if a profile of the executed query must be returned
+     * @param cypherQuery the query to execute
+     * @return a {@link CypherQueryResult}.
+     * @throws IOException if anything goes wrong with the operation.
+     */
+    @Processor
+    // FIXME de-hardcode the uri
+    @RestCall(uri = "http://localhost:7474/db/data/cypher", method = HttpMethod.POST, contentType = "application/json", exceptions = {@RestExceptionOn(expression = "#[message.inboundProperties['http.status'] != 200]")})
+    public abstract CypherQueryResult runCypherQuery(@RestQueryParam("includeStats") @Optional @Default("false") boolean includeStatistics,
+                                                     @RestQueryParam("profile") @Optional @Default("false") boolean profile,
+                                                     CypherQuery cypherQuery) throws IOException;
 
     private void refreshAuthorization()
     {
