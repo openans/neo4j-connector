@@ -37,13 +37,14 @@ import org.mule.api.annotations.param.ConnectionKey;
 import org.mule.api.annotations.param.Default;
 import org.mule.api.annotations.param.Optional;
 import org.mule.api.context.MuleContextAware;
-import org.mule.api.transformer.Transformer;
+import org.mule.api.lifecycle.InitialisationException;
+import org.mule.api.transformer.TransformerException;
 import org.mule.endpoint.URIBuilder;
+import org.mule.module.json.transformers.ObjectToJson;
 import org.mule.modules.neo4j.model.CypherQuery;
 import org.mule.modules.neo4j.model.CypherQueryResult;
 import org.mule.modules.neo4j.model.Node;
 import org.mule.modules.neo4j.model.ServiceRoot;
-import org.mule.transformer.types.DataTypeFactory;
 import org.mule.transformer.types.MimeTypes;
 import org.mule.transport.http.HttpConnector;
 import org.mule.transport.http.HttpConstants;
@@ -62,9 +63,10 @@ import org.mule.util.StringUtils;
 @Connector(name = "neo4j", schemaVersion = "3.4", friendlyName = "Neo4j", minMuleVersion = "3.4.0", description = "Neo4j Module")
 public class Neo4jConnector implements MuleContextAware
 {
-    private static final Set<Integer> OK_ONLY = Collections.singleton(HttpConstants.SC_OK);
+    private static final Set<Integer> SC_OK = Collections.singleton(HttpConstants.SC_OK);
+    private static final Set<Integer> SC_CREATED = Collections.singleton(HttpConstants.SC_CREATED);
 
-    private static final Set<Integer> OK_OR_NOT_FOUND = Collections.unmodifiableSet(new HashSet<Integer>(
+    private static final Set<Integer> SC_OK_OR_NOT_FOUND = Collections.unmodifiableSet(new HashSet<Integer>(
         Arrays.asList(HttpConstants.SC_OK, HttpConstants.SC_NOT_FOUND)));
 
     /**
@@ -101,6 +103,7 @@ public class Neo4jConnector implements MuleContextAware
     private String authorization;
     private String baseUri;
     private ServiceRoot serviceRoot;
+    private ObjectToJson objectToJsonTransformer;
 
     /**
      * Connect to a Neo4j server.
@@ -126,12 +129,25 @@ public class Neo4jConnector implements MuleContextAware
 
         try
         {
-            serviceRoot = getEntityFromApi(baseUri + "/", ServiceRoot.class, OK_ONLY);
+            serviceRoot = getEntity(baseUri + "/", ServiceRoot.class, SC_OK);
         }
         catch (final MuleException me)
         {
             throw new ConnectionException(ConnectionExceptionCode.CANNOT_REACH, null,
                 "Failed to retrieve service root from: " + baseUri, me);
+        }
+
+        objectToJsonTransformer = new ObjectToJson();
+        objectToJsonTransformer.setMuleContext(muleContext);
+
+        try
+        {
+            objectToJsonTransformer.initialise();
+        }
+        catch (final InitialisationException ie)
+        {
+            throw new ConnectionException(ConnectionExceptionCode.UNKNOWN, null,
+                "Failed to initialize JSON transformer: " + baseUri, ie);
         }
     }
 
@@ -145,34 +161,42 @@ public class Neo4jConnector implements MuleContextAware
     public void disconnect() throws IOException
     {
         serviceRoot = null;
+        objectToJsonTransformer = null;
     }
 
-    private <T> T getEntityFromApi(final String uri,
-                                   final Class<T> responseClass,
-                                   final Set<Integer> expectedStatusCodes,
-                                   final Object... queryParameters) throws MuleException
+    private <T> T getEntity(final String uri,
+                            final Class<T> responseClass,
+                            final Set<Integer> expectedStatusCodes,
+                            final Object... queryParameters) throws MuleException
     {
         return sendHttpRequest(uri, null, getRequestProperties(HttpConstants.METHOD_GET), responseClass,
             expectedStatusCodes, queryParameters);
     }
 
-    private <T> T postEntityToApi(final String uri,
-                                  final Object entity,
-                                  final Class<T> responseClass,
-                                  final Set<Integer> expectedStatusCodes,
-                                  final Object... queryParameters) throws MuleException
+    private <T> T postEntity(final String uri,
+                             final Object entity,
+                             final Class<T> responseClass,
+                             final Set<Integer> expectedStatusCodes,
+                             final Object... queryParameters) throws MuleException
     {
         final Map<String, Object> requestProperties = getRequestProperties(HttpConstants.METHOD_POST);
 
         requestProperties.put(HttpConstants.HEADER_CONTENT_TYPE, MimeTypes.JSON);
 
-        final Transformer transformer = muleContext.getRegistry().lookupTransformer(
-            DataTypeFactory.create(entity.getClass()), DataTypeFactory.JSON_STRING);
-
-        final Object json = transformer.transform(entity);
+        final String json = serializeEntityToJson(entity);
 
         return sendHttpRequest(uri, json, requestProperties, responseClass, expectedStatusCodes,
             queryParameters);
+    }
+
+    private String serializeEntityToJson(final Object entity) throws TransformerException
+    {
+        if (entity == null)
+        {
+            return null;
+        }
+
+        return (String) objectToJsonTransformer.transform(entity);
     }
 
     private <T> T sendHttpRequest(final String uri,
@@ -269,7 +293,7 @@ public class Neo4jConnector implements MuleContextAware
                                             @Optional @Default("false") final boolean profile,
                                             final CypherQuery cypherQuery) throws MuleException
     {
-        return postEntityToApi(serviceRoot.getCypher(), cypherQuery, CypherQueryResult.class, OK_ONLY,
+        return postEntity(serviceRoot.getCypher(), cypherQuery, CypherQueryResult.class, SC_OK,
             "includeStats", includeStatistics, "profile", profile);
     }
 
@@ -290,11 +314,28 @@ public class Neo4jConnector implements MuleContextAware
     public Node getNode(@Optional @Default("false") final boolean failIfNotFound, final long nodeId)
         throws MuleException
     {
-        return getEntityFromApi(serviceRoot.getNode() + "/" + nodeId, Node.class,
-            failIfNotFound ? OK_ONLY : OK_OR_NOT_FOUND);
+        return getEntity(serviceRoot.getNode() + "/" + nodeId, Node.class, failIfNotFound
+                                                                                         ? SC_OK
+                                                                                         : SC_OK_OR_NOT_FOUND);
     }
 
-    // TODO createNode
+    /**
+     * Create a node.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:createNode}
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:createNode-withProperties}
+     * 
+     * @param properties node properties or null.
+     * @return the created {@link Node} instance.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
+    @Processor
+    public Node createNode(@Optional final Map<String, Object> properties) throws MuleException
+    {
+        return postEntity(serviceRoot.getNode(), properties, Node.class, SC_CREATED);
+    }
+
     // TODO deleteNode
 
     private void refreshAuthorization()

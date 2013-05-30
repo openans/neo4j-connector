@@ -17,10 +17,20 @@
 </neo4j:run-cypher-query>
 <!-- END_INCLUDE(neo4j:runCypherQuery) -->
 
-
 <!-- BEGIN_INCLUDE(neo4j:getNode) -->
 <neo4j:get-node nodeId="37800000" />
 <!-- END_INCLUDE(neo4j:getNode) -->
 <!-- BEGIN_INCLUDE(neo4j:getNode-failIfNotFound) -->
 <neo4j:get-node nodeId="37800000" failIfNotFound="true" />
 <!-- END_INCLUDE(neo4j:getNode-failIfNotFound) -->
+
+<!-- BEGIN_INCLUDE(neo4j:createNode) -->
+<neo4j:create-node />
+<!-- END_INCLUDE(neo4j:createNode) -->
+<!-- BEGIN_INCLUDE(neo4j:createNode-withProperties) -->
+<neo4j:create-node>
+    <neo4j:properties>
+        <neo4j:property key="foo">bar</neo4j:property>
+    </neo4j:properties>
+</neo4j:create-node>
+<!-- END_INCLUDE(neo4j:createNode-withProperties) -->

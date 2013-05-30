@@ -17,5 +17,12 @@
 
         <neo4j:get-node nodeId="0" failIfNotFound="true" />
         <neo4j:get-node nodeId="37800000" />
+
+        <neo4j:create-node />
+        <neo4j:create-node>
+            <neo4j:properties>
+                <neo4j:property key="foo">bar</neo4j:property>
+            </neo4j:properties>
+        </neo4j:create-node>
     </flow>
 </mule>
