@@ -36,6 +36,7 @@ import org.mule.api.annotations.ValidateConnection;
 import org.mule.api.annotations.param.ConnectionKey;
 import org.mule.api.annotations.param.Default;
 import org.mule.api.annotations.param.Optional;
+import org.mule.api.annotations.param.Payload;
 import org.mule.api.context.MuleContextAware;
 import org.mule.api.lifecycle.InitialisationException;
 import org.mule.api.transformer.TransformerException;
@@ -65,6 +66,7 @@ public class Neo4jConnector implements MuleContextAware
 {
     private static final Set<Integer> SC_OK = Collections.singleton(HttpConstants.SC_OK);
     private static final Set<Integer> SC_CREATED = Collections.singleton(HttpConstants.SC_CREATED);
+    private static final Set<Integer> SC_NO_CONTENT = Collections.singleton(HttpConstants.SC_NO_CONTENT);
 
     private static final Set<Integer> SC_OK_OR_NOT_FOUND = Collections.unmodifiableSet(new HashSet<Integer>(
         Arrays.asList(HttpConstants.SC_OK, HttpConstants.SC_NOT_FOUND)));
@@ -300,9 +302,9 @@ public class Neo4jConnector implements MuleContextAware
     /**
      * Get a node.
      * <p>
-     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:getNode}
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:getNodeById}
      * <p>
-     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:getNode-failIfNotFound}
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:getNodeById-failIfNotFound}
      * 
      * @param failIfNotFound if true, an exception will be thrown if the node is not found,
      *            otherwise null will be returned.
@@ -311,7 +313,7 @@ public class Neo4jConnector implements MuleContextAware
      * @throws MuleException if anything goes wrong with the operation.
      */
     @Processor
-    public Node getNode(@Optional @Default("false") final boolean failIfNotFound, final long nodeId)
+    public Node getNodeById(@Optional @Default("false") final boolean failIfNotFound, final long nodeId)
         throws MuleException
     {
         return getEntity(serviceRoot.getNode() + "/" + nodeId, Node.class, failIfNotFound
@@ -336,7 +338,13 @@ public class Neo4jConnector implements MuleContextAware
         return postEntity(serviceRoot.getNode(), properties, Node.class, SC_CREATED);
     }
 
-    // TODO deleteNode
+    // TODO java doc
+    // TODO unit test
+    // TODO xml examples
+    public void deleteNode(@Optional final Long nodeId, @Optional @Payload final Node node)
+    {
+        Validate.isTrue(!(nodeId == null && node == null), "Either nodeId or node must be provided");
+    }
 
     private void refreshAuthorization()
     {
