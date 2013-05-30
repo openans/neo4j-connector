@@ -16,3 +16,11 @@
     <neo4j:cypher-query query="start x = node(0) match x -[r]-> n return type(r)" />
 </neo4j:run-cypher-query>
 <!-- END_INCLUDE(neo4j:runCypherQuery) -->
+
+
+<!-- BEGIN_INCLUDE(neo4j:getNode) -->
+<neo4j:get-node nodeId="37800000" />
+<!-- END_INCLUDE(neo4j:getNode) -->
+<!-- BEGIN_INCLUDE(neo4j:getNode-failIfNotFound) -->
+<neo4j:get-node nodeId="37800000" failIfNotFound="true" />
+<!-- END_INCLUDE(neo4j:getNode-failIfNotFound) -->

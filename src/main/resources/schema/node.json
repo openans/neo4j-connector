@@ -1,0 +1,48 @@
+{
+  "type": "object",
+  "additionalProperties": true,
+  "properties" : {
+    "paged_traverse": {
+      "type": "string"
+    },
+    "outgoing_relationships": {
+      "type": "string"
+    },
+    "traverse": {
+      "type": "string"
+    },
+    "all_typed_relationships": {
+      "type": "string"
+    },
+    "self": {
+      "type": "string"
+    },
+    "all_relationships": {
+      "type": "string"
+    },
+    "property": {
+      "type": "string"
+    },
+    "properties": {
+      "type": "string"
+    },
+    "outgoing_typed_relationships": {
+      "type": "string"
+    },
+    "incoming_relationships": {
+      "type": "string"
+    },
+    "incoming_typed_relationships": {
+      "type": "string"
+    },
+    "create_relationship": {
+      "type": "string"
+    },
+    "extensions": {
+      "type": "object"
+    },
+    "data": {
+      "type": "object"
+    }
+  }
+}

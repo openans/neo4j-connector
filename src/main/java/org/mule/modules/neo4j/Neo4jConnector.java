@@ -11,13 +11,18 @@ package org.mule.modules.neo4j;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.Validate;
 import org.mule.api.ConnectionException;
 import org.mule.api.ConnectionExceptionCode;
+import org.mule.api.DefaultMuleException;
 import org.mule.api.MuleContext;
 import org.mule.api.MuleException;
 import org.mule.api.MuleMessage;
@@ -36,6 +41,7 @@ import org.mule.api.transformer.Transformer;
 import org.mule.endpoint.URIBuilder;
 import org.mule.modules.neo4j.model.CypherQuery;
 import org.mule.modules.neo4j.model.CypherQueryResult;
+import org.mule.modules.neo4j.model.Node;
 import org.mule.modules.neo4j.model.ServiceRoot;
 import org.mule.transformer.types.DataTypeFactory;
 import org.mule.transformer.types.MimeTypes;
@@ -47,7 +53,8 @@ import org.mule.util.StringUtils;
  * <p>
  * Neo4j Connector.
  * </p>
- * {@sample.config ../../../doc/mule-module-neo4j.xml.sample neo4j:config-no-auth} <br/>
+ * {@sample.config ../../../doc/mule-module-neo4j.xml.sample neo4j:config-no-auth}
+ * <p>
  * {@sample.config ../../../doc/mule-module-neo4j.xml.sample neo4j:config-auth}
  * 
  * @author MuleSoft Inc.
@@ -55,6 +62,11 @@ import org.mule.util.StringUtils;
 @Connector(name = "neo4j", schemaVersion = "3.4", friendlyName = "Neo4j", minMuleVersion = "3.4.0", description = "Neo4j Module")
 public class Neo4jConnector implements MuleContextAware
 {
+    private static final Set<Integer> OK_ONLY = Collections.singleton(HttpConstants.SC_OK);
+
+    private static final Set<Integer> OK_OR_NOT_FOUND = Collections.unmodifiableSet(new HashSet<Integer>(
+        Arrays.asList(HttpConstants.SC_OK, HttpConstants.SC_NOT_FOUND)));
+
     /**
      * The user used to authenticate to Neo4j.
      */
@@ -90,6 +102,12 @@ public class Neo4jConnector implements MuleContextAware
     private String baseUri;
     private ServiceRoot serviceRoot;
 
+    /**
+     * Connect to a Neo4j server.
+     * 
+     * @param baseUri the base URI of the Neo4j server API.
+     * @throws ConnectionException in case connection fails.
+     */
     @Connect
     public void connect(@ConnectionKey @Default("http://localhost:7474/db/data") final String baseUri)
         throws ConnectionException
@@ -108,7 +126,7 @@ public class Neo4jConnector implements MuleContextAware
 
         try
         {
-            serviceRoot = getEntityFromApi(baseUri + "/", ServiceRoot.class);
+            serviceRoot = getEntityFromApi(baseUri + "/", ServiceRoot.class, OK_ONLY);
         }
         catch (final MuleException me)
         {
@@ -131,17 +149,17 @@ public class Neo4jConnector implements MuleContextAware
 
     private <T> T getEntityFromApi(final String uri,
                                    final Class<T> responseClass,
+                                   final Set<Integer> expectedStatusCodes,
                                    final Object... queryParameters) throws MuleException
     {
-        final MuleMessage response = muleContext.getClient().send(buildUri(uri, queryParameters), null,
-            getRequestProperties(HttpConstants.METHOD_GET));
-
-        return response.getPayload(responseClass);
+        return sendHttpRequest(uri, null, getRequestProperties(HttpConstants.METHOD_GET), responseClass,
+            expectedStatusCodes, queryParameters);
     }
 
     private <T> T postEntityToApi(final String uri,
                                   final Object entity,
                                   final Class<T> responseClass,
+                                  final Set<Integer> expectedStatusCodes,
                                   final Object... queryParameters) throws MuleException
     {
         final Map<String, Object> requestProperties = getRequestProperties(HttpConstants.METHOD_POST);
@@ -153,10 +171,29 @@ public class Neo4jConnector implements MuleContextAware
 
         final Object json = transformer.transform(entity);
 
-        final MuleMessage response = muleContext.getClient().send(buildUri(uri, queryParameters), json,
+        return sendHttpRequest(uri, json, requestProperties, responseClass, expectedStatusCodes,
+            queryParameters);
+    }
+
+    private <T> T sendHttpRequest(final String uri,
+                                  final Object entity,
+                                  final Map<String, Object> requestProperties,
+                                  final Class<T> responseClass,
+                                  final Set<Integer> expectedStatusCodes,
+                                  final Object... queryParameters) throws MuleException
+    {
+        final MuleMessage response = muleContext.getClient().send(buildUri(uri, queryParameters), entity,
             requestProperties);
 
-        return response.getPayload(responseClass);
+        final Integer responseStatusCode = Integer.valueOf((String) response.getInboundProperty(HttpConnector.HTTP_STATUS_PROPERTY));
+
+        if (!expectedStatusCodes.contains(responseStatusCode))
+        {
+            throw new DefaultMuleException("Received status code: " + responseStatusCode
+                                           + " but was expecting: " + expectedStatusCodes);
+        }
+
+        return responseStatusCode != HttpConstants.SC_NOT_FOUND ? response.getPayload(responseClass) : null;
     }
 
     private String buildUri(final String uri, final Object... queryParameters)
@@ -209,7 +246,6 @@ public class Neo4jConnector implements MuleContextAware
      * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:getServiceRoot}
      * 
      * @return the service root data.
-     * @throws IOException if anything goes wrong with the operation.
      */
     @Processor
     public ServiceRoot getServiceRoot()
@@ -226,17 +262,40 @@ public class Neo4jConnector implements MuleContextAware
      * @param profile defines if a profile of the executed query must be returned
      * @param cypherQuery the query to execute
      * @return a {@link CypherQueryResult}.
-     * @throws MuleException
-     * @throws IOException if anything goes wrong with the operation.
+     * @throws MuleException if anything goes wrong with the operation.
      */
     @Processor
     public CypherQueryResult runCypherQuery(@Optional @Default("false") final boolean includeStatistics,
                                             @Optional @Default("false") final boolean profile,
                                             final CypherQuery cypherQuery) throws MuleException
     {
-        return postEntityToApi(serviceRoot.getCypher(), cypherQuery, CypherQueryResult.class, "includeStats",
-            includeStatistics, "profile", profile);
+        return postEntityToApi(serviceRoot.getCypher(), cypherQuery, CypherQueryResult.class, OK_ONLY,
+            "includeStats", includeStatistics, "profile", profile);
     }
+
+    /**
+     * Get a node.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:getNode}
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:getNode-failIfNotFound}
+     * 
+     * @param failIfNotFound if true, an exception will be thrown if the node is not found,
+     *            otherwise null will be returned.
+     * @param nodeId id of the node to get.
+     * @return a {@link Node} instance or null.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
+    @Processor
+    public Node getNode(@Optional @Default("false") final boolean failIfNotFound, final long nodeId)
+        throws MuleException
+    {
+        return getEntityFromApi(serviceRoot.getNode() + "/" + nodeId, Node.class,
+            failIfNotFound ? OK_ONLY : OK_OR_NOT_FOUND);
+    }
+
+    // TODO createNode
+    // TODO deleteNode
 
     private void refreshAuthorization()
     {
