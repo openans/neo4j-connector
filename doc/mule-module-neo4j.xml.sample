@@ -34,3 +34,17 @@
     </neo4j:properties>
 </neo4j:create-node>
 <!-- END_INCLUDE(neo4j:createNode-withProperties) -->
+
+<!-- BEGIN_INCLUDE(neo4j:deleteNodeById) -->
+<neo4j:delete-node-by-id nodeId="37800000" />
+<!-- END_INCLUDE(neo4j:deleteNodeById) -->
+<!-- BEGIN_INCLUDE(neo4j:deleteNodeById-failIfNotFound) -->
+<neo4j:delete-node-by-id nodeId="37800000" failIfNotFound="true" />
+<!-- END_INCLUDE(neo4j:deleteNodeById-failIfNotFound) -->
+
+<!-- BEGIN_INCLUDE(neo4j:deleteNode) -->
+<neo4j:delete-node />
+<!-- END_INCLUDE(neo4j:deleteNode) -->
+<!-- BEGIN_INCLUDE(neo4j:deleteNode-failIfNotFound) -->
+<neo4j:delete-node failIfNotFound="true" />
+<!-- END_INCLUDE(neo4j:deleteNode-failIfNotFound) -->

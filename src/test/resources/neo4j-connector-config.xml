@@ -24,5 +24,12 @@
                 <neo4j:property key="foo">bar</neo4j:property>
             </neo4j:properties>
         </neo4j:create-node>
+
+        <neo4j:delete-node-by-id nodeId="37800000" />
+        <neo4j:delete-node-by-id nodeId="37800000"
+            failIfNotFound="true" />
+
+        <neo4j:delete-node />
+        <neo4j:delete-node failIfNotFound="true" />
     </flow>
 </mule>

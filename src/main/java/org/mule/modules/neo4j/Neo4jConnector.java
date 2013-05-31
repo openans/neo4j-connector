@@ -18,12 +18,15 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.inject.Inject;
+
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.Validate;
 import org.mule.api.ConnectionException;
 import org.mule.api.ConnectionExceptionCode;
 import org.mule.api.DefaultMuleException;
 import org.mule.api.MuleContext;
+import org.mule.api.MuleEvent;
 import org.mule.api.MuleException;
 import org.mule.api.MuleMessage;
 import org.mule.api.annotations.Configurable;
@@ -36,7 +39,6 @@ import org.mule.api.annotations.ValidateConnection;
 import org.mule.api.annotations.param.ConnectionKey;
 import org.mule.api.annotations.param.Default;
 import org.mule.api.annotations.param.Optional;
-import org.mule.api.annotations.param.Payload;
 import org.mule.api.context.MuleContextAware;
 import org.mule.api.lifecycle.InitialisationException;
 import org.mule.api.transformer.TransformerException;
@@ -67,9 +69,12 @@ public class Neo4jConnector implements MuleContextAware
     private static final Set<Integer> SC_OK = Collections.singleton(HttpConstants.SC_OK);
     private static final Set<Integer> SC_CREATED = Collections.singleton(HttpConstants.SC_CREATED);
     private static final Set<Integer> SC_NO_CONTENT = Collections.singleton(HttpConstants.SC_NO_CONTENT);
-
+    private static final Set<Integer> SC_NO_CONTENT_OR_NOT_FOUND = Collections.unmodifiableSet(new HashSet<Integer>(
+        Arrays.asList(HttpConstants.SC_NO_CONTENT, HttpConstants.SC_NOT_FOUND)));
     private static final Set<Integer> SC_OK_OR_NOT_FOUND = Collections.unmodifiableSet(new HashSet<Integer>(
         Arrays.asList(HttpConstants.SC_OK, HttpConstants.SC_NOT_FOUND)));
+    private static final Set<Integer> NO_RESPONSE_STATUSES = Collections.unmodifiableSet(new HashSet<Integer>(
+        Arrays.asList(HttpConstants.SC_NO_CONTENT, HttpConstants.SC_NOT_FOUND)));
 
     /**
      * The user used to authenticate to Neo4j.
@@ -175,6 +180,12 @@ public class Neo4jConnector implements MuleContextAware
             expectedStatusCodes, queryParameters);
     }
 
+    private void deleteEntity(final String uri, final Set<Integer> expectedStatusCodes) throws MuleException
+    {
+        sendHttpRequest(uri, null, getRequestProperties(HttpConstants.METHOD_DELETE), null,
+            expectedStatusCodes);
+    }
+
     private <T> T postEntity(final String uri,
                              final Object entity,
                              final Class<T> responseClass,
@@ -219,7 +230,7 @@ public class Neo4jConnector implements MuleContextAware
                                            + " but was expecting: " + expectedStatusCodes);
         }
 
-        return responseStatusCode != HttpConstants.SC_NOT_FOUND ? response.getPayload(responseClass) : null;
+        return NO_RESPONSE_STATUSES.contains(responseStatusCode) ? null : response.getPayload(responseClass);
     }
 
     private String buildUri(final String uri, final Object... queryParameters)
@@ -264,6 +275,11 @@ public class Neo4jConnector implements MuleContextAware
         }
 
         return properties;
+    }
+
+    private String getNodeUrl(final long nodeId)
+    {
+        return serviceRoot.getNode() + "/" + nodeId;
     }
 
     /**
@@ -316,9 +332,7 @@ public class Neo4jConnector implements MuleContextAware
     public Node getNodeById(@Optional @Default("false") final boolean failIfNotFound, final long nodeId)
         throws MuleException
     {
-        return getEntity(serviceRoot.getNode() + "/" + nodeId, Node.class, failIfNotFound
-                                                                                         ? SC_OK
-                                                                                         : SC_OK_OR_NOT_FOUND);
+        return getEntity(getNodeUrl(nodeId), Node.class, failIfNotFound ? SC_OK : SC_OK_OR_NOT_FOUND);
     }
 
     /**
@@ -338,12 +352,50 @@ public class Neo4jConnector implements MuleContextAware
         return postEntity(serviceRoot.getNode(), properties, Node.class, SC_CREATED);
     }
 
-    // TODO java doc
-    // TODO unit test
-    // TODO xml examples
-    public void deleteNode(@Optional final Long nodeId, @Optional @Payload final Node node)
+    /**
+     * Delete a node.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:deleteNodeById}
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:deleteNodeById-failIfNotFound}
+     * 
+     * @param failIfNotFound if true, an exception will be thrown if the node is not found and
+     *            couldn't be deleted.
+     * @param nodeId id of the node to delete.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
+    @Processor
+    public void deleteNodeById(@Optional @Default("false") final boolean failIfNotFound, final long nodeId)
+        throws MuleException
     {
-        Validate.isTrue(!(nodeId == null && node == null), "Either nodeId or node must be provided");
+        deleteNode(getNodeUrl(nodeId), failIfNotFound);
+    }
+
+    /**
+     * Delete a node.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:deleteNode}
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:deleteNode-failIfNotFound}
+     * 
+     * @param failIfNotFound if true, an exception will be thrown if the node is not found and
+     *            couldn't be deleted.
+     * @param muleEvent {@link MuleEvent} that contains a message whose payload is or can be
+     *            converted to a {@link Node} instance.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
+    @Processor
+    @Inject
+    public void deleteNode(@Optional @Default("false") final boolean failIfNotFound, final MuleEvent muleEvent)
+        throws MuleException
+    {
+        final Node node = muleEvent.getMessage().getPayload(Node.class);
+        deleteNode(node.getSelf(), failIfNotFound);
+    }
+
+    private void deleteNode(final String nodeUrl, final boolean failIfNotFound) throws MuleException
+    {
+        deleteEntity(nodeUrl, failIfNotFound ? SC_NO_CONTENT : SC_NO_CONTENT_OR_NOT_FOUND);
     }
 
     private void refreshAuthorization()
