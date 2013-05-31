@@ -9,12 +9,15 @@
 package org.mule.modules.neo4j;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -22,6 +25,8 @@ import javax.inject.Inject;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.Validate;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 import org.mule.api.ConnectionException;
 import org.mule.api.ConnectionExceptionCode;
 import org.mule.api.DefaultMuleException;
@@ -40,10 +45,7 @@ import org.mule.api.annotations.param.Default;
 import org.mule.api.annotations.param.Optional;
 import org.mule.api.annotations.param.RefOnly;
 import org.mule.api.context.MuleContextAware;
-import org.mule.api.lifecycle.InitialisationException;
-import org.mule.api.transformer.TransformerException;
 import org.mule.endpoint.URIBuilder;
-import org.mule.module.json.transformers.ObjectToJson;
 import org.mule.modules.neo4j.model.CypherQuery;
 import org.mule.modules.neo4j.model.CypherQueryResult;
 import org.mule.modules.neo4j.model.Data;
@@ -70,6 +72,79 @@ import org.mule.util.StringUtils;
 @Connector(name = "neo4j", schemaVersion = "3.4", friendlyName = "Neo4j", minMuleVersion = "3.4.0", description = "Neo4j Module")
 public class Neo4jConnector implements MuleContextAware
 {
+    public static enum RelationshipDirection
+    {
+        ALL
+        {
+            @Override
+            public String getRelationshipsUrl(final Node node)
+            {
+                return node.getAllRelationships();
+            }
+
+            @Override
+            public String getTypeRelationshipsUrlPattern(final Node node)
+            {
+                return node.getAllTypedRelationships();
+            }
+        },
+        INCOMING
+        {
+            @Override
+            public String getRelationshipsUrl(final Node node)
+            {
+                return node.getIncomingRelationships();
+            }
+
+            @Override
+            public String getTypeRelationshipsUrlPattern(final Node node)
+            {
+                return node.getIncomingTypedRelationships();
+            }
+        },
+        OUTGOING
+        {
+            @Override
+            public String getRelationshipsUrl(final Node node)
+            {
+                return node.getOutgoingRelationships();
+            }
+
+            @Override
+            public String getTypeRelationshipsUrlPattern(final Node node)
+            {
+                return node.getOutgoingTypedRelationships();
+            }
+        };
+
+        public abstract String getRelationshipsUrl(Node node);
+
+        public abstract String getTypeRelationshipsUrlPattern(Node node);
+    }
+
+    private static final TypeReference<ServiceRoot> SERVICE_ROOT_TYPE_REFERENCE = new TypeReference<ServiceRoot>()
+    {
+        // NOOP
+    };
+    private static final TypeReference<CypherQueryResult> CYPHER_QUERY_RESULT_TYPE_REFERENCE = new TypeReference<CypherQueryResult>()
+    {
+        // NOOP
+    };
+    private static final TypeReference<Node> NODE_TYPE_REFERENCE = new TypeReference<Node>()
+    {
+        // NOOP
+    };
+    private static final TypeReference<Relationship> RELATIONSHIP_TYPE_REFERENCE = new TypeReference<Relationship>()
+    {
+        // NOOP
+    };
+    private static final TypeReference<Collection<Relationship>> RELATIONSHIPS_TYPE_REFERENCE = new TypeReference<Collection<Relationship>>()
+    {
+        // NOOP
+    };
+
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+
     private static final Set<Integer> SC_OK = Collections.singleton(HttpConstants.SC_OK);
     private static final Set<Integer> SC_CREATED = Collections.singleton(HttpConstants.SC_CREATED);
     private static final Set<Integer> SC_NO_CONTENT = Collections.singleton(HttpConstants.SC_NO_CONTENT);
@@ -114,7 +189,6 @@ public class Neo4jConnector implements MuleContextAware
     private String authorization;
     private String baseUri;
     private ServiceRoot serviceRoot;
-    private ObjectToJson objectToJsonTransformer;
 
     /**
      * Connect to a Neo4j server.
@@ -140,25 +214,12 @@ public class Neo4jConnector implements MuleContextAware
 
         try
         {
-            serviceRoot = getEntity(baseUri + "/", ServiceRoot.class, SC_OK);
+            serviceRoot = getEntity(baseUri + "/", SERVICE_ROOT_TYPE_REFERENCE, SC_OK);
         }
         catch (final MuleException me)
         {
             throw new ConnectionException(ConnectionExceptionCode.CANNOT_REACH, null,
                 "Failed to retrieve service root from: " + baseUri, me);
-        }
-
-        objectToJsonTransformer = new ObjectToJson();
-        objectToJsonTransformer.setMuleContext(muleContext);
-
-        try
-        {
-            objectToJsonTransformer.initialise();
-        }
-        catch (final InitialisationException ie)
-        {
-            throw new ConnectionException(ConnectionExceptionCode.UNKNOWN, null,
-                "Failed to initialize JSON transformer: " + baseUri, ie);
         }
     }
 
@@ -172,15 +233,14 @@ public class Neo4jConnector implements MuleContextAware
     public void disconnect() throws IOException
     {
         serviceRoot = null;
-        objectToJsonTransformer = null;
     }
 
     private <T> T getEntity(final String uri,
-                            final Class<T> responseClass,
+                            final TypeReference<T> responseType,
                             final Set<Integer> expectedStatusCodes,
                             final Object... queryParameters) throws MuleException
     {
-        return sendHttpRequest(uri, null, getRequestProperties(HttpConstants.METHOD_GET), responseClass,
+        return sendHttpRequest(uri, null, getRequestProperties(HttpConstants.METHOD_GET), responseType,
             expectedStatusCodes, queryParameters);
     }
 
@@ -192,7 +252,7 @@ public class Neo4jConnector implements MuleContextAware
 
     private <T> T postEntity(final String uri,
                              final Object entity,
-                             final Class<T> responseClass,
+                             final TypeReference<T> responseType,
                              final Set<Integer> expectedStatusCodes,
                              final Object... queryParameters) throws MuleException
     {
@@ -202,24 +262,31 @@ public class Neo4jConnector implements MuleContextAware
 
         final String json = serializeEntityToJson(entity);
 
-        return sendHttpRequest(uri, json, requestProperties, responseClass, expectedStatusCodes,
+        return sendHttpRequest(uri, json, requestProperties, responseType, expectedStatusCodes,
             queryParameters);
     }
 
-    private String serializeEntityToJson(final Object entity) throws TransformerException
+    private String serializeEntityToJson(final Object entity) throws MuleException
     {
         if (entity == null)
         {
             return null;
         }
 
-        return (String) objectToJsonTransformer.transform(entity);
+        try
+        {
+            return OBJECT_MAPPER.writeValueAsString(entity);
+        }
+        catch (final IOException ioe)
+        {
+            throw new DefaultMuleException("Failed to serialize to JSON: " + entity, ioe);
+        }
     }
 
     private <T> T sendHttpRequest(final String uri,
                                   final Object entity,
                                   final Map<String, Object> requestProperties,
-                                  final Class<T> responseClass,
+                                  final TypeReference<T> responseType,
                                   final Set<Integer> expectedStatusCodes,
                                   final Object... queryParameters) throws MuleException
     {
@@ -234,7 +301,19 @@ public class Neo4jConnector implements MuleContextAware
                                            + " but was expecting: " + expectedStatusCodes);
         }
 
-        return NO_RESPONSE_STATUSES.contains(responseStatusCode) ? null : response.getPayload(responseClass);
+        if (NO_RESPONSE_STATUSES.contains(responseStatusCode))
+        {
+            return null;
+        }
+
+        try
+        {
+            return OBJECT_MAPPER.readValue((InputStream) response.getPayload(), responseType);
+        }
+        catch (final IOException ioe)
+        {
+            throw new DefaultMuleException("Failed to deserialize from JSON: " + response, ioe);
+        }
     }
 
     private String buildUri(final String uri, final Object... queryParameters)
@@ -316,7 +395,7 @@ public class Neo4jConnector implements MuleContextAware
                                             @Optional @Default("false") final boolean profile)
         throws MuleException
     {
-        return postEntity(serviceRoot.getCypher(), cypherQuery, CypherQueryResult.class, SC_OK,
+        return postEntity(serviceRoot.getCypher(), cypherQuery, CYPHER_QUERY_RESULT_TYPE_REFERENCE, SC_OK,
             "includeStats", includeStatistics, "profile", profile);
     }
 
@@ -337,7 +416,7 @@ public class Neo4jConnector implements MuleContextAware
     public Node getNodeById(final long nodeId, @Optional @Default("false") final boolean failIfNotFound)
         throws MuleException
     {
-        return getEntity(getNodeUrl(nodeId), Node.class, failIfNotFound ? SC_OK : SC_OK_OR_NOT_FOUND);
+        return getEntity(getNodeUrl(nodeId), NODE_TYPE_REFERENCE, failIfNotFound ? SC_OK : SC_OK_OR_NOT_FOUND);
     }
 
     /**
@@ -354,7 +433,7 @@ public class Neo4jConnector implements MuleContextAware
     @Processor
     public Node createNode(@Optional final Map<String, Object> properties) throws MuleException
     {
-        return postEntity(serviceRoot.getNode(), properties, Node.class, SC_CREATED);
+        return postEntity(serviceRoot.getNode(), properties, NODE_TYPE_REFERENCE, SC_CREATED);
     }
 
     /**
@@ -420,7 +499,7 @@ public class Neo4jConnector implements MuleContextAware
                                             @Optional @Default("false") final boolean failIfNotFound)
         throws MuleException
     {
-        return getEntity(getRelationshipUrl(relationshipId), Relationship.class,
+        return getEntity(getRelationshipUrl(relationshipId), RELATIONSHIP_TYPE_REFERENCE,
             failIfNotFound ? SC_OK : SC_OK_OR_NOT_FOUND);
     }
 
@@ -459,8 +538,8 @@ public class Neo4jConnector implements MuleContextAware
             .withTo(getNodeUrl(toNodeId))
             .withData(data);
 
-        return postEntity(getNodeUrl(fromNodeId) + "/relationships", newRelationship, Relationship.class,
-            SC_CREATED);
+        return postEntity(getNodeUrl(fromNodeId) + "/relationships", newRelationship,
+            RELATIONSHIP_TYPE_REFERENCE, SC_CREATED);
     }
 
     /**
@@ -491,7 +570,8 @@ public class Neo4jConnector implements MuleContextAware
             .withTo(toNode.getSelf())
             .withData(data);
 
-        return postEntity(fromNode.getCreateRelationship(), newRelationship, Relationship.class, SC_CREATED);
+        return postEntity(fromNode.getCreateRelationship(), newRelationship, RELATIONSHIP_TYPE_REFERENCE,
+            SC_CREATED);
     }
 
     /**
@@ -546,7 +626,21 @@ public class Neo4jConnector implements MuleContextAware
     // TODO getRelationshipProperty
     // TODO setRelationshipProperties
     // TODO setRelationshipProperty
-    // TODO getNodeRelationships ALL|IN|OUT types
+
+    // TODO Test
+    // TODO JavaDoc
+    // TODO DevKit Doc
+    @Processor
+    public Collection<Relationship> getNodeRelationships(@RefOnly final Node node,
+                                                         final RelationshipDirection direction,
+                                                         @Optional final List<String> types)
+        throws MuleException
+    {
+        // FIXME support types
+        final String relationshipsUrl = direction.getRelationshipsUrl(node);
+
+        return getEntity(relationshipsUrl, RELATIONSHIPS_TYPE_REFERENCE, SC_OK);
+    }
 
     private Data convertMapToData(final Map<String, Object> properties)
     {
