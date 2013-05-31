@@ -43,8 +43,8 @@
 <!-- END_INCLUDE(neo4j:deleteNodeById-failIfNotFound) -->
 
 <!-- BEGIN_INCLUDE(neo4j:deleteNode) -->
-<neo4j:delete-node />
+<neo4j:delete-node node-ref="#[message.payload]" />
 <!-- END_INCLUDE(neo4j:deleteNode) -->
 <!-- BEGIN_INCLUDE(neo4j:deleteNode-failIfNotFound) -->
-<neo4j:delete-node failIfNotFound="true" />
+<neo4j:delete-node node-ref="#[message.payload]" failIfNotFound="true" />
 <!-- END_INCLUDE(neo4j:deleteNode-failIfNotFound) -->

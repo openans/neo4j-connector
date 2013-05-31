@@ -26,7 +26,6 @@ import org.mule.api.ConnectionException;
 import org.mule.api.ConnectionExceptionCode;
 import org.mule.api.DefaultMuleException;
 import org.mule.api.MuleContext;
-import org.mule.api.MuleEvent;
 import org.mule.api.MuleException;
 import org.mule.api.MuleMessage;
 import org.mule.api.annotations.Configurable;
@@ -39,6 +38,7 @@ import org.mule.api.annotations.ValidateConnection;
 import org.mule.api.annotations.param.ConnectionKey;
 import org.mule.api.annotations.param.Default;
 import org.mule.api.annotations.param.Optional;
+import org.mule.api.annotations.param.RefOnly;
 import org.mule.api.context.MuleContextAware;
 import org.mule.api.lifecycle.InitialisationException;
 import org.mule.api.transformer.TransformerException;
@@ -46,7 +46,10 @@ import org.mule.endpoint.URIBuilder;
 import org.mule.module.json.transformers.ObjectToJson;
 import org.mule.modules.neo4j.model.CypherQuery;
 import org.mule.modules.neo4j.model.CypherQueryResult;
+import org.mule.modules.neo4j.model.Data;
+import org.mule.modules.neo4j.model.NewRelationship;
 import org.mule.modules.neo4j.model.Node;
+import org.mule.modules.neo4j.model.Relationship;
 import org.mule.modules.neo4j.model.ServiceRoot;
 import org.mule.transformer.types.MimeTypes;
 import org.mule.transport.http.HttpConnector;
@@ -300,16 +303,17 @@ public class Neo4jConnector implements MuleContextAware
      * <p>
      * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:runCypherQuery}
      * 
+     * @param cypherQuery the query to execute
      * @param includeStatistics defines if meta data about the query must be returned
      * @param profile defines if a profile of the executed query must be returned
-     * @param cypherQuery the query to execute
      * @return a {@link CypherQueryResult}.
      * @throws MuleException if anything goes wrong with the operation.
      */
     @Processor
-    public CypherQueryResult runCypherQuery(@Optional @Default("false") final boolean includeStatistics,
-                                            @Optional @Default("false") final boolean profile,
-                                            final CypherQuery cypherQuery) throws MuleException
+    public CypherQueryResult runCypherQuery(final CypherQuery cypherQuery,
+                                            @Optional @Default("false") final boolean includeStatistics,
+                                            @Optional @Default("false") final boolean profile)
+        throws MuleException
     {
         return postEntity(serviceRoot.getCypher(), cypherQuery, CypherQueryResult.class, SC_OK,
             "includeStats", includeStatistics, "profile", profile);
@@ -322,14 +326,14 @@ public class Neo4jConnector implements MuleContextAware
      * <p>
      * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:getNodeById-failIfNotFound}
      * 
+     * @param nodeId id of the node to get.
      * @param failIfNotFound if true, an exception will be thrown if the node is not found,
      *            otherwise null will be returned.
-     * @param nodeId id of the node to get.
      * @return a {@link Node} instance or null.
      * @throws MuleException if anything goes wrong with the operation.
      */
     @Processor
-    public Node getNodeById(@Optional @Default("false") final boolean failIfNotFound, final long nodeId)
+    public Node getNodeById(final long nodeId, @Optional @Default("false") final boolean failIfNotFound)
         throws MuleException
     {
         return getEntity(getNodeUrl(nodeId), Node.class, failIfNotFound ? SC_OK : SC_OK_OR_NOT_FOUND);
@@ -359,13 +363,13 @@ public class Neo4jConnector implements MuleContextAware
      * <p>
      * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:deleteNodeById-failIfNotFound}
      * 
+     * @param nodeId id of the node to delete.
      * @param failIfNotFound if true, an exception will be thrown if the node is not found and
      *            couldn't be deleted.
-     * @param nodeId id of the node to delete.
      * @throws MuleException if anything goes wrong with the operation.
      */
     @Processor
-    public void deleteNodeById(@Optional @Default("false") final boolean failIfNotFound, final long nodeId)
+    public void deleteNodeById(final long nodeId, @Optional @Default("false") final boolean failIfNotFound)
         throws MuleException
     {
         deleteNode(getNodeUrl(nodeId), failIfNotFound);
@@ -378,26 +382,121 @@ public class Neo4jConnector implements MuleContextAware
      * <p>
      * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:deleteNode-failIfNotFound}
      * 
+     * @param node the {@link Node} to delete.
      * @param failIfNotFound if true, an exception will be thrown if the node is not found and
      *            couldn't be deleted.
-     * @param muleEvent {@link MuleEvent} that contains a message whose payload is or can be
-     *            converted to a {@link Node} instance.
      * @throws MuleException if anything goes wrong with the operation.
      */
     @Processor
     @Inject
-    public void deleteNode(@Optional @Default("false") final boolean failIfNotFound, final MuleEvent muleEvent)
+    public void deleteNode(@RefOnly final Node node, @Optional @Default("false") final boolean failIfNotFound)
         throws MuleException
     {
-        final Node node = muleEvent.getMessage().getPayload(Node.class);
         deleteNode(node.getSelf(), failIfNotFound);
     }
-
-    // TODO add relationship methods
 
     private void deleteNode(final String nodeUrl, final boolean failIfNotFound) throws MuleException
     {
         deleteEntity(nodeUrl, failIfNotFound ? SC_NO_CONTENT : SC_NO_CONTENT_OR_NOT_FOUND);
+    }
+
+    // TODO unit test
+    // TODO javadoc
+    // TODO devkit doc
+    @Processor
+    public Relationship getRelationshipById(final long relationshipId,
+                                            @Optional @Default("false") final boolean failIfNotFound)
+        throws MuleException
+    {
+        return getEntity(getRelationshipUrl(relationshipId), Relationship.class,
+            failIfNotFound ? SC_OK : SC_OK_OR_NOT_FOUND);
+    }
+
+    private String getRelationshipUrl(final long relationshipId)
+    {
+        // why this horrible hack? see: https://github.com/neo4j/neo4j/issues/848
+        return StringUtils.substringBeforeLast(serviceRoot.getNode(), "/node") + "/relationship/"
+               + relationshipId;
+    }
+
+    // TODO unit test
+    // TODO javadoc
+    // TODO devkit doc
+    @Processor
+    public Relationship createRelationshipByIds(final long fromNodeId,
+                                                final long toNodeId,
+                                                final String type,
+                                                @Optional final Map<String, Object> properties)
+        throws MuleException
+    {
+        final Data data = convertMapToData(properties);
+
+        final NewRelationship newRelationship = new NewRelationship().withType(type)
+            .withTo(getNodeUrl(toNodeId))
+            .withData(data);
+
+        return postEntity(getNodeUrl(fromNodeId) + "/relationships", newRelationship, Relationship.class,
+            SC_CREATED);
+    }
+
+    // TODO unit test
+    // TODO javadoc
+    // TODO devkit doc
+    @Processor
+    public Relationship createRelationship(@RefOnly final Node fromNode,
+                                           @RefOnly final Node toNode,
+                                           final String type,
+                                           @Optional final Map<String, Object> properties)
+        throws MuleException
+    {
+        final Data data = convertMapToData(properties);
+
+        final NewRelationship newRelationship = new NewRelationship().withType(type)
+            .withTo(toNode.getSelf())
+            .withData(data);
+
+        return postEntity(fromNode.getCreateRelationship(), newRelationship, Relationship.class, SC_CREATED);
+    }
+
+    // TODO unit test
+    // TODO javadoc
+    // TODO devkit doc
+    @Processor
+    public void deleteRelationshipById(final long relationshipId,
+                                       @Optional @Default("false") final boolean failIfNotFound)
+        throws MuleException
+    {
+        deleteRelationship(getRelationshipUrl(relationshipId), failIfNotFound);
+    }
+
+    // TODO unit test
+    // TODO javadoc
+    // TODO devkit doc
+    @Processor
+    public void deleteRelationship(@RefOnly final Relationship relationship,
+                                   @Optional @Default("false") final boolean failIfNotFound)
+        throws MuleException
+    {
+        deleteRelationship(relationship.getSelf(), failIfNotFound);
+    }
+
+    private void deleteRelationship(final String relationshipUrl, final boolean failIfNotFound)
+        throws MuleException
+    {
+        deleteEntity(relationshipUrl, failIfNotFound ? SC_NO_CONTENT : SC_NO_CONTENT_OR_NOT_FOUND);
+    }
+
+    // TODO getRelationshipProperties
+    // TODO getRelationshipProperty
+    // TODO setRelationshipProperties
+    // TODO setRelationshipProperty
+    // TODO getNodeRelationships ALL|IN|OUT types
+
+    private Data convertMapToData(final Map<String, Object> properties)
+    {
+        final Data data = new Data();
+        data.getAdditionalProperties().putAll(properties);
+        return data;
     }
 
     private void refreshAuthorization()

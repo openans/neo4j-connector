@@ -36,6 +36,7 @@
                     <annotationStyle>jackson1</annotationStyle>
                     <generateBuilders>true</generateBuilders>
                     <propertyWordDelimiters>_</propertyWordDelimiters>
+                    <includeToString>true</includeToString>
                 </configuration>
                 <executions>
                     <execution>

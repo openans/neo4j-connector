@@ -29,7 +29,7 @@
         <neo4j:delete-node-by-id nodeId="37800000"
             failIfNotFound="true" />
 
-        <neo4j:delete-node />
-        <neo4j:delete-node failIfNotFound="true" />
+        <neo4j:delete-node node-ref="#[message.payload]" />
+        <neo4j:delete-node node-ref="#[message.payload]" failIfNotFound="true" />
     </flow>
 </mule>

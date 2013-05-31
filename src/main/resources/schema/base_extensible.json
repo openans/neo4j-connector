@@ -1,7 +1,7 @@
 {
   "type": "object",
+  "additionalProperties": false,
   "javaType" : "org.mule.modules.neo4j.model.BaseExtensible",
-  "additionalProperties": true,
   "properties" : {
     "extensions": {
       "type": "object"
