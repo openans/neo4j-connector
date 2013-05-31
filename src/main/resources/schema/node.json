@@ -1,6 +1,8 @@
 {
   "type": "object",
-  "additionalProperties": true,
+  "extends" : {
+    "$ref" : "base_data_extensible.json"
+  },
   "properties" : {
     "paged_traverse": {
       "type": "string"
@@ -14,16 +16,7 @@
     "all_typed_relationships": {
       "type": "string"
     },
-    "self": {
-      "type": "string"
-    },
     "all_relationships": {
-      "type": "string"
-    },
-    "property": {
-      "type": "string"
-    },
-    "properties": {
       "type": "string"
     },
     "outgoing_typed_relationships": {
@@ -37,12 +30,6 @@
     },
     "create_relationship": {
       "type": "string"
-    },
-    "extensions": {
-      "type": "object"
-    },
-    "data": {
-      "type": "object"
     }
   }
 }

@@ -1,0 +1,17 @@
+{
+  "type": "object",
+  "extends" : {
+    "$ref" : "base_data_extensible.json"
+  },
+  "properties" : {
+    "start": {
+      "type": "string"
+    },
+    "end": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    }
+  }
+}

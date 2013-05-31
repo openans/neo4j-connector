@@ -1,6 +1,8 @@
 {
   "type": "object",
-  "additionalProperties": true,
+  "extends" : {
+    "$ref" : "base_extensible.json"
+  },
   "properties" : {
     "neo4j_version": {
       "type": "string"
@@ -10,9 +12,6 @@
     },
     "cypher": {
       "type": "string"
-    },
-    "extensions": {
-      "type": "object"
     },
     "extensions_info": {
       "type": "string"

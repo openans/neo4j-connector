@@ -393,6 +393,8 @@ public class Neo4jConnector implements MuleContextAware
         deleteNode(node.getSelf(), failIfNotFound);
     }
 
+    // TODO add relationship methods
+
     private void deleteNode(final String nodeUrl, final boolean failIfNotFound) throws MuleException
     {
         deleteEntity(nodeUrl, failIfNotFound ? SC_NO_CONTENT : SC_NO_CONTENT_OR_NOT_FOUND);
