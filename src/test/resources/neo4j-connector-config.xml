@@ -30,6 +30,32 @@
             failIfNotFound="true" />
 
         <neo4j:delete-node node-ref="#[message.payload]" />
-        <neo4j:delete-node node-ref="#[message.payload]" failIfNotFound="true" />
+        <neo4j:delete-node node-ref="#[message.payload]"
+            failIfNotFound="true" />
+
+        <neo4j:get-relationship-by-id
+            relationshipId="1" failIfNotFound="true" />
+
+        <neo4j:get-relationship-by-id
+            relationshipId="1" />
+
+        <neo4j:create-relationship-by-ids
+            fromNodeId="1" toNodeId="2" type="test" />
+
+        <neo4j:create-relationship fromNode-ref="#[firstNode]"
+            toNode-ref="#[secondNode]" type="test">
+            <neo4j:properties>
+                <neo4j:property key="foo">bar</neo4j:property>
+            </neo4j:properties>
+        </neo4j:create-relationship>
+
+        <neo4j:delete-relationship-by-id
+            relationshipId="1" failIfNotFound="true" />
+        <neo4j:delete-relationship-by-id
+            relationshipId="1" />
+
+        <neo4j:delete-relationship relationship-ref="#[secondRelationship]"
+            failIfNotFound="true" />
+        <neo4j:delete-relationship relationship-ref="#[secondRelationship]" />
     </flow>
 </mule>

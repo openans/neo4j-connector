@@ -54,6 +54,7 @@ import org.mule.modules.neo4j.model.ServiceRoot;
 import org.mule.transformer.types.MimeTypes;
 import org.mule.transport.http.HttpConnector;
 import org.mule.transport.http.HttpConstants;
+import org.mule.util.MapUtils;
 import org.mule.util.StringUtils;
 
 /**
@@ -346,7 +347,7 @@ public class Neo4jConnector implements MuleContextAware
      * <p>
      * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:createNode-withProperties}
      * 
-     * @param properties node properties or null.
+     * @param properties the properties of the node.
      * @return the created {@link Node} instance.
      * @throws MuleException if anything goes wrong with the operation.
      */
@@ -400,9 +401,20 @@ public class Neo4jConnector implements MuleContextAware
         deleteEntity(nodeUrl, failIfNotFound ? SC_NO_CONTENT : SC_NO_CONTENT_OR_NOT_FOUND);
     }
 
-    // TODO unit test
-    // TODO javadoc
-    // TODO devkit doc
+    /**
+     * Get a relationship.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:getRelationshipById}
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample
+     * neo4j:getRelationshipById-failIfNotFound}
+     * 
+     * @param relationshipId the ID of the relationship to retrieve.
+     * @param failIfNotFound if true, an exception will be thrown if the node is not found,
+     *            otherwise null will be returned.
+     * @return a {@link Relationship} or null.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
     @Processor
     public Relationship getRelationshipById(final long relationshipId,
                                             @Optional @Default("false") final boolean failIfNotFound)
@@ -419,9 +431,21 @@ public class Neo4jConnector implements MuleContextAware
                + relationshipId;
     }
 
-    // TODO unit test
-    // TODO javadoc
-    // TODO devkit doc
+    /**
+     * Create a relationship.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:createRelationshipByIds}
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample
+     * neo4j:createRelationshipByIds-withProperties}
+     * 
+     * @param fromNodeId the ID of the node where the relationship starts.
+     * @param toNodeId the ID of the node where the relationship ends.
+     * @param type the type of relationship.
+     * @param properties the properties of the relationship.
+     * @return the created {@link Relationship} instance.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
     @Processor
     public Relationship createRelationshipByIds(final long fromNodeId,
                                                 final long toNodeId,
@@ -439,9 +463,21 @@ public class Neo4jConnector implements MuleContextAware
             SC_CREATED);
     }
 
-    // TODO unit test
-    // TODO javadoc
-    // TODO devkit doc
+    /**
+     * Create a relationship.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:createRelationship}
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample
+     * neo4j:createRelationship-withProperties}
+     * 
+     * @param fromNode the node where the relationship starts.
+     * @param toNode the node where the relationship ends.
+     * @param type the type of relationship.
+     * @param properties the properties of the relationship.
+     * @return the created {@link Relationship} instance.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
     @Processor
     public Relationship createRelationship(@RefOnly final Node fromNode,
                                            @RefOnly final Node toNode,
@@ -458,9 +494,19 @@ public class Neo4jConnector implements MuleContextAware
         return postEntity(fromNode.getCreateRelationship(), newRelationship, Relationship.class, SC_CREATED);
     }
 
-    // TODO unit test
-    // TODO javadoc
-    // TODO devkit doc
+    /**
+     * Delete a relationship.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:deleteRelationshipById}
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample
+     * neo4j:deleteRelationshipById-failIfNotFound}
+     * 
+     * @param relationshipId the ID of the relationship to delete.
+     * @param failIfNotFound if true, an exception will be thrown if the relationship is not found
+     *            and couldn't be deleted.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
     @Processor
     public void deleteRelationshipById(final long relationshipId,
                                        @Optional @Default("false") final boolean failIfNotFound)
@@ -469,9 +515,19 @@ public class Neo4jConnector implements MuleContextAware
         deleteRelationship(getRelationshipUrl(relationshipId), failIfNotFound);
     }
 
-    // TODO unit test
-    // TODO javadoc
-    // TODO devkit doc
+    /**
+     * Delete a relationship.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:deleteRelationship}
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample
+     * neo4j:deleteRelationship-failIfNotFound}
+     * 
+     * @param relationship the {@link Relationship} to delete.
+     * @param failIfNotFound if true, an exception will be thrown if the relationship is not found
+     *            and couldn't be deleted.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
     @Processor
     public void deleteRelationship(@RefOnly final Relationship relationship,
                                    @Optional @Default("false") final boolean failIfNotFound)
@@ -495,7 +551,12 @@ public class Neo4jConnector implements MuleContextAware
     private Data convertMapToData(final Map<String, Object> properties)
     {
         final Data data = new Data();
-        data.getAdditionalProperties().putAll(properties);
+
+        if (MapUtils.isNotEmpty(properties))
+        {
+            data.getAdditionalProperties().putAll(properties);
+        }
+
         return data;
     }
 

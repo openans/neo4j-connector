@@ -48,3 +48,46 @@
 <!-- BEGIN_INCLUDE(neo4j:deleteNode-failIfNotFound) -->
 <neo4j:delete-node node-ref="#[message.payload]" failIfNotFound="true" />
 <!-- END_INCLUDE(neo4j:deleteNode-failIfNotFound) -->
+
+<!-- BEGIN_INCLUDE(neo4j:getRelationshipById) -->
+<neo4j:get-relationship-by-id relationshipId="1" />
+<!-- END_INCLUDE(neo4j:getRelationshipById) -->
+<!-- BEGIN_INCLUDE(neo4j:getRelationshipById-failIfNotFound) -->
+<neo4j:get-relationship-by-id relationshipId="1" failIfNotFound="true" />
+<!-- END_INCLUDE(neo4j:getRelationshipById-failIfNotFound) -->
+
+<!-- BEGIN_INCLUDE(neo4j:createRelationshipByIds) -->
+<neo4j:create-relationship-by-ids fromNodeId="1" toNodeId="2" type="test" />
+<!-- END_INCLUDE(neo4j:createRelationshipByIds) -->
+<!-- BEGIN_INCLUDE(neo4j:createRelationshipByIds-withProperties) -->
+<neo4j:create-relationship-by-ids fromNodeId="1" toNodeId="2" type="test">
+    <neo4j:properties>
+        <neo4j:property key="foo">bar</neo4j:property>
+    </neo4j:properties>
+</neo4j:create-relationship-by-ids>
+<!-- END_INCLUDE(neo4j:createRelationshipByIds-withProperties) -->
+
+<!-- BEGIN_INCLUDE(neo4j:createRelationship) -->
+<neo4j:create-relationship fromNode-ref="#[sourceNode]" toNode-ref="#[targetNode]" type="test" />
+<!-- END_INCLUDE(neo4j:createRelationship) -->
+<!-- BEGIN_INCLUDE(neo4j:createRelationship-withProperties) -->
+<neo4j:create-relationship fromNode-ref="#[sourceNode]" toNode-ref="#[targetNode]" type="test">
+    <neo4j:properties>
+        <neo4j:property key="foo">bar</neo4j:property>
+    </neo4j:properties>
+</neo4j:create-relationship>
+<!-- END_INCLUDE(neo4j:createRelationship-withProperties) -->
+
+<!-- BEGIN_INCLUDE(neo4j:deleteRelationshipById) -->
+<neo4j:delete-relationship-by-id relationshipId="1" />
+<!-- END_INCLUDE(neo4j:deleteRelationshipById) -->
+<!-- BEGIN_INCLUDE(neo4j:deleteRelationshipById-failIfNotFound) -->
+<neo4j:delete-relationship-by-id relationshipId="1" failIfNotFound="true" />
+<!-- END_INCLUDE(neo4j:deleteRelationshipById-failIfNotFound) -->
+
+<!-- BEGIN_INCLUDE(neo4j:deleteRelationship) -->
+<neo4j:delete-relationship relationship-ref="#[myRelationship]" />
+<!-- END_INCLUDE(neo4j:deleteRelationship) -->
+<!-- BEGIN_INCLUDE(neo4j:deleteRelationship-failIfNotFound) -->
+<neo4j:delete-relationship relationship-ref="#[myRelationship]" failIfNotFound="true" />
+<!-- END_INCLUDE(neo4j:deleteRelationship-failIfNotFound) -->
