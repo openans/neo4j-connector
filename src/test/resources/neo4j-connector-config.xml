@@ -57,5 +57,23 @@
         <neo4j:delete-relationship relationship-ref="#[secondRelationship]"
             failIfNotFound="true" />
         <neo4j:delete-relationship relationship-ref="#[secondRelationship]" />
+
+        <neo4j:get-node-relationships node-ref="#[aNode]"
+            direction="ALL" />
+
+        <neo4j:get-node-relationships node-ref="#[aNode]"
+            direction="OUTGOING">
+            <neo4j:types>
+                <neo4j:type>likes</neo4j:type>
+            </neo4j:types>
+        </neo4j:get-node-relationships>
+
+        <neo4j:get-node-relationships node-ref="#[aNode]"
+            direction="INCOMING">
+            <neo4j:types>
+                <neo4j:type>loves</neo4j:type>
+                <neo4j:type>hates</neo4j:type>
+            </neo4j:types>
+        </neo4j:get-node-relationships>
     </flow>
 </mule>

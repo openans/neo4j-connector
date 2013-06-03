@@ -91,3 +91,24 @@
 <!-- BEGIN_INCLUDE(neo4j:deleteRelationship-failIfNotFound) -->
 <neo4j:delete-relationship relationship-ref="#[myRelationship]" failIfNotFound="true" />
 <!-- END_INCLUDE(neo4j:deleteRelationship-failIfNotFound) -->
+
+<!-- BEGIN_INCLUDE(neo4j:getNodeRelationships) -->
+<neo4j:get-node-relationships node-ref="#[aNode]" direction="ALL" />
+<!-- END_INCLUDE(neo4j:getNodeRelationships) -->
+<!-- BEGIN_INCLUDE(neo4j:getNodeRelationships-singleType) -->
+<neo4j:get-node-relationships node-ref="#[aNode]"
+    direction="OUTGOING">
+    <neo4j:types>
+        <neo4j:type>likes</neo4j:type>
+    </neo4j:types>
+</neo4j:get-node-relationships>
+<!-- END_INCLUDE(neo4j:getNodeRelationships-singleType) -->
+<!-- BEGIN_INCLUDE(neo4j:getNodeRelationships-multipleTypes) -->
+<neo4j:get-node-relationships node-ref="#[aNode]"
+    direction="INCOMING">
+    <neo4j:types>
+        <neo4j:type>loves</neo4j:type>
+        <neo4j:type>hates</neo4j:type>
+    </neo4j:types>
+</neo4j:get-node-relationships>
+<!-- END_INCLUDE(neo4j:getNodeRelationships-multipleTypes) -->

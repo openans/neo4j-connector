@@ -56,6 +56,7 @@ import org.mule.modules.neo4j.model.ServiceRoot;
 import org.mule.transformer.types.MimeTypes;
 import org.mule.transport.http.HttpConnector;
 import org.mule.transport.http.HttpConstants;
+import org.mule.util.CollectionUtils;
 import org.mule.util.MapUtils;
 import org.mule.util.StringUtils;
 
@@ -627,17 +628,41 @@ public class Neo4jConnector implements MuleContextAware
     // TODO setRelationshipProperties
     // TODO setRelationshipProperty
 
-    // TODO Test
-    // TODO JavaDoc
-    // TODO DevKit Doc
+    /**
+     * Get the relationships for a particular {@link Node}.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:getNodeRelationships}
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:getNodeRelationships-singleType}
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample
+     * neo4j:getNodeRelationships-multipleTypes}
+     * 
+     * @param node the {@link Node} for which relationships are considered.
+     * @param direction the {@link RelationshipDirection} to use.
+     * @param types the relationship types to look for.
+     * @return a {@link Collection} of {@link Relationship}, which can be empty but never null.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
     @Processor
     public Collection<Relationship> getNodeRelationships(@RefOnly final Node node,
                                                          final RelationshipDirection direction,
                                                          @Optional final List<String> types)
         throws MuleException
     {
-        // FIXME support types
-        final String relationshipsUrl = direction.getRelationshipsUrl(node);
+
+        String relationshipsUrl;
+
+        if (CollectionUtils.isEmpty(types))
+        {
+            relationshipsUrl = direction.getRelationshipsUrl(node);
+        }
+        else
+        {
+            final String relationshipsUrlPattern = direction.getTypeRelationshipsUrlPattern(node);
+            relationshipsUrl = StringUtils.replace(relationshipsUrlPattern, "{-list|&|types}",
+                StringUtils.join(types, '&'));
+        }
 
         return getEntity(relationshipsUrl, RELATIONSHIPS_TYPE_REFERENCE, SC_OK);
     }
