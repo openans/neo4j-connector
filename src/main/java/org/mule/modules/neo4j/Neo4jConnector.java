@@ -155,6 +155,8 @@ public class Neo4jConnector implements MuleContextAware
         Arrays.asList(HttpConstants.SC_OK, HttpConstants.SC_NOT_FOUND)));
     private static final Set<Integer> NO_RESPONSE_STATUSES = Collections.unmodifiableSet(new HashSet<Integer>(
         Arrays.asList(HttpConstants.SC_NO_CONTENT, HttpConstants.SC_NOT_FOUND)));
+    private static final Set<String> ENTITY_CARRYING_HTTP_METHODS = Collections.unmodifiableSet(new HashSet<String>(
+        Arrays.asList(HttpConstants.METHOD_POST, HttpConstants.METHOD_PUT, HttpConstants.METHOD_PATCH)));
 
     /**
      * The user used to authenticate to Neo4j.
@@ -257,7 +259,30 @@ public class Neo4jConnector implements MuleContextAware
                              final Set<Integer> expectedStatusCodes,
                              final Object... queryParameters) throws MuleException
     {
-        final Map<String, Object> requestProperties = getRequestProperties(HttpConstants.METHOD_POST);
+        return sendRequestWithEntity(HttpConstants.METHOD_POST, uri, entity, responseType,
+            expectedStatusCodes, queryParameters);
+    }
+
+    private <T> T putEntity(final String uri,
+                            final Object entity,
+                            final Set<Integer> expectedStatusCodes,
+                            final Object... queryParameters) throws MuleException
+    {
+        return sendRequestWithEntity(HttpConstants.METHOD_PUT, uri, entity, null, expectedStatusCodes,
+            queryParameters);
+    }
+
+    private <T> T sendRequestWithEntity(final String httpMethod,
+                                        final String uri,
+                                        final Object entity,
+                                        final TypeReference<T> responseType,
+                                        final Set<Integer> expectedStatusCodes,
+                                        final Object... queryParameters) throws MuleException
+    {
+        Validate.isTrue(ENTITY_CARRYING_HTTP_METHODS.contains(httpMethod),
+            "Only entity carrying HTTP methods are supported: " + ENTITY_CARRYING_HTTP_METHODS);
+
+        final Map<String, Object> requestProperties = getRequestProperties(httpMethod);
 
         requestProperties.put(HttpConstants.HEADER_CONTENT_TYPE, MimeTypes.JSON);
 
@@ -623,10 +648,26 @@ public class Neo4jConnector implements MuleContextAware
         deleteEntity(relationshipUrl, failIfNotFound ? SC_NO_CONTENT : SC_NO_CONTENT_OR_NOT_FOUND);
     }
 
-    // TODO getRelationshipProperties
-    // TODO getRelationshipProperty
-    // TODO setRelationshipProperties
-    // TODO setRelationshipProperty
+    // TODO test
+    // TODO javadoc
+    // TODO devkit doc
+    @Processor
+    public void setRelationshipProperties(@RefOnly final Relationship relationship,
+                                          final Map<String, Object> properties) throws MuleException
+    {
+        putEntity(relationship.getProperties(), properties, SC_NO_CONTENT);
+    }
+
+    // TODO test
+    // TODO javadoc
+    // TODO devkit doc
+    @Processor
+    public void setRelationshipProperty(@RefOnly final Relationship relationship,
+                                        final String key,
+                                        final Object value) throws MuleException
+    {
+        putEntity(StringUtils.replace(relationship.getProperty(), "{key}", key), value, SC_NO_CONTENT);
+    }
 
     /**
      * Get the relationships for a particular {@link Node}.
