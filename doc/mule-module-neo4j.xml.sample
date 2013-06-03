@@ -113,7 +113,6 @@
 </neo4j:get-node-relationships>
 <!-- END_INCLUDE(neo4j:getNodeRelationships-multipleTypes) -->
 
-
 <!-- BEGIN_INCLUDE(neo4j:setRelationshipProperties) -->
 <neo4j:set-relationship-properties relationship-ref="#[aRelationship]">
     <neo4j:properties>
@@ -126,3 +125,7 @@
 <neo4j:set-relationship-property relationship-ref="#[aRelationship]"
        key="pi" value-ref="#[Math.PI]" />
 <!-- END_INCLUDE(neo4j:setRelationshipProperty) -->
+
+<!-- BEGIN_INCLUDE(neo4j:getRelationshipTypes) -->
+<neo4j:get-relationship-types />
+<!-- END_INCLUDE(neo4j:getRelationshipTypes) -->

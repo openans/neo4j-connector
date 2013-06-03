@@ -144,6 +144,10 @@ public class Neo4jConnector implements MuleContextAware
     {
         // NOOP
     };
+    private static final TypeReference<Collection<String>> RELATIONSHIP_TYPES_TYPE_REFERENCE = new TypeReference<Collection<String>>()
+    {
+        // NOOP
+    };
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
@@ -734,6 +738,20 @@ public class Neo4jConnector implements MuleContextAware
         }
 
         return getEntity(relationshipsUrl, RELATIONSHIPS_TYPE_REFERENCE, SC_OK);
+    }
+
+    /**
+     * Get all the relationship types.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:getRelationshipTypes}
+     * 
+     * @return a {@link Collection} of {@link String}, which can be empty but never null.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
+    @Processor
+    public Collection<String> getRelationshipTypes() throws MuleException
+    {
+        return getEntity(getServiceRoot().getRelationshipTypes(), RELATIONSHIP_TYPES_TYPE_REFERENCE, SC_OK);
     }
 
     private Data convertMapToData(final Map<String, Object> properties)

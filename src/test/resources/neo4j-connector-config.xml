@@ -86,5 +86,7 @@
                 <neo4j:property key="chords">EADGBE</neo4j:property>
             </neo4j:properties>
         </neo4j:set-relationship-properties>
+
+        <neo4j:get-relationship-types />
     </flow>
 </mule>
