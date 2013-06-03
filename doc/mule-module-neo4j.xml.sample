@@ -112,3 +112,17 @@
     </neo4j:types>
 </neo4j:get-node-relationships>
 <!-- END_INCLUDE(neo4j:getNodeRelationships-multipleTypes) -->
+
+
+<!-- BEGIN_INCLUDE(neo4j:setRelationshipProperties) -->
+<neo4j:set-relationship-properties relationship-ref="#[aRelationship]">
+    <neo4j:properties>
+        <neo4j:property key="pi" value-ref="#[Math.PI]" />
+        <neo4j:property key="chords">EADGBE</neo4j:property>
+    </neo4j:properties>
+</neo4j:set-relationship-properties>
+<!-- END_INCLUDE(neo4j:setRelationshipProperties) -->
+<!-- BEGIN_INCLUDE(neo4j:setRelationshipProperty) -->
+<neo4j:set-relationship-property relationship-ref="#[aRelationship]"
+       key="pi" value-ref="#[Math.PI]" />
+<!-- END_INCLUDE(neo4j:setRelationshipProperty) -->

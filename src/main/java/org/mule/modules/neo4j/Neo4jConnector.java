@@ -663,9 +663,15 @@ public class Neo4jConnector implements MuleContextAware
         deleteEntity(relationshipUrl, failIfNotFound ? SC_NO_CONTENT : SC_NO_CONTENT_OR_NOT_FOUND);
     }
 
-    // TODO test
-    // TODO javadoc
-    // TODO devkit doc
+    /**
+     * Set the properties of a relationship.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:setRelationshipProperties}
+     * 
+     * @param relationship the {@link Relationship} to set properties on.
+     * @param properties the properties to set.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
     @Processor
     public void setRelationshipProperties(@RefOnly final Relationship relationship,
                                           final Map<String, Object> properties) throws MuleException
@@ -673,9 +679,16 @@ public class Neo4jConnector implements MuleContextAware
         putEntity(relationship.getProperties(), properties, SC_NO_CONTENT);
     }
 
-    // TODO test
-    // TODO javadoc
-    // TODO devkit doc
+    /**
+     * Set one property of a relationship.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:setRelationshipProperty}
+     * 
+     * @param relationship the {@link Relationship} to set a property on.
+     * @param key the property key.
+     * @param value the property value.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
     @Processor
     public void setRelationshipProperty(@RefOnly final Relationship relationship,
                                         final String key,

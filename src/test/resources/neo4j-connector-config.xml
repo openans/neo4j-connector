@@ -54,9 +54,9 @@
         <neo4j:delete-relationship-by-id
             relationshipId="1" />
 
-        <neo4j:delete-relationship relationship-ref="#[secondRelationship]"
+        <neo4j:delete-relationship relationship-ref="#[aRelationship]"
             failIfNotFound="true" />
-        <neo4j:delete-relationship relationship-ref="#[secondRelationship]" />
+        <neo4j:delete-relationship relationship-ref="#[aRelationship]" />
 
         <neo4j:get-node-relationships node-ref="#[aNode]"
             direction="ALL" />
@@ -75,5 +75,16 @@
                 <neo4j:type>hates</neo4j:type>
             </neo4j:types>
         </neo4j:get-node-relationships>
+
+        <neo4j:set-relationship-property
+            relationship-ref="#[aRelationship]" key="pi" value-ref="#[Math.PI]" />
+
+        <neo4j:set-relationship-properties
+            relationship-ref="#[aRelationship]">
+            <neo4j:properties>
+                <neo4j:property key="pi" value-ref="#[Math.PI]" />
+                <neo4j:property key="chords">EADGBE</neo4j:property>
+            </neo4j:properties>
+        </neo4j:set-relationship-properties>
     </flow>
 </mule>
