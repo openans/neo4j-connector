@@ -46,6 +46,7 @@ import org.mule.api.annotations.param.Optional;
 import org.mule.api.annotations.param.RefOnly;
 import org.mule.api.context.MuleContextAware;
 import org.mule.endpoint.URIBuilder;
+import org.mule.modules.neo4j.model.BaseDataExtensible;
 import org.mule.modules.neo4j.model.CypherQuery;
 import org.mule.modules.neo4j.model.CypherQueryResult;
 import org.mule.modules.neo4j.model.Data;
@@ -332,9 +333,23 @@ public class Neo4jConnector implements MuleContextAware
             return null;
         }
 
+        return deserializeJsonToEntity(responseType, response);
+    }
+
+    private <T> T deserializeJsonToEntity(final TypeReference<T> responseType, final MuleMessage response)
+        throws DefaultMuleException
+    {
         try
         {
-            return OBJECT_MAPPER.readValue((InputStream) response.getPayload(), responseType);
+            final T entity = OBJECT_MAPPER.readValue((InputStream) response.getPayload(), responseType);
+
+            if (entity instanceof BaseDataExtensible)
+            {
+                final BaseDataExtensible bde = (BaseDataExtensible) entity;
+                bde.setId(StringUtils.substringAfterLast(bde.getSelf(), "/"));
+            }
+
+            return entity;
         }
         catch (final IOException ioe)
         {

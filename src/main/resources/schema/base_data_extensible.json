@@ -8,6 +8,9 @@
     "self": {
       "type": "string"
     },
+    "id": {
+      "type": "string"
+    },
     "property": {
       "type": "string"
     },
