@@ -25,6 +25,9 @@
     "reference_node": {
       "type": "string"
     },
+    "relationship": {
+      "type": "string"
+    },
     "relationship_index": {
       "type": "string"
     },

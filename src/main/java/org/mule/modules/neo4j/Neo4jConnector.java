@@ -228,6 +228,11 @@ public class Neo4jConnector implements MuleContextAware
         try
         {
             serviceRoot = getEntity(baseUri + "/", SERVICE_ROOT_TYPE_REFERENCE, SC_OK);
+
+            // this hack courtesy of https://github.com/neo4j/neo4j/issues/848
+            serviceRoot.setRelationship(StringUtils.substringBeforeLast(serviceRoot.getNode(), "/node")
+                                        + "/relationship");
+
         }
         catch (final MuleException me)
         {
@@ -417,9 +422,7 @@ public class Neo4jConnector implements MuleContextAware
 
     private String getRelationshipUrl(final long relationshipId)
     {
-        // why this horrible hack? see: https://github.com/neo4j/neo4j/issues/848
-        return StringUtils.substringBeforeLast(serviceRoot.getNode(), "/node") + "/relationship/"
-               + relationshipId;
+        return serviceRoot.getRelationship() + "/" + relationshipId;
     }
 
     private void deleteEntity(final BaseEntity entity, final boolean failIfNotFound) throws MuleException
