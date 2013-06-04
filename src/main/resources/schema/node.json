@@ -2,7 +2,7 @@
   "type": "object",
   "additionalProperties": false,
   "extends" : {
-    "$ref" : "base_data_extensible.json"
+    "$ref" : "base_entity.json"
   },
   "properties" : {
     "paged_traverse": {

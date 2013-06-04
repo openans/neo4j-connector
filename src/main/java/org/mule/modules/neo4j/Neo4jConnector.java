@@ -46,7 +46,7 @@ import org.mule.api.annotations.param.Optional;
 import org.mule.api.annotations.param.RefOnly;
 import org.mule.api.context.MuleContextAware;
 import org.mule.endpoint.URIBuilder;
-import org.mule.modules.neo4j.model.BaseDataExtensible;
+import org.mule.modules.neo4j.model.BaseEntity;
 import org.mule.modules.neo4j.model.CypherQuery;
 import org.mule.modules.neo4j.model.CypherQueryResult;
 import org.mule.modules.neo4j.model.Data;
@@ -162,6 +162,11 @@ public class Neo4jConnector implements MuleContextAware
         Arrays.asList(HttpConstants.SC_NO_CONTENT, HttpConstants.SC_NOT_FOUND)));
     private static final Set<String> ENTITY_CARRYING_HTTP_METHODS = Collections.unmodifiableSet(new HashSet<String>(
         Arrays.asList(HttpConstants.METHOD_POST, HttpConstants.METHOD_PUT, HttpConstants.METHOD_PATCH)));
+
+    private static final String HEADER_STREAMING = "X-Stream";
+
+    private static final String PROPERTY_KEY_TEMPLATE = "{key}";
+    private static final String TYPE_LIST_TEMPLATE = "{-list|&|types}";
 
     /**
      * The user used to authenticate to Neo4j.
@@ -347,10 +352,10 @@ public class Neo4jConnector implements MuleContextAware
         {
             final T entity = OBJECT_MAPPER.readValue((InputStream) response.getPayload(), responseType);
 
-            if (entity instanceof BaseDataExtensible)
+            if (entity instanceof BaseEntity)
             {
-                final BaseDataExtensible bde = (BaseDataExtensible) entity;
-                bde.setId(StringUtils.substringAfterLast(bde.getSelf(), "/"));
+                final BaseEntity be = (BaseEntity) entity;
+                be.setId(StringUtils.substringAfterLast(be.getSelf(), "/"));
             }
 
             return entity;
@@ -395,7 +400,7 @@ public class Neo4jConnector implements MuleContextAware
 
         properties.put(HttpConstants.HEADER_ACCEPT, MimeTypes.JSON);
         properties.put(HttpConnector.HTTP_METHOD_PROPERTY, method);
-        properties.put("X-Stream", streaming);
+        properties.put(HEADER_STREAMING, streaming);
 
         if (StringUtils.isNotBlank(authorization))
         {
@@ -408,6 +413,45 @@ public class Neo4jConnector implements MuleContextAware
     private String getNodeUrl(final long nodeId)
     {
         return serviceRoot.getNode() + "/" + nodeId;
+    }
+
+    private String getRelationshipUrl(final long relationshipId)
+    {
+        // why this horrible hack? see: https://github.com/neo4j/neo4j/issues/848
+        return StringUtils.substringBeforeLast(serviceRoot.getNode(), "/node") + "/relationship/"
+               + relationshipId;
+    }
+
+    private void deleteEntity(final BaseEntity entity, final boolean failIfNotFound) throws MuleException
+    {
+        deleteEntityByUrl(entity.getSelf(), failIfNotFound);
+    }
+
+    private void deleteEntityByUrl(final String entityUrl, final boolean failIfNotFound) throws MuleException
+    {
+        deleteEntity(entityUrl, failIfNotFound ? SC_NO_CONTENT : SC_NO_CONTENT_OR_NOT_FOUND);
+    }
+
+    private void setPropertiesOnEntity(final Map<String, Object> properties, final BaseEntity entity)
+        throws MuleException
+    {
+        putEntity(entity.getProperties(), properties, SC_NO_CONTENT);
+    }
+
+    private void setPropertyOnEntity(final String key, final Object value, final BaseEntity entity)
+        throws MuleException
+    {
+        putEntity(StringUtils.replace(entity.getProperty(), PROPERTY_KEY_TEMPLATE, key), value, SC_NO_CONTENT);
+    }
+
+    private void deletePropertiesFromEntity(final BaseEntity entity) throws MuleException
+    {
+        deleteEntity(entity.getProperties(), SC_NO_CONTENT);
+    }
+
+    private void deletePropertyFromEntity(final String key, final BaseEntity entity) throws MuleException
+    {
+        deleteEntity(StringUtils.replace(entity.getProperty(), PROPERTY_KEY_TEMPLATE, key), SC_NO_CONTENT);
     }
 
     /**
@@ -481,6 +525,47 @@ public class Neo4jConnector implements MuleContextAware
         return postEntity(serviceRoot.getNode(), properties, NODE_TYPE_REFERENCE, SC_CREATED);
     }
 
+    // TODO test
+    // TODO javadoc
+    // TODO devkit doc
+    @Processor
+    public void setNodeProperties(@RefOnly final Node node, final Map<String, Object> properties)
+        throws MuleException
+    {
+        setPropertiesOnEntity(properties, node);
+    }
+
+    // TODO test
+    // TODO javadoc
+    // TODO devkit doc
+    @Processor
+    public void setNodeProperty(@RefOnly final Node node, final String key, final Object value)
+        throws MuleException
+    {
+        setPropertyOnEntity(key, value, node);
+    }
+
+    // TODO test
+    // TODO javadoc
+    // TODO devkit doc
+    @Processor
+    public void deleteNodeProperty(@RefOnly final Node node,
+                                   final String key,
+                                   @Optional @Default("false") final boolean failIfNotFound)
+        throws MuleException
+    {
+        deletePropertyFromEntity(key, node);
+    }
+
+    // TODO test
+    // TODO javadoc
+    // TODO devkit doc
+    @Processor
+    public void deleteNodeProperties(@RefOnly final Node node) throws MuleException
+    {
+        deletePropertiesFromEntity(node);
+    }
+
     /**
      * Delete a node.
      * <p>
@@ -497,7 +582,7 @@ public class Neo4jConnector implements MuleContextAware
     public void deleteNodeById(final long nodeId, @Optional @Default("false") final boolean failIfNotFound)
         throws MuleException
     {
-        deleteNode(getNodeUrl(nodeId), failIfNotFound);
+        deleteEntityByUrl(getNodeUrl(nodeId), failIfNotFound);
     }
 
     /**
@@ -517,12 +602,7 @@ public class Neo4jConnector implements MuleContextAware
     public void deleteNode(@RefOnly final Node node, @Optional @Default("false") final boolean failIfNotFound)
         throws MuleException
     {
-        deleteNode(node.getSelf(), failIfNotFound);
-    }
-
-    private void deleteNode(final String nodeUrl, final boolean failIfNotFound) throws MuleException
-    {
-        deleteEntity(nodeUrl, failIfNotFound ? SC_NO_CONTENT : SC_NO_CONTENT_OR_NOT_FOUND);
+        deleteEntity(node, failIfNotFound);
     }
 
     /**
@@ -546,13 +626,6 @@ public class Neo4jConnector implements MuleContextAware
     {
         return getEntity(getRelationshipUrl(relationshipId), RELATIONSHIP_TYPE_REFERENCE,
             failIfNotFound ? SC_OK : SC_OK_OR_NOT_FOUND);
-    }
-
-    private String getRelationshipUrl(final long relationshipId)
-    {
-        // why this horrible hack? see: https://github.com/neo4j/neo4j/issues/848
-        return StringUtils.substringBeforeLast(serviceRoot.getNode(), "/node") + "/relationship/"
-               + relationshipId;
     }
 
     /**
@@ -637,7 +710,7 @@ public class Neo4jConnector implements MuleContextAware
                                        @Optional @Default("false") final boolean failIfNotFound)
         throws MuleException
     {
-        deleteRelationship(getRelationshipUrl(relationshipId), failIfNotFound);
+        deleteEntityByUrl(getRelationshipUrl(relationshipId), failIfNotFound);
     }
 
     /**
@@ -658,13 +731,7 @@ public class Neo4jConnector implements MuleContextAware
                                    @Optional @Default("false") final boolean failIfNotFound)
         throws MuleException
     {
-        deleteRelationship(relationship.getSelf(), failIfNotFound);
-    }
-
-    private void deleteRelationship(final String relationshipUrl, final boolean failIfNotFound)
-        throws MuleException
-    {
-        deleteEntity(relationshipUrl, failIfNotFound ? SC_NO_CONTENT : SC_NO_CONTENT_OR_NOT_FOUND);
+        deleteEntity(relationship, failIfNotFound);
     }
 
     /**
@@ -680,7 +747,7 @@ public class Neo4jConnector implements MuleContextAware
     public void setRelationshipProperties(@RefOnly final Relationship relationship,
                                           final Map<String, Object> properties) throws MuleException
     {
-        putEntity(relationship.getProperties(), properties, SC_NO_CONTENT);
+        setPropertiesOnEntity(properties, relationship);
     }
 
     /**
@@ -698,7 +765,28 @@ public class Neo4jConnector implements MuleContextAware
                                         final String key,
                                         final Object value) throws MuleException
     {
-        putEntity(StringUtils.replace(relationship.getProperty(), "{key}", key), value, SC_NO_CONTENT);
+        setPropertyOnEntity(key, value, relationship);
+    }
+
+    // TODO test
+    // TODO javadoc
+    // TODO devkit doc
+    @Processor
+    public void deleteRelationshipProperty(@RefOnly final Relationship relationship,
+                                           final String key,
+                                           @Optional @Default("false") final boolean failIfNotFound)
+        throws MuleException
+    {
+        deletePropertyFromEntity(key, relationship);
+    }
+
+    // TODO test
+    // TODO javadoc
+    // TODO devkit doc
+    @Processor
+    public void deleteRelationshipProperties(@RefOnly final Relationship relationship) throws MuleException
+    {
+        deletePropertiesFromEntity(relationship);
     }
 
     /**
@@ -733,7 +821,7 @@ public class Neo4jConnector implements MuleContextAware
         else
         {
             final String relationshipsUrlPattern = direction.getTypeRelationshipsUrlPattern(node);
-            relationshipsUrl = StringUtils.replace(relationshipsUrlPattern, "{-list|&|types}",
+            relationshipsUrl = StringUtils.replace(relationshipsUrlPattern, TYPE_LIST_TEMPLATE,
                 StringUtils.join(types, '&'));
         }
 
