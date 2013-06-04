@@ -449,9 +449,12 @@ public class Neo4jConnector implements MuleContextAware
         deleteEntity(entity.getProperties(), SC_NO_CONTENT);
     }
 
-    private void deletePropertyFromEntity(final String key, final BaseEntity entity) throws MuleException
+    private void deletePropertyFromEntity(final String key,
+                                          final BaseEntity entity,
+                                          final boolean failIfNotFound) throws MuleException
     {
-        deleteEntity(StringUtils.replace(entity.getProperty(), PROPERTY_KEY_TEMPLATE, key), SC_NO_CONTENT);
+        deleteEntity(StringUtils.replace(entity.getProperty(), PROPERTY_KEY_TEMPLATE, key),
+            failIfNotFound ? SC_NO_CONTENT : SC_NO_CONTENT_OR_NOT_FOUND);
     }
 
     /**
@@ -489,7 +492,7 @@ public class Neo4jConnector implements MuleContextAware
     }
 
     /**
-     * Get a node.
+     * Get a {@link Node}.
      * <p>
      * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:getNodeById}
      * <p>
@@ -509,7 +512,7 @@ public class Neo4jConnector implements MuleContextAware
     }
 
     /**
-     * Create a node.
+     * Create a {@link Node}.
      * <p>
      * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:createNode}
      * <p>
@@ -525,9 +528,15 @@ public class Neo4jConnector implements MuleContextAware
         return postEntity(serviceRoot.getNode(), properties, NODE_TYPE_REFERENCE, SC_CREATED);
     }
 
-    // TODO test
-    // TODO javadoc
-    // TODO devkit doc
+    /**
+     * Set the properties of a {@link Node}.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:setNodeProperties}
+     * 
+     * @param node the {@link Node} to set properties on.
+     * @param properties the properties of the node.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
     @Processor
     public void setNodeProperties(@RefOnly final Node node, final Map<String, Object> properties)
         throws MuleException
@@ -535,9 +544,16 @@ public class Neo4jConnector implements MuleContextAware
         setPropertiesOnEntity(properties, node);
     }
 
-    // TODO test
-    // TODO javadoc
-    // TODO devkit doc
+    /**
+     * Set a property of a {@link Node}.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:setNodeProperty}
+     * 
+     * @param node the {@link Node} to set the property on.
+     * @param key the key of the property.
+     * @param value the value of the property.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
     @Processor
     public void setNodeProperty(@RefOnly final Node node, final String key, final Object value)
         throws MuleException
@@ -545,21 +561,37 @@ public class Neo4jConnector implements MuleContextAware
         setPropertyOnEntity(key, value, node);
     }
 
-    // TODO test
-    // TODO javadoc
-    // TODO devkit doc
+    /**
+     * Delete a property from a {@link Node}.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:deleteNodeProperty}
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample
+     * neo4j:deleteNodeProperty-failIfNotFound}
+     * 
+     * @param node the {@link Node} to delete the property from.
+     * @param key the key of the property.
+     * @param failIfNotFound if true, an exception will be thrown if the property is not found and
+     *            couldn't be deleted.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
     @Processor
     public void deleteNodeProperty(@RefOnly final Node node,
                                    final String key,
                                    @Optional @Default("false") final boolean failIfNotFound)
         throws MuleException
     {
-        deletePropertyFromEntity(key, node);
+        deletePropertyFromEntity(key, node, failIfNotFound);
     }
 
-    // TODO test
-    // TODO javadoc
-    // TODO devkit doc
+    /**
+     * Delete all properties from a {@link Node}.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:deleteNodeProperties}
+     * 
+     * @param node the {@link Node} to delete properties from.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
     @Processor
     public void deleteNodeProperties(@RefOnly final Node node) throws MuleException
     {
@@ -567,7 +599,7 @@ public class Neo4jConnector implements MuleContextAware
     }
 
     /**
-     * Delete a node.
+     * Delete a {@link Node}.
      * <p>
      * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:deleteNodeById}
      * <p>
@@ -586,7 +618,7 @@ public class Neo4jConnector implements MuleContextAware
     }
 
     /**
-     * Delete a node.
+     * Delete a {@link Node}.
      * <p>
      * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:deleteNode}
      * <p>
@@ -606,7 +638,7 @@ public class Neo4jConnector implements MuleContextAware
     }
 
     /**
-     * Get a relationship.
+     * Get a {@link Relationship}.
      * <p>
      * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:getRelationshipById}
      * <p>
@@ -629,7 +661,7 @@ public class Neo4jConnector implements MuleContextAware
     }
 
     /**
-     * Create a relationship.
+     * Create a {@link Relationship}.
      * <p>
      * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:createRelationshipByIds}
      * <p>
@@ -661,7 +693,7 @@ public class Neo4jConnector implements MuleContextAware
     }
 
     /**
-     * Create a relationship.
+     * Create a {@link Relationship}.
      * <p>
      * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:createRelationship}
      * <p>
@@ -693,7 +725,7 @@ public class Neo4jConnector implements MuleContextAware
     }
 
     /**
-     * Delete a relationship.
+     * Delete a {@link Relationship}.
      * <p>
      * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:deleteRelationshipById}
      * <p>
@@ -714,7 +746,7 @@ public class Neo4jConnector implements MuleContextAware
     }
 
     /**
-     * Delete a relationship.
+     * Delete a {@link Relationship}.
      * <p>
      * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:deleteRelationship}
      * <p>
@@ -735,7 +767,7 @@ public class Neo4jConnector implements MuleContextAware
     }
 
     /**
-     * Set the properties of a relationship.
+     * Set the properties of a {@link Relationship}.
      * <p>
      * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:setRelationshipProperties}
      * 
@@ -751,7 +783,7 @@ public class Neo4jConnector implements MuleContextAware
     }
 
     /**
-     * Set one property of a relationship.
+     * Set one property of a {@link Relationship}.
      * <p>
      * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:setRelationshipProperty}
      * 
@@ -768,21 +800,34 @@ public class Neo4jConnector implements MuleContextAware
         setPropertyOnEntity(key, value, relationship);
     }
 
-    // TODO test
-    // TODO javadoc
-    // TODO devkit doc
+    /**
+     * Delete one property of a {@link Relationship}.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:deleteRelationshipProperty}
+     * 
+     * @param relationship the {@link Relationship} to delete from.
+     * @param key the key of the property.
+     * @param failIfNotFound if true, an exception will be thrown if the property is not found and
+     *            couldn't be deleted.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
     @Processor
     public void deleteRelationshipProperty(@RefOnly final Relationship relationship,
                                            final String key,
                                            @Optional @Default("false") final boolean failIfNotFound)
         throws MuleException
     {
-        deletePropertyFromEntity(key, relationship);
+        deletePropertyFromEntity(key, relationship, failIfNotFound);
     }
 
-    // TODO test
-    // TODO javadoc
-    // TODO devkit doc
+    /**
+     * Delete all properties of a {@link Relationship}.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:deleteRelationshipProperties}
+     * 
+     * @param relationship the {@link Relationship} to delete from.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
     @Processor
     public void deleteRelationshipProperties(@RefOnly final Relationship relationship) throws MuleException
     {

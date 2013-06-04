@@ -25,6 +25,22 @@
             </neo4j:properties>
         </neo4j:create-node>
 
+        <neo4j:set-node-properties node-ref="#[aNode]">
+            <neo4j:properties>
+                <neo4j:property key="foo">bar</neo4j:property>
+            </neo4j:properties>
+        </neo4j:set-node-properties>
+
+        <neo4j:set-node-property node-ref="#[aNode]"
+            key="pi" value-ref="#[Math.PI]" />
+
+        <neo4j:delete-node-property node-ref="#[aNode]"
+            key="pi" failIfNotFound="true" />
+        <neo4j:delete-node-property node-ref="#[aNode]"
+            key="pi" />
+
+        <neo4j:delete-node-properties node-ref="#[aNode]" />
+
         <neo4j:delete-node-by-id nodeId="37800000" />
         <neo4j:delete-node-by-id nodeId="37800000"
             failIfNotFound="true" />
@@ -42,7 +58,7 @@
         <neo4j:create-relationship-by-ids
             fromNodeId="1" toNodeId="2" type="test" />
 
-        <neo4j:create-relationship fromNode-ref="#[firstNode]"
+        <neo4j:create-relationship fromNode-ref="#[aNode]"
             toNode-ref="#[secondNode]" type="test">
             <neo4j:properties>
                 <neo4j:property key="foo">bar</neo4j:property>
@@ -86,6 +102,12 @@
                 <neo4j:property key="chords">EADGBE</neo4j:property>
             </neo4j:properties>
         </neo4j:set-relationship-properties>
+
+        <neo4j:delete-relationship-property
+            relationship-ref="#[aRelationship]" key="pi" />
+
+        <neo4j:delete-relationship-properties
+            relationship-ref="#[aRelationship]" />
 
         <neo4j:get-relationship-types />
     </flow>

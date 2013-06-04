@@ -129,3 +129,38 @@
 <!-- BEGIN_INCLUDE(neo4j:getRelationshipTypes) -->
 <neo4j:get-relationship-types />
 <!-- END_INCLUDE(neo4j:getRelationshipTypes) -->
+
+<!-- BEGIN_INCLUDE(neo4j:setNodeProperties) -->
+<neo4j:set-node-properties node-ref="#[aNode]">
+    <neo4j:properties>
+        <neo4j:property key="foo">bar</neo4j:property>
+    </neo4j:properties>
+</neo4j:set-node-properties>
+<!-- END_INCLUDE(neo4j:setNodeProperties) -->
+
+<!-- BEGIN_INCLUDE(neo4j:setNodeProperty) -->
+<neo4j:set-node-property node-ref="#[aNode]"
+       key="pi" value-ref="#[Math.PI]" />
+<!-- END_INCLUDE(neo4j:setNodeProperty) -->
+
+<!-- BEGIN_INCLUDE(neo4j:deleteNodeProperty) -->
+<neo4j:delete-node-property node-ref="#[aNode]" key="pi" />
+<!-- END_INCLUDE(neo4j:deleteNodeProperty) -->
+<!-- BEGIN_INCLUDE(neo4j:deleteNodeProperty-failIfNotFound) -->
+<neo4j:delete-node-property node-ref="#[aNode]"
+       key="pi" failIfNotFound="true" />
+<!-- END_INCLUDE(neo4j:deleteNodeProperty-failIfNotFound) -->
+
+<!-- BEGIN_INCLUDE(neo4j:deleteNodeProperties) -->
+<neo4j:delete-node-properties node-ref="#[aNode]" />
+<!-- END_INCLUDE(neo4j:deleteNodeProperties) -->
+
+<!-- BEGIN_INCLUDE(neo4j:deleteRelationshipProperty) -->
+<neo4j:delete-relationship-property
+       relationship-ref="#[aRelationship]" key="pi" />
+<!-- END_INCLUDE(neo4j:deleteRelationshipProperty) -->
+
+<!-- BEGIN_INCLUDE(neo4j:deleteRelationshipProperties) -->
+<neo4j:delete-relationship-properties
+       relationship-ref="#[aRelationship]" />
+<!-- END_INCLUDE(neo4j:deleteRelationshipProperties) -->
