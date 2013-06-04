@@ -1,114 +1,244 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:neo4j="http://www.mulesoft.org/schema/mule/neo4j"
+<mule xmlns="http://www.mulesoft.org/schema/mule/core" xmlns:neo4j="http://www.mulesoft.org/schema/mule/neo4j"
+    xmlns:vm="http://www.mulesoft.org/schema/mule/vm" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="
-            http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
-            http://www.mulesoft.org/schema/mule/neo4j http://www.mulesoft.org/schema/mule/neo4j/current/mule-neo4j.xsd">
+        http://www.mulesoft.org/schema/mule/vm http://www.mulesoft.org/schema/mule/vm/current/mule-vm.xsd
+        http://www.mulesoft.org/schema/mule/neo4j http://www.mulesoft.org/schema/mule/neo4j/current/mule-neo4j.xsd
+        http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd">
 
     <neo4j:config name="neo4j" />
 
     <flow name="test">
+        <vm:inbound-endpoint path="test.in"
+            exchange-pattern="request-response" />
+
         <neo4j:get-service-root />
+        <logger level="INFO" category="neo4j.tests" message="Service root: #[message.payload]" />
 
         <neo4j:run-cypher-query>
             <neo4j:cypher-query
                 query="start x  = node(0) match x -[r]-> n return type(r)" />
         </neo4j:run-cypher-query>
+        <logger level="INFO" category="neo4j.tests"
+            message="Cypher Query Result: #[message.payload]" />
+
+        <neo4j:get-node-by-id nodeId="0" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Get Node by ID: #[message.payload]" />
+
+        <neo4j:get-node-by-id nodeId="37800000" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Get Node by ID (not found): #[message.payload]" />
 
         <neo4j:get-node-by-id nodeId="0" failIfNotFound="true" />
-        <neo4j:get-node-by-id nodeId="37800000" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Get Node by ID (fail if not found): #[message.payload]" />
 
         <neo4j:create-node />
+        <logger level="INFO" category="neo4j.tests" message="Create Node: #[message.payload]" />
+
+        <set-variable variableName="firstNode" value="#[message.payload]" />
+
+        <neo4j:set-node-properties node-ref="#[firstNode]">
+            <neo4j:properties>
+                <neo4j:property key="pi" value-ref="#[Math.PI]" />
+                <neo4j:property key="chords">EADGBE</neo4j:property>
+            </neo4j:properties>
+        </neo4j:set-node-properties>
+
+        <neo4j:delete-node-properties node-ref="#[firstNode]" />
+
         <neo4j:create-node>
             <neo4j:properties>
                 <neo4j:property key="foo">bar</neo4j:property>
             </neo4j:properties>
         </neo4j:create-node>
+        <logger level="INFO" category="neo4j.tests"
+            message="Create Node with Properties: #[message.payload]" />
 
-        <neo4j:set-node-properties node-ref="#[aNode]">
-            <neo4j:properties>
-                <neo4j:property key="foo">bar</neo4j:property>
-            </neo4j:properties>
-        </neo4j:set-node-properties>
+        <set-variable variableName="secondNode" value="#[message.payload]" />
 
-        <neo4j:set-node-property node-ref="#[aNode]"
+        <neo4j:set-node-property node-ref="#[secondNode]"
             key="pi" value-ref="#[Math.PI]" />
 
-        <neo4j:delete-node-property node-ref="#[aNode]"
+        <neo4j:delete-node-property node-ref="#[secondNode]"
             key="pi" failIfNotFound="true" />
-        <neo4j:delete-node-property node-ref="#[aNode]"
+        <neo4j:delete-node-property node-ref="#[secondNode]"
             key="pi" />
 
-        <neo4j:delete-node-properties node-ref="#[aNode]" />
-
-        <neo4j:delete-node-by-id nodeId="37800000" />
-        <neo4j:delete-node-by-id nodeId="37800000"
-            failIfNotFound="true" />
-
-        <neo4j:delete-node node-ref="#[message.payload]" />
-        <neo4j:delete-node node-ref="#[message.payload]"
-            failIfNotFound="true" />
-
-        <neo4j:get-relationship-by-id
-            relationshipId="1" failIfNotFound="true" />
-
-        <neo4j:get-relationship-by-id
-            relationshipId="1" />
-
         <neo4j:create-relationship-by-ids
-            fromNodeId="1" toNodeId="2" type="test" />
+            fromNodeId="#[firstNode.id]" toNodeId="#[secondNode.id]" type="first" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Create Relationship by IDs: #[message.payload]" />
 
-        <neo4j:create-relationship fromNode-ref="#[aNode]"
-            toNode-ref="#[secondNode]" type="test">
+        <set-variable variableName="firstRelationship" value="#[message.payload]" />
+
+        <neo4j:get-relationship-by-id
+            relationshipId="#[firstRelationship.id]" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Get Relationship by ID: #[message.payload]" />
+
+        <neo4j:get-relationship-by-id
+            relationshipId="37800000" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Get Relationship by ID (not found): #[message.payload]" />
+
+        <neo4j:get-relationship-by-id
+            relationshipId="#[firstRelationship.id]" failIfNotFound="true" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Get Relationship by ID (fail if not found): #[message.payload]" />
+
+        <neo4j:create-relationship fromNode-ref="#[firstNode]"
+            toNode-ref="#[secondNode]" type="second">
             <neo4j:properties>
                 <neo4j:property key="foo">bar</neo4j:property>
             </neo4j:properties>
         </neo4j:create-relationship>
+        <logger level="INFO" category="neo4j.tests"
+            message="Create Relationship: #[message.payload]" />
 
-        <neo4j:delete-relationship-by-id
-            relationshipId="1" failIfNotFound="true" />
-        <neo4j:delete-relationship-by-id
-            relationshipId="1" />
+        <set-variable variableName="secondRelationship" value="#[message.payload]" />
 
-        <neo4j:delete-relationship relationship-ref="#[aRelationship]"
-            failIfNotFound="true" />
-        <neo4j:delete-relationship relationship-ref="#[aRelationship]" />
-
-        <neo4j:get-node-relationships node-ref="#[aNode]"
+        <neo4j:get-node-relationships node-ref="#[firstNode]"
             direction="ALL" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Get ALL Node Relationships: #[message.payload]" />
 
-        <neo4j:get-node-relationships node-ref="#[aNode]"
+        <neo4j:get-node-relationships node-ref="#[firstNode]"
+            direction="OUTGOING" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Get OUTGOING Node Relationships: #[message.payload]" />
+
+        <neo4j:get-node-relationships node-ref="#[firstNode]"
+            direction="INCOMING" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Get INCOMING Node Relationships: #[message.payload]" />
+
+        <neo4j:get-node-relationships node-ref="#[secondNode]"
+            direction="ALL">
+            <neo4j:types>
+                <neo4j:type>first</neo4j:type>
+                <neo4j:type>second</neo4j:type>
+            </neo4j:types>
+        </neo4j:get-node-relationships>
+        <logger level="INFO" category="neo4j.tests"
+            message="Get ALL Node Relationships with Multiple Types: #[message.payload]" />
+
+        <neo4j:get-node-relationships node-ref="#[secondNode]"
             direction="OUTGOING">
             <neo4j:types>
-                <neo4j:type>likes</neo4j:type>
+                <neo4j:type>second</neo4j:type>
             </neo4j:types>
         </neo4j:get-node-relationships>
+        <logger level="INFO" category="neo4j.tests"
+            message="Get OUTGOING Node Relationships with Single Type: #[message.payload]" />
 
-        <neo4j:get-node-relationships node-ref="#[aNode]"
+        <neo4j:get-node-relationships node-ref="#[secondNode]"
             direction="INCOMING">
             <neo4j:types>
-                <neo4j:type>loves</neo4j:type>
-                <neo4j:type>hates</neo4j:type>
+                <neo4j:type>second</neo4j:type>
             </neo4j:types>
         </neo4j:get-node-relationships>
+        <logger level="INFO" category="neo4j.tests"
+            message="Get INCOMING Node Relationships with Single Type: #[message.payload]" />
 
         <neo4j:set-relationship-property
-            relationship-ref="#[aRelationship]" key="pi" value-ref="#[Math.PI]" />
+            relationship-ref="#[firstRelationship]" key="pi" value-ref="#[Math.PI]" />
+
+        <neo4j:get-relationship-by-id
+            relationshipId="#[firstRelationship.id]" failIfNotFound="true" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Set Relationship Property: #[message.payload.data]" />
+
+        <neo4j:delete-relationship-property
+            relationship-ref="#[firstRelationship]" key="pi" />
 
         <neo4j:set-relationship-properties
-            relationship-ref="#[aRelationship]">
+            relationship-ref="#[secondRelationship]">
             <neo4j:properties>
                 <neo4j:property key="pi" value-ref="#[Math.PI]" />
                 <neo4j:property key="chords">EADGBE</neo4j:property>
             </neo4j:properties>
         </neo4j:set-relationship-properties>
 
-        <neo4j:delete-relationship-property
-            relationship-ref="#[aRelationship]" key="pi" />
+        <neo4j:get-relationship-by-id
+            relationshipId="#[secondRelationship.id]" failIfNotFound="true" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Set Relationship Properties: #[message.payload.data]" />
 
         <neo4j:delete-relationship-properties
-            relationship-ref="#[aRelationship]" />
+            relationship-ref="#[secondRelationship]" />
+
+        <neo4j:delete-relationship-by-id
+            relationshipId="#[firstRelationship.id]" failIfNotFound="true" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Delete Relationship by ID (fail if not found): #[message.payload]" />
+        <neo4j:delete-relationship-by-id
+            relationshipId="#[firstRelationship.id]" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Delete Relationship by ID: #[message.payload]" />
+
+        <neo4j:delete-relationship relationship-ref="#[secondRelationship]"
+            failIfNotFound="true" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Delete Relationship (fail if not found): #[message.payload]" />
+
+        <neo4j:delete-relationship relationship-ref="#[secondRelationship]" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Delete Relationship: #[message.payload]" />
+
+        <neo4j:add-node-label node-ref="#[firstNode]"
+            label="firstLabel" />
+
+        <neo4j:add-node-labels node-ref="#[secondNode]">
+            <neo4j:labels>
+                <neo4j:label>secondLabelA</neo4j:label>
+                <neo4j:label>secondLabelB</neo4j:label>
+            </neo4j:labels>
+        </neo4j:add-node-labels>
+
+        <neo4j:set-node-labels node-ref="#[secondNode]">
+            <neo4j:labels>
+                <neo4j:label>secondLabelB</neo4j:label>
+                <neo4j:label>secondLabelC</neo4j:label>
+            </neo4j:labels>
+        </neo4j:set-node-labels>
+
+        <neo4j:delete-node-label node-ref="#[secondNode]"
+            label="secondLabelC" />
+
+        <neo4j:get-node-labels node-ref="#[secondNode]" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Get Node Labels: #[message.payload]" />
+
+        <neo4j:get-nodes-by-label label="secondLabelB" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Get Nodes By Label: #[message.payload]" />
+
+        <neo4j:get-nodes-by-label label="secondLabelB"
+            propertyName="foo" propertyValue-ref="#['bar']" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Get Nodes By Label And Property: #[message.payload]" />
+
+        <neo4j:get-nodes-by-label label="missing" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Get Nodes By Label And Property (Not Found): #[message.payload] - isEmpty?: #[message.payload.empty]" />
+
+        <neo4j:get-labels />
+        <logger level="INFO" category="neo4j.tests" message="Get Labels: #[message.payload]" />
+
+        <neo4j:delete-node-by-id nodeId="#[firstNode.id]"
+            failIfNotFound="true" />
+        <logger level="INFO" category="neo4j.tests" message="Delete Node Id: #[firstNode.id]" />
+        <neo4j:delete-node-by-id nodeId="#[firstNode.id]" />
+
+        <neo4j:delete-node node-ref="#[secondNode]"
+            failIfNotFound="true" />
+        <logger level="INFO" category="neo4j.tests" message="Delete Node: #[secondNode]" />
+        <neo4j:delete-node node-ref="#[secondNode]" />
 
         <neo4j:get-relationship-types />
+        <logger level="INFO" category="neo4j.tests"
+            message="Get Relationship Types: #[message.payload]" />
     </flow>
 </mule>

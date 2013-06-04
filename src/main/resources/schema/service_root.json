@@ -22,6 +22,9 @@
     "node_index": {
       "type": "string"
     },
+    "node_labels": {
+      "type": "string"
+    },
     "reference_node": {
       "type": "string"
     },
@@ -32,6 +35,9 @@
       "type": "string"
     },
     "relationship_types": {
+      "type": "string"
+    },
+    "label_nodes": {
       "type": "string"
     }
   }

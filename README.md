@@ -4,3 +4,8 @@
 
 Allows Mule to interact with [Neo4j graph databases](http://www.neo4j.org/).
 
+## Testing
+
+To run the integration tests on a locally running instance of Neo4j, use:
+
+    mvn -Pit clean verify

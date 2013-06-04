@@ -164,3 +164,46 @@
 <neo4j:delete-relationship-properties
        relationship-ref="#[aRelationship]" />
 <!-- END_INCLUDE(neo4j:deleteRelationshipProperties) -->
+
+<!-- BEGIN_INCLUDE(neo4j:addNodeLabel) -->
+<neo4j:add-node-label node-ref="#[aNode]" label="aLabel" />
+<!-- END_INCLUDE(neo4j:addNodeLabel) -->
+
+<!-- BEGIN_INCLUDE(neo4j:addNodeLabels) -->
+<neo4j:add-node-labels node-ref="#[aNode]">
+    <neo4j:labels>
+        <neo4j:label>aLabel</neo4j:label>
+        <neo4j:label>anotherLabel</neo4j:label>
+    </neo4j:labels>
+</neo4j:add-node-labels>
+<!-- END_INCLUDE(neo4j:addNodeLabels) -->
+
+<!-- BEGIN_INCLUDE(neo4j:setNodeLabels) -->
+<neo4j:set-node-labels node-ref="#[aNode]">
+    <neo4j:labels>
+        <neo4j:label>aLabel</neo4j:label>
+        <neo4j:label>anotherLabel</neo4j:label>
+    </neo4j:labels>
+</neo4j:set-node-labels>
+<!-- END_INCLUDE(neo4j:setNodeLabels) -->
+
+<!-- BEGIN_INCLUDE(neo4j:deleteNodeLabel) -->
+<neo4j:delete-node-label node-ref="#[aNode]" label="aLabel" />
+<!-- END_INCLUDE(neo4j:deleteNodeLabel) -->
+
+<!-- BEGIN_INCLUDE(neo4j:getNodeLabels) -->
+<neo4j:get-node-labels node-ref="#[aNode]" />
+<!-- END_INCLUDE(neo4j:getNodeLabels) -->
+
+<!-- BEGIN_INCLUDE(neo4j:getNodesByLabel) -->
+<neo4j:get-nodes-by-label label="aLabel" />
+<!-- END_INCLUDE(neo4j:getNodesByLabel) -->
+
+<!-- BEGIN_INCLUDE(neo4j:getNodesByLabel-property) -->
+<neo4j:get-nodes-by-label label="aLabel"
+       propertyName="aKey" propertyValue-ref="#['aValue']" />
+<!-- END_INCLUDE(neo4j:getNodesByLabel-property) -->
+
+<!-- BEGIN_INCLUDE(neo4j:getLabels) -->
+<neo4j:get-labels />
+<!-- END_INCLUDE(neo4j:getLabels) -->

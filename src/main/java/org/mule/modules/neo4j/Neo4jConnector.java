@@ -10,8 +10,10 @@ package org.mule.modules.neo4j;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -19,6 +21,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.inject.Inject;
@@ -33,6 +36,7 @@ import org.mule.api.DefaultMuleException;
 import org.mule.api.MuleContext;
 import org.mule.api.MuleException;
 import org.mule.api.MuleMessage;
+import org.mule.api.MuleRuntimeException;
 import org.mule.api.annotations.Configurable;
 import org.mule.api.annotations.Connect;
 import org.mule.api.annotations.ConnectionIdentifier;
@@ -45,7 +49,6 @@ import org.mule.api.annotations.param.Default;
 import org.mule.api.annotations.param.Optional;
 import org.mule.api.annotations.param.RefOnly;
 import org.mule.api.context.MuleContextAware;
-import org.mule.endpoint.URIBuilder;
 import org.mule.modules.neo4j.model.BaseEntity;
 import org.mule.modules.neo4j.model.CypherQuery;
 import org.mule.modules.neo4j.model.CypherQueryResult;
@@ -136,6 +139,10 @@ public class Neo4jConnector implements MuleContextAware
     {
         // NOOP
     };
+    private static final TypeReference<Collection<Node>> NODES_TYPE_REFERENCE = new TypeReference<Collection<Node>>()
+    {
+        // NOOP
+    };
     private static final TypeReference<Relationship> RELATIONSHIP_TYPE_REFERENCE = new TypeReference<Relationship>()
     {
         // NOOP
@@ -144,7 +151,7 @@ public class Neo4jConnector implements MuleContextAware
     {
         // NOOP
     };
-    private static final TypeReference<Collection<String>> RELATIONSHIP_TYPES_TYPE_REFERENCE = new TypeReference<Collection<String>>()
+    private static final TypeReference<Collection<String>> STRINGS_TYPE_REFERENCE = new TypeReference<Collection<String>>()
     {
         // NOOP
     };
@@ -166,6 +173,7 @@ public class Neo4jConnector implements MuleContextAware
     private static final String HEADER_STREAMING = "X-Stream";
 
     private static final String PROPERTY_KEY_TEMPLATE = "{key}";
+    private static final String LABEL_TEMPLATE = "{label}";
     private static final String TYPE_LIST_TEMPLATE = "{-list|&|types}";
 
     /**
@@ -229,10 +237,12 @@ public class Neo4jConnector implements MuleContextAware
         {
             serviceRoot = getEntity(baseUri + "/", SERVICE_ROOT_TYPE_REFERENCE, SC_OK);
 
-            // this hack courtesy of https://github.com/neo4j/neo4j/issues/848
-            serviceRoot.setRelationship(StringUtils.substringBeforeLast(serviceRoot.getNode(), "/node")
-                                        + "/relationship");
-
+            // this hack courtesy of: https://github.com/neo4j/neo4j/issues/848
+            final String serviceRootSelf = StringUtils.substringBeforeLast(serviceRoot.getNode(), "/node");
+            serviceRoot.setRelationship(serviceRootSelf + "/relationship");
+            // and these ones of: https://github.com/neo4j/neo4j/issues/850
+            serviceRoot.setNodeLabels(serviceRootSelf + "/labels");
+            serviceRoot.setLabelNodes(serviceRootSelf + "/label/" + LABEL_TEMPLATE + "/nodes");
         }
         catch (final MuleException me)
         {
@@ -359,8 +369,8 @@ public class Neo4jConnector implements MuleContextAware
 
             if (entity instanceof BaseEntity)
             {
-                final BaseEntity be = (BaseEntity) entity;
-                be.setId(StringUtils.substringAfterLast(be.getSelf(), "/"));
+                final BaseEntity baseEntity = (BaseEntity) entity;
+                baseEntity.setId(StringUtils.substringAfterLast(baseEntity.getSelf(), "/"));
             }
 
             return entity;
@@ -375,28 +385,54 @@ public class Neo4jConnector implements MuleContextAware
     {
         Validate.isTrue(queryParameters.length % 2 == 0, "queryParameters must be an even array");
 
-        final URIBuilder uriBuilder = new URIBuilder(uri, muleContext);
-
-        final Map<Object, Object> queryMap = new HashMap<Object, Object>();
+        final Map<String, String> queryParams = new HashMap<String, String>();
 
         if (connector != null)
         {
-            queryMap.put("connector", connector.getName());
+            queryParams.put("connector", connector.getName());
         }
 
         for (int i = 0; i < queryParameters.length; i += 2)
         {
+            final String name = (String) queryParameters[i];
             final Object value = queryParameters[i + 1];
 
-            if (value != null)
+            if ((StringUtils.isNotBlank(name)) && (value != null))
             {
-                queryMap.put(queryParameters[i], value.toString());
+                queryParams.put(name, value.toString());
             }
         }
 
-        uriBuilder.setQueryMap(queryMap);
+        if (queryParams.isEmpty())
+        {
+            return uri;
+        }
 
-        return uriBuilder.toString();
+        final StringBuilder queryBuilder = new StringBuilder(uri).append("?");
+        for (final Entry<String, String> queryParam : queryParams.entrySet())
+        {
+            if (queryBuilder.length() != 0)
+            {
+                queryBuilder.append("&");
+            }
+            queryBuilder.append(urlEncode(queryParam.getKey()))
+                .append("=")
+                .append(urlEncode(queryParam.getValue()));
+        }
+
+        return queryBuilder.toString();
+    }
+
+    private static String urlEncode(final String s)
+    {
+        try
+        {
+            return URLEncoder.encode(s, "UTF-8");
+        }
+        catch (final UnsupportedEncodingException uee)
+        {
+            throw new MuleRuntimeException(uee);
+        }
     }
 
     private Map<String, Object> getRequestProperties(final String method)
@@ -458,6 +494,18 @@ public class Neo4jConnector implements MuleContextAware
     {
         deleteEntity(StringUtils.replace(entity.getProperty(), PROPERTY_KEY_TEMPLATE, key),
             failIfNotFound ? SC_NO_CONTENT : SC_NO_CONTENT_OR_NOT_FOUND);
+    }
+
+    private static Data convertMapToData(final Map<String, Object> properties)
+    {
+        final Data data = new Data();
+
+        if (MapUtils.isNotEmpty(properties))
+        {
+            data.getAdditionalProperties().putAll(properties);
+        }
+
+        return data;
     }
 
     /**
@@ -887,24 +935,132 @@ public class Neo4jConnector implements MuleContextAware
     @Processor
     public Collection<String> getRelationshipTypes() throws MuleException
     {
-        return getEntity(getServiceRoot().getRelationshipTypes(), RELATIONSHIP_TYPES_TYPE_REFERENCE, SC_OK);
+        return getEntity(getServiceRoot().getRelationshipTypes(), STRINGS_TYPE_REFERENCE, SC_OK);
     }
 
-    private Data convertMapToData(final Map<String, Object> properties)
+    /**
+     * Add a label to a {@link Node}.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:addNodeLabel}
+     * 
+     * @param node the {@link Node} to add a label to.
+     * @param label the label to add.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
+    @Processor
+    public void addNodeLabel(@RefOnly final Node node, final String label) throws MuleException
     {
-        final Data data = new Data();
+        postEntity(node.getLabels(), label, null, SC_NO_CONTENT);
+    }
 
-        if (MapUtils.isNotEmpty(properties))
-        {
-            data.getAdditionalProperties().putAll(properties);
-        }
+    /**
+     * Add labels to a {@link Node}.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:addNodeLabels}
+     * 
+     * @param node the {@link Node} to add labels to.
+     * @param labels a {@link List} of labels to add.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
+    @Processor
+    public void addNodeLabels(@RefOnly final Node node, final List<String> labels) throws MuleException
+    {
+        postEntity(node.getLabels(), labels, null, SC_NO_CONTENT);
+    }
 
-        return data;
+    /**
+     * Set labels of a {@link Node}.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:setNodeLabels}
+     * 
+     * @param node the {@link Node} to set labels of.
+     * @param labels a {@link List} of labels to set.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
+    @Processor
+    public void setNodeLabels(@RefOnly final Node node, final List<String> labels) throws MuleException
+    {
+        putEntity(node.getLabels(), labels, SC_NO_CONTENT);
+    }
+
+    /**
+     * Delete a label from a node, never failing even if the label doesn't exist.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:deleteNodeLabel}
+     * 
+     * @param node the {@link Node} to delete the label from.
+     * @param label the label to delete.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
+    @Processor
+    public void deleteNodeLabel(@RefOnly final Node node, final String label) throws MuleException
+    {
+        deleteEntityByUrl(node.getLabels() + "/" + label, true);
+    }
+
+    /**
+     * Get all the labels of a {@link Node}.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:getNodeLabels}
+     * 
+     * @param node the {@link Node} from which to get the labels.
+     * @return a {@link Collection} of {@link String} representing the labels, never null but
+     *         possible empty.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
+    @Processor
+    public Collection<String> getNodeLabels(@RefOnly final Node node) throws MuleException
+    {
+        return getEntity(node.getLabels(), STRINGS_TYPE_REFERENCE, SC_OK);
+    }
+
+    /**
+     * Get all the {@link Node}s that have a particular label and, optional, a particular property.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:getNodesByLabel}
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:getNodesByLabel-property}
+     * 
+     * @param label the label to use when searching for nodes.
+     * @param propertyName the property name to use when searching for nodes.
+     * @param propertyValue the property value to use when searching for nodes.
+     * @return a {@link Collection} of {@link Node}, never null but possibly empty.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
+    @Processor
+    public Collection<Node> getNodesByLabel(final String label,
+                                            @Optional final String propertyName,
+                                            @Optional final Object propertyValue) throws MuleException
+    {
+        final String uri = StringUtils.replace(serviceRoot.getLabelNodes(), LABEL_TEMPLATE, label);
+
+        return getEntity(uri, NODES_TYPE_REFERENCE, SC_OK_OR_NOT_FOUND, propertyName,
+            serializeEntityToJson(propertyValue));
+    }
+
+    /**
+     * Get all the labels.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:getLabels}
+     * 
+     * @return a {@link Collection} of {@link String} labels, never null but potentially empty.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
+    @Processor
+    public Collection<String> getLabels() throws MuleException
+    {
+        return getEntity(getServiceRoot().getNodeLabels(), STRINGS_TYPE_REFERENCE, SC_OK);
     }
 
     private void refreshAuthorization()
     {
-        final byte[] credentialBytes = (StringUtils.trimToEmpty(user) + ":" + StringUtils.trimToEmpty(password)).getBytes();
+        if ((StringUtils.isEmpty(user)) && (StringUtils.isEmpty(password)))
+        {
+            return;
+        }
+
+        final String userPassword = StringUtils.trimToEmpty(user) + ":" + StringUtils.trimToEmpty(password);
+        final byte[] credentialBytes = userPassword.getBytes();
         authorization = "Basic " + new String(Base64.encodeBase64(credentialBytes));
     }
 

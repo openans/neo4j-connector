@@ -31,6 +31,9 @@
     },
     "create_relationship": {
       "type": "string"
+    },
+    "labels": {
+      "type": "string"
     }
   }
 }
