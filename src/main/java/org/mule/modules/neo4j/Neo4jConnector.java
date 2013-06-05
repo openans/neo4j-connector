@@ -66,7 +66,7 @@ import org.mule.util.StringUtils;
 
 /**
  * <p>
- * Neo4j Connector.
+ * Neo4j Connector, for versions 1.9 or above.
  * </p>
  * {@sample.config ../../../doc/mule-module-neo4j.xml.sample neo4j:config-no-auth}
  * <p>
@@ -508,6 +508,19 @@ public class Neo4jConnector implements MuleContextAware
         return data;
     }
 
+    private boolean isBeforeVersion2()
+    {
+        return serviceRoot.getNeo4jVersion().compareTo("2") < 0;
+    }
+
+    private void ensureVersion2OrAbove() throws DefaultMuleException
+    {
+        if (isBeforeVersion2())
+        {
+            throw new DefaultMuleException("This feature is only available with Neo4j version 2.0 or above");
+        }
+    }
+
     /**
      * Get service root.
      * <p>
@@ -946,10 +959,13 @@ public class Neo4jConnector implements MuleContextAware
      * @param node the {@link Node} to add a label to.
      * @param label the label to add.
      * @throws MuleException if anything goes wrong with the operation.
+     * @since Neo4j 2.0.0
      */
     @Processor
     public void addNodeLabel(@RefOnly final Node node, final String label) throws MuleException
     {
+        ensureVersion2OrAbove();
+
         postEntity(node.getLabels(), label, null, SC_NO_CONTENT);
     }
 
@@ -961,10 +977,13 @@ public class Neo4jConnector implements MuleContextAware
      * @param node the {@link Node} to add labels to.
      * @param labels a {@link List} of labels to add.
      * @throws MuleException if anything goes wrong with the operation.
+     * @since Neo4j 2.0.0
      */
     @Processor
     public void addNodeLabels(@RefOnly final Node node, final List<String> labels) throws MuleException
     {
+        ensureVersion2OrAbove();
+
         postEntity(node.getLabels(), labels, null, SC_NO_CONTENT);
     }
 
@@ -976,10 +995,13 @@ public class Neo4jConnector implements MuleContextAware
      * @param node the {@link Node} to set labels of.
      * @param labels a {@link List} of labels to set.
      * @throws MuleException if anything goes wrong with the operation.
+     * @since Neo4j 2.0.0
      */
     @Processor
     public void setNodeLabels(@RefOnly final Node node, final List<String> labels) throws MuleException
     {
+        ensureVersion2OrAbove();
+
         putEntity(node.getLabels(), labels, SC_NO_CONTENT);
     }
 
@@ -991,10 +1013,13 @@ public class Neo4jConnector implements MuleContextAware
      * @param node the {@link Node} to delete the label from.
      * @param label the label to delete.
      * @throws MuleException if anything goes wrong with the operation.
+     * @since Neo4j 2.0.0
      */
     @Processor
     public void deleteNodeLabel(@RefOnly final Node node, final String label) throws MuleException
     {
+        ensureVersion2OrAbove();
+
         deleteEntityByUrl(node.getLabels() + "/" + label, true);
     }
 
@@ -1007,10 +1032,13 @@ public class Neo4jConnector implements MuleContextAware
      * @return a {@link Collection} of {@link String} representing the labels, never null but
      *         possible empty.
      * @throws MuleException if anything goes wrong with the operation.
+     * @since Neo4j 2.0.0
      */
     @Processor
     public Collection<String> getNodeLabels(@RefOnly final Node node) throws MuleException
     {
+        ensureVersion2OrAbove();
+
         return getEntity(node.getLabels(), STRINGS_TYPE_REFERENCE, SC_OK);
     }
 
@@ -1026,12 +1054,15 @@ public class Neo4jConnector implements MuleContextAware
      * @param propertyValue the property value to use when searching for nodes.
      * @return a {@link Collection} of {@link Node}, never null but possibly empty.
      * @throws MuleException if anything goes wrong with the operation.
+     * @since Neo4j 2.0.0
      */
     @Processor
     public Collection<Node> getNodesByLabel(final String label,
                                             @Optional final String propertyName,
                                             @Optional final Object propertyValue) throws MuleException
     {
+        ensureVersion2OrAbove();
+
         final String uri = StringUtils.replace(serviceRoot.getLabelNodes(), LABEL_TEMPLATE, label);
 
         return getEntity(uri, NODES_TYPE_REFERENCE, SC_OK_OR_NOT_FOUND, propertyName,
@@ -1045,10 +1076,13 @@ public class Neo4jConnector implements MuleContextAware
      * 
      * @return a {@link Collection} of {@link String} labels, never null but potentially empty.
      * @throws MuleException if anything goes wrong with the operation.
+     * @since Neo4j 2.0.0
      */
     @Processor
     public Collection<String> getLabels() throws MuleException
     {
+        ensureVersion2OrAbove();
+
         return getEntity(getServiceRoot().getNodeLabels(), STRINGS_TYPE_REFERENCE, SC_OK);
     }
 

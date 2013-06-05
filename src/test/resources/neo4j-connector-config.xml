@@ -13,7 +13,8 @@
             exchange-pattern="request-response" />
 
         <neo4j:get-service-root />
-        <logger level="INFO" category="neo4j.tests" message="Service root: #[message.payload]" />
+        <set-variable variableName="serviceRoot" value="#[message.payload]" />
+        <logger level="INFO" category="neo4j.tests" message="Service root: #[serviceRoot]" />
 
         <neo4j:run-cypher-query>
             <neo4j:cypher-query
@@ -187,6 +188,31 @@
         <logger level="INFO" category="neo4j.tests"
             message="Delete Relationship: #[message.payload]" />
 
+        <choice>
+            <when expression="#[serviceRoot.neo4jVersion &lt; '2']">
+                <logger level="DEBUG" message="NOOP" />
+            </when>
+            <otherwise>
+                <flow-ref name="version2Tests" />
+            </otherwise>
+        </choice>
+
+        <neo4j:delete-node-by-id nodeId="#[firstNode.id]"
+            failIfNotFound="true" />
+        <logger level="INFO" category="neo4j.tests" message="Delete Node Id: #[firstNode.id]" />
+        <neo4j:delete-node-by-id nodeId="#[firstNode.id]" />
+
+        <neo4j:delete-node node-ref="#[secondNode]"
+            failIfNotFound="true" />
+        <logger level="INFO" category="neo4j.tests" message="Delete Node: #[secondNode]" />
+        <neo4j:delete-node node-ref="#[secondNode]" />
+
+        <neo4j:get-relationship-types />
+        <logger level="INFO" category="neo4j.tests"
+            message="Get Relationship Types: #[message.payload]" />
+    </flow>
+    
+    <flow name="version2Tests">
         <neo4j:add-node-label node-ref="#[firstNode]"
             label="firstLabel" />
 
@@ -226,19 +252,5 @@
 
         <neo4j:get-labels />
         <logger level="INFO" category="neo4j.tests" message="Get Labels: #[message.payload]" />
-
-        <neo4j:delete-node-by-id nodeId="#[firstNode.id]"
-            failIfNotFound="true" />
-        <logger level="INFO" category="neo4j.tests" message="Delete Node Id: #[firstNode.id]" />
-        <neo4j:delete-node-by-id nodeId="#[firstNode.id]" />
-
-        <neo4j:delete-node node-ref="#[secondNode]"
-            failIfNotFound="true" />
-        <logger level="INFO" category="neo4j.tests" message="Delete Node: #[secondNode]" />
-        <neo4j:delete-node node-ref="#[secondNode]" />
-
-        <neo4j:get-relationship-types />
-        <logger level="INFO" category="neo4j.tests"
-            message="Get Relationship Types: #[message.payload]" />
     </flow>
 </mule>

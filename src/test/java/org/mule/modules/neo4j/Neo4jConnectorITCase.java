@@ -9,8 +9,9 @@
 package org.mule.modules.neo4j;
 
 import static org.hamcrest.CoreMatchers.is;
-import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.junit.Assert.assertThat;
+
+import java.util.Collection;
 
 import org.junit.Test;
 import org.mule.api.MuleException;
@@ -30,6 +31,6 @@ public class Neo4jConnectorITCase extends FunctionalTestCase
     {
         final MuleMessage response = muleContext.getClient().send("vm://test.in", "ignored", null);
 
-        assertThat(response.getPayload(), is(notNullValue()));
+        assertThat(response.getPayload(), is(Collection.class));
     }
 }
