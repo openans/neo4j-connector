@@ -211,7 +211,7 @@
         <logger level="INFO" category="neo4j.tests"
             message="Get Relationship Types: #[message.payload]" />
     </flow>
-    
+
     <flow name="version2Tests">
         <neo4j:add-node-label node-ref="#[firstNode]"
             label="firstLabel" />
@@ -252,5 +252,25 @@
 
         <neo4j:get-labels />
         <logger level="INFO" category="neo4j.tests" message="Get Labels: #[message.payload]" />
+
+        <set-variable variableName="randomPropertyKey"
+            value="#[UUID.randomUUID().toString()]" />
+
+        <neo4j:create-schema-index label="firstLabel">
+            <neo4j:property-keys>
+                <neo4j:property-key>#[randomPropertyKey]</neo4j:property-key>
+            </neo4j:property-keys>
+        </neo4j:create-schema-index>
+        <logger level="INFO" category="neo4j.tests"
+            message="Create Schema Index: #[message.payload]" />
+
+        <neo4j:get-schema-indexes label="firstLabel" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Get Schema Indexes: #[message.payload]" />
+
+        <neo4j:delete-schema-index label="firstLabel"
+            propertyKey="#[randomPropertyKey]" failIfNotFound="true" />
+        <neo4j:delete-schema-index label="firstLabel"
+            propertyKey="#[randomPropertyKey]" />
     </flow>
 </mule>

@@ -39,6 +39,9 @@
     },
     "label_nodes": {
       "type": "string"
+    },
+    "schema_index": {
+      "type": "string"
     }
   }
 }

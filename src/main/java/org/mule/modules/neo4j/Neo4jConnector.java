@@ -54,8 +54,10 @@ import org.mule.modules.neo4j.model.CypherQuery;
 import org.mule.modules.neo4j.model.CypherQueryResult;
 import org.mule.modules.neo4j.model.Data;
 import org.mule.modules.neo4j.model.NewRelationship;
+import org.mule.modules.neo4j.model.NewSchemaIndex;
 import org.mule.modules.neo4j.model.Node;
 import org.mule.modules.neo4j.model.Relationship;
+import org.mule.modules.neo4j.model.SchemaIndex;
 import org.mule.modules.neo4j.model.ServiceRoot;
 import org.mule.transformer.types.MimeTypes;
 import org.mule.transport.http.HttpConnector;
@@ -155,6 +157,14 @@ public class Neo4jConnector implements MuleContextAware
     {
         // NOOP
     };
+    private static final TypeReference<SchemaIndex> SCHEMA_INDEX_TYPE_REFERENCE = new TypeReference<SchemaIndex>()
+    {
+        // NOOP
+    };
+    private static final TypeReference<Collection<SchemaIndex>> SCHEMA_INDEXES_TYPE_REFERENCE = new TypeReference<Collection<SchemaIndex>>()
+    {
+        // NOOP
+    };
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
@@ -240,9 +250,16 @@ public class Neo4jConnector implements MuleContextAware
             // this hack courtesy of: https://github.com/neo4j/neo4j/issues/848
             final String serviceRootSelf = StringUtils.substringBeforeLast(serviceRoot.getNode(), "/node");
             serviceRoot.setRelationship(serviceRootSelf + "/relationship");
-            // and these ones of: https://github.com/neo4j/neo4j/issues/850
-            serviceRoot.setNodeLabels(serviceRootSelf + "/labels");
-            serviceRoot.setLabelNodes(serviceRootSelf + "/label/" + LABEL_TEMPLATE + "/nodes");
+
+            if (!isBeforeVersion2())
+            {
+                // and these ones of: https://github.com/neo4j/neo4j/issues/850
+                serviceRoot.setNodeLabels(serviceRootSelf + "/labels");
+                serviceRoot.setLabelNodes(serviceRootSelf + "/label/" + LABEL_TEMPLATE + "/nodes");
+
+                // and this one of: https://github.com/neo4j/neo4j/issues/857
+                serviceRoot.setSchemaIndex(serviceRootSelf + "/schema/index/" + LABEL_TEMPLATE);
+            }
         }
         catch (final MuleException me)
         {
@@ -261,6 +278,21 @@ public class Neo4jConnector implements MuleContextAware
     public void disconnect() throws IOException
     {
         serviceRoot = null;
+    }
+
+    private String getNodeUrl(final long nodeId)
+    {
+        return serviceRoot.getNode() + "/" + nodeId;
+    }
+
+    private String getRelationshipUrl(final long relationshipId)
+    {
+        return serviceRoot.getRelationship() + "/" + relationshipId;
+    }
+
+    private String getSchemaIndexUrl(final String label)
+    {
+        return StringUtils.replace(serviceRoot.getSchemaIndex(), LABEL_TEMPLATE, label);
     }
 
     private <T> T getEntity(final String uri,
@@ -449,16 +481,6 @@ public class Neo4jConnector implements MuleContextAware
         }
 
         return properties;
-    }
-
-    private String getNodeUrl(final long nodeId)
-    {
-        return serviceRoot.getNode() + "/" + nodeId;
-    }
-
-    private String getRelationshipUrl(final long relationshipId)
-    {
-        return serviceRoot.getRelationship() + "/" + relationshipId;
     }
 
     private void deleteEntity(final BaseEntity entity, final boolean failIfNotFound) throws MuleException
@@ -1084,6 +1106,73 @@ public class Neo4jConnector implements MuleContextAware
         ensureVersion2OrAbove();
 
         return getEntity(getServiceRoot().getNodeLabels(), STRINGS_TYPE_REFERENCE, SC_OK);
+    }
+
+    /**
+     * Create a {@link SchemaIndex}.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:createSchemaIndex}
+     * 
+     * @param label the label to create the index for.
+     * @param propertyKeys the property key or keys to index.
+     * @return the created {@link SchemaIndex}.
+     * @throws MuleException if anything goes wrong with the operation.
+     * @since Neo4j 2.0.0
+     */
+    @Processor
+    public SchemaIndex createSchemaIndex(final String label, final List<String> propertyKeys)
+        throws MuleException
+    {
+        ensureVersion2OrAbove();
+
+        Validate.notEmpty(propertyKeys, "propertyKeys can not be empty");
+
+        return postEntity(getSchemaIndexUrl(label), new NewSchemaIndex().withPropertyKeys(propertyKeys),
+            SCHEMA_INDEX_TYPE_REFERENCE, SC_OK);
+    }
+
+    /**
+     * Get the {@link SchemaIndex}es for a particular label.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:getSchemaIndexes}
+     * 
+     * @param label the label to consider.
+     * @return a {@link Collection} of {@link SchemaIndex} instances, never null but possibly empty
+     * @throws MuleException if anything goes wrong with the operation.
+     * @since Neo4j 2.0.0
+     */
+    @Processor
+    public Collection<SchemaIndex> getSchemaIndexes(final String label) throws MuleException
+    {
+        ensureVersion2OrAbove();
+
+        return getEntity(getSchemaIndexUrl(label), SCHEMA_INDEXES_TYPE_REFERENCE, SC_OK);
+    }
+
+    /**
+     * Delete a schema index.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:deleteSchemaIndex}
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample
+     * neo4j:deleteSchemaIndex-failIfNotFound}
+     * 
+     * @param label the label to delete the schema index from.
+     * @param propertyKey the property key to delete the schema index for.
+     * @param failIfNotFound if true, an exception will be thrown if the schema index is not found
+     *            and couldn't be deleted.
+     * @throws MuleException if anything goes wrong with the operation.
+     * @since Neo4j 2.0.0
+     */
+    @Processor
+    public void deleteSchemaIndex(final String label,
+                                  final String propertyKey,
+                                  @Optional @Default("false") final boolean failIfNotFound)
+        throws MuleException
+    {
+        ensureVersion2OrAbove();
+
+        deleteEntityByUrl(getSchemaIndexUrl(label) + "/" + propertyKey, failIfNotFound);
     }
 
     private void refreshAuthorization()

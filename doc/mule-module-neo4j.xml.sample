@@ -207,3 +207,24 @@
 <!-- BEGIN_INCLUDE(neo4j:getLabels) -->
 <neo4j:get-labels />
 <!-- END_INCLUDE(neo4j:getLabels) -->
+
+<!-- BEGIN_INCLUDE(neo4j:createSchemaIndex) -->
+<neo4j:create-schema-index label="aLabel">
+    <neo4j:property-keys>
+        <neo4j:property-key>aKey</neo4j:property-key>
+    </neo4j:property-keys>
+</neo4j:create-schema-index>
+<!-- END_INCLUDE(neo4j:createSchemaIndex) -->
+
+<!-- BEGIN_INCLUDE(neo4j:getSchemaIndexes) -->
+<neo4j:get-schema-indexes label="aLabel" />
+<!-- END_INCLUDE(neo4j:getSchemaIndexes) -->
+
+<!-- BEGIN_INCLUDE(neo4j:deleteSchemaIndex) -->
+<neo4j:delete-schema-index label="aLabel" propertyKey="aKey" />
+<!-- END_INCLUDE(neo4j:deleteSchemaIndex) -->
+
+<!-- BEGIN_INCLUDE(neo4j:deleteSchemaIndex-failIfNotFound) -->
+<neo4j:delete-schema-index label="aLabel"
+       propertyKey="aKey" failIfNotFound="true" />
+<!-- END_INCLUDE(neo4j:deleteSchemaIndex-failIfNotFound) -->
