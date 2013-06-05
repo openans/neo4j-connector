@@ -207,6 +207,30 @@
         <logger level="INFO" category="neo4j.tests" message="Delete Node: #[secondNode]" />
         <neo4j:delete-node node-ref="#[secondNode]" />
 
+        <set-variable variableName="randomNodeIndexName"
+            value="#[UUID.randomUUID().toString()]" />
+
+        <neo4j:create-node-index indexName="#[randomNodeIndexName]" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Create Node Index: #[message.payload]" />
+
+        <neo4j:create-node-index indexName="#[randomNodeIndexName]"
+            type="exact" provider="lucene" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Create Node Index with Configuration: #[message.payload]" />
+
+        <neo4j:get-node-indexes />
+        <logger level="INFO" category="neo4j.tests"
+            message="Get Node Indexes: #[message.payload]" />
+
+        <neo4j:delete-node-index indexName="#[randomNodeIndexName]"
+            failIfNotFound="true" />
+        <neo4j:delete-node-index indexName="#[randomNodeIndexName]" />
+
+        <neo4j:get-node-indexes />
+        <logger level="INFO" category="neo4j.tests"
+            message="Get Node Indexes (after delete): #[message.payload]" />
+
         <neo4j:get-relationship-types />
         <logger level="INFO" category="neo4j.tests"
             message="Get Relationship Types: #[message.payload]" />

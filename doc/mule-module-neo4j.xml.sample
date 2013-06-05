@@ -228,3 +228,23 @@
 <neo4j:delete-schema-index label="aLabel"
        propertyKey="aKey" failIfNotFound="true" />
 <!-- END_INCLUDE(neo4j:deleteSchemaIndex-failIfNotFound) -->
+
+<!-- BEGIN_INCLUDE(neo4j:createNodeIndex) -->
+<neo4j:create-node-index indexName="anIndexName" />
+<!-- END_INCLUDE(neo4j:createNodeIndex) -->
+
+<!-- BEGIN_INCLUDE(neo4j:createNodeIndex-withConfiguration) -->
+<neo4j:create-node-index indexName="anIndexName" type="exact" provider="lucene" />
+<!-- END_INCLUDE(neo4j:createNodeIndex-withConfiguration) -->
+
+<!-- BEGIN_INCLUDE(neo4j:deleteSchemaIndex) -->
+<neo4j:delete-node-index indexName="aIndexName" />
+<!-- END_INCLUDE(neo4j:deleteSchemaIndex) -->
+
+<!-- BEGIN_INCLUDE(neo4j:deleteSchemaIndex-failIfNotFound) -->
+<neo4j:delete-node-index indexName="aIndexName" failIfNotFound="true" />
+<!-- END_INCLUDE(neo4j:deleteSchemaIndex-failIfNotFound) -->
+
+<!-- BEGIN_INCLUDE(neo4j:getNodeIndexes) -->
+<neo4j:get-node-indexes />
+<!-- END_INCLUDE(neo4j:getNodeIndexes) -->

@@ -14,6 +14,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
@@ -28,6 +29,8 @@ import javax.inject.Inject;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.Validate;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 import org.mule.api.ConnectionException;
@@ -53,9 +56,12 @@ import org.mule.modules.neo4j.model.BaseEntity;
 import org.mule.modules.neo4j.model.CypherQuery;
 import org.mule.modules.neo4j.model.CypherQueryResult;
 import org.mule.modules.neo4j.model.Data;
+import org.mule.modules.neo4j.model.NewNodeIndex;
 import org.mule.modules.neo4j.model.NewRelationship;
 import org.mule.modules.neo4j.model.NewSchemaIndex;
 import org.mule.modules.neo4j.model.Node;
+import org.mule.modules.neo4j.model.NodeIndex;
+import org.mule.modules.neo4j.model.NodeIndexConfiguration;
 import org.mule.modules.neo4j.model.Relationship;
 import org.mule.modules.neo4j.model.SchemaIndex;
 import org.mule.modules.neo4j.model.ServiceRoot;
@@ -165,8 +171,17 @@ public class Neo4jConnector implements MuleContextAware
     {
         // NOOP
     };
+    private static final TypeReference<NodeIndex> NODE_INDEX_TYPE_REFERENCE = new TypeReference<NodeIndex>()
+    {
+        // NOOP
+    };
+    private static final TypeReference<Map<String, Map<String, String>>> NODE_INDEXES_TYPE_REFERENCE = new TypeReference<Map<String, Map<String, String>>>()
+    {
+        // NOOP
+    };
 
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
+    private static final Log LOGGER = LogFactory.getLog(Neo4jConnector.class);
 
     private static final Set<Integer> SC_OK = Collections.singleton(HttpConstants.SC_OK);
     private static final Set<Integer> SC_CREATED = Collections.singleton(HttpConstants.SC_CREATED);
@@ -175,6 +190,8 @@ public class Neo4jConnector implements MuleContextAware
         Arrays.asList(HttpConstants.SC_NO_CONTENT, HttpConstants.SC_NOT_FOUND)));
     private static final Set<Integer> SC_OK_OR_NOT_FOUND = Collections.unmodifiableSet(new HashSet<Integer>(
         Arrays.asList(HttpConstants.SC_OK, HttpConstants.SC_NOT_FOUND)));
+    private static final Set<Integer> SC_OK_OR_NO_CONTENT = Collections.unmodifiableSet(new HashSet<Integer>(
+        Arrays.asList(HttpConstants.SC_OK, HttpConstants.SC_NO_CONTENT)));
     private static final Set<Integer> NO_RESPONSE_STATUSES = Collections.unmodifiableSet(new HashSet<Integer>(
         Arrays.asList(HttpConstants.SC_NO_CONTENT, HttpConstants.SC_NOT_FOUND)));
     private static final Set<String> ENTITY_CARRYING_HTTP_METHODS = Collections.unmodifiableSet(new HashSet<String>(
@@ -540,6 +557,14 @@ public class Neo4jConnector implements MuleContextAware
         if (isBeforeVersion2())
         {
             throw new DefaultMuleException("This feature is only available with Neo4j version 2.0 or above");
+        }
+    }
+
+    private void logDeprecatedIn2OrAbove(final String method)
+    {
+        if (!isBeforeVersion2())
+        {
+            LOGGER.info(method + " is deprecated in Neo4j version 2.0 or above");
         }
     }
 
@@ -1173,6 +1198,99 @@ public class Neo4jConnector implements MuleContextAware
         ensureVersion2OrAbove();
 
         deleteEntityByUrl(getSchemaIndexUrl(label) + "/" + propertyKey, failIfNotFound);
+    }
+
+    /**
+     * Create a node index.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:createNodeIndex}
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample
+     * neo4j:createNodeIndex-withConfiguration}
+     * 
+     * @param indexName the name of the new node index to create.
+     * @param type the type of the new node index.
+     * @param provider the provider for the new node index.
+     * @return the created {@link NodeIndex}.
+     * @throws MuleException if anything goes wrong with the operation.
+     * @Deprecated since version 2.0
+     */
+    @Processor
+    public NodeIndex createNodeIndex(final String indexName,
+                                     @Optional final String type,
+                                     @Optional final String provider) throws MuleException
+    {
+        logDeprecatedIn2OrAbove("createNodeIndex");
+
+        final NewNodeIndex newNodeIndex = new NewNodeIndex().withName(indexName);
+
+        if ((StringUtils.isNotBlank(type)) || (StringUtils.isNotBlank(provider)))
+        {
+            newNodeIndex.setConfig(new NodeIndexConfiguration().withType(type).withProvider(provider));
+        }
+
+        final NodeIndex nodeIndex = postEntity(serviceRoot.getNodeIndex(), newNodeIndex,
+            NODE_INDEX_TYPE_REFERENCE, SC_CREATED);
+        nodeIndex.setName(indexName);
+        return nodeIndex;
+    }
+
+    /**
+     * Delete a node index.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:deleteSchemaIndex}
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample
+     * neo4j:deleteSchemaIndex-failIfNotFound}
+     * 
+     * @param indexName the name of the node index to delete.
+     * @param failIfNotFound if true, an exception will be thrown if the node index is not found and
+     *            couldn't be deleted.
+     * @throws MuleException if anything goes wrong with the operation.
+     * @Deprecated since version 2.0
+     */
+    @Processor
+    public void deleteNodeIndex(final String indexName,
+                                @Optional @Default("false") final boolean failIfNotFound)
+        throws MuleException
+    {
+        logDeprecatedIn2OrAbove("createNodeIndex");
+
+        deleteEntityByUrl(serviceRoot.getNodeIndex() + "/" + indexName, failIfNotFound);
+    }
+
+    /**
+     * Get all the node indexes.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:getNodeIndexes}
+     * 
+     * @return a {@link Collection} of {@link NodeIndex}es, never null but can be empty.
+     * @throws MuleException if anything goes wrong with the operation.
+     * @Deprecated since version 2.0
+     */
+    @Processor
+    public Collection<NodeIndex> getNodeIndexes() throws MuleException
+    {
+        // the Neo4j returns an object instead of an array for the list of indexes :(
+        // so we need to manually convert this mess into proper objects
+        final Map<String, Map<String, String>> rawNodeIndexes = getEntity(serviceRoot.getNodeIndex(),
+            NODE_INDEXES_TYPE_REFERENCE, SC_OK_OR_NO_CONTENT);
+
+        final List<NodeIndex> nodeIndexes = new ArrayList<NodeIndex>();
+
+        if (MapUtils.isNotEmpty(rawNodeIndexes))
+        {
+            for (final Entry<String, Map<String, String>> rawNodeIndex : rawNodeIndexes.entrySet())
+            {
+                final NodeIndex nodeIndex = new NodeIndex().withName(rawNodeIndex.getKey());
+                nodeIndex.setTemplate(rawNodeIndex.getValue().get("template"));
+                nodeIndex.setProvider(rawNodeIndex.getValue().get("provider"));
+                nodeIndex.setType(rawNodeIndex.getValue().get("type"));
+                nodeIndexes.add(nodeIndex);
+            }
+        }
+
+        return nodeIndexes;
     }
 
     private void refreshAuthorization()

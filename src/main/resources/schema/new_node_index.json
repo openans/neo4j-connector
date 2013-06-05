@@ -1,0 +1,12 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties" : {
+    "name": {
+      "type": "string"
+    },
+    "config": {
+      "$ref" : "node_index_configuration.json"
+    }
+  }
+}

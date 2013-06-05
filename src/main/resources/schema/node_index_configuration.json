@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "javaType" : "org.mule.modules.neo4j.model.NodeIndexConfiguration",
+  "properties" : {
+    "type": {
+      "type": "string"
+    },
+    "provider": {
+      "type": "string"
+    }
+  }
+}
