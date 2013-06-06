@@ -315,3 +315,17 @@
         name="none" />
 </neo4j:traverse-for-relationships>
 <!-- END_INCLUDE(neo4j:traverseForRelationships) -->
+
+<!-- BEGIN_INCLUDE(neo4j:traverseForPaths) -->
+<neo4j:traverse-for-paths node-ref="#[aNode]"
+    order="BREADTH_FIRST" maxDepth="3" uniqueness="NODE_GLOBAL">
+    <neo4j:relationships>
+        <neo4j:relationship direction="ALL" type="first" />
+        <neo4j:relationship direction="ALL" type="second" />
+    </neo4j:relationships>
+    <neo4j:return-filter language="javascript"
+        body="position.length() &lt; 3;" />
+    <neo4j:prune-evaluator language="builtin"
+        name="none" />
+</neo4j:traverse-for-paths>
+<!-- END_INCLUDE(neo4j:traverseForPaths) -->

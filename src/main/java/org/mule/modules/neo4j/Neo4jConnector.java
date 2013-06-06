@@ -64,6 +64,7 @@ import org.mule.modules.neo4j.model.Node;
 import org.mule.modules.neo4j.model.NodeIndex;
 import org.mule.modules.neo4j.model.NodeIndexConfiguration;
 import org.mule.modules.neo4j.model.NodeIndexingRequest;
+import org.mule.modules.neo4j.model.Path;
 import org.mule.modules.neo4j.model.Relationship;
 import org.mule.modules.neo4j.model.RelationshipQuery;
 import org.mule.modules.neo4j.model.SchemaIndex;
@@ -199,6 +200,10 @@ public class Neo4jConnector implements MuleContextAware
         // NOOP
     };
     private static final TypeReference<Collection<IndexedNode>> INDEXED_NODES_TYPE_REFERENCE = new TypeReference<Collection<IndexedNode>>()
+    {
+        // NOOP
+    };
+    private static final TypeReference<Collection<Path>> PATHS_TYPE_REFERENCE = new TypeReference<Collection<Path>>()
     {
         // NOOP
     };
@@ -1545,6 +1550,36 @@ public class Neo4jConnector implements MuleContextAware
     {
         return traverse(node, order, uniqueness, maxDepth, relationships, returnFilter, pruneEvaluator,
             TraversalResult.RELATIONSHIP, RELATIONSHIPS_TYPE_REFERENCE);
+    }
+
+    /**
+     * Perform a node traversal, returning {@link Path} instances.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:traverseForPaths}
+     * 
+     * @param node the start {@link Node}.
+     * @param order the order to visit the nodes.
+     * @param uniqueness how uniquess should be calculated.
+     * @param maxDepth the maximum depth from the start node after which results must be pruned.
+     * @param relationships the relationship types and directions that must be followed.
+     * @param returnFilter a filter that determines if the current position should be included in
+     *            the result.
+     * @param pruneEvaluator an evaluator that determines of traversal should stop or continue.
+     * @return a {@link Collection} of {@link Path}, never null but potentially empty.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
+    @Processor
+    public Collection<Path> traverseForPaths(@RefOnly final Node node,
+                                             final TraversalQuery.Order order,
+                                             final TraversalQuery.Uniqueness uniqueness,
+                                             @Optional final Integer maxDepth,
+                                             @Optional final List<RelationshipQuery> relationships,
+                                             @Optional final TraversalScript returnFilter,
+                                             @Optional final TraversalScript pruneEvaluator)
+        throws MuleException
+    {
+        return traverse(node, order, uniqueness, maxDepth, relationships, returnFilter, pruneEvaluator,
+            TraversalResult.PATH, PATHS_TYPE_REFERENCE);
     }
 
     private void refreshAuthorization()
