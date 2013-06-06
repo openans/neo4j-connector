@@ -1,0 +1,27 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties" : {
+    "start": {
+      "$ref": "node.json"
+    },
+    "end": {
+      "$ref": "node.json"
+    },
+    "length": {
+      "type": "integer"
+    },
+    "nodes": {
+      "type": "array",
+      "items" : {
+        "$ref": "node.json"
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "items" : {
+        "$ref": "relationship.json"
+      }
+    }
+  }
+}

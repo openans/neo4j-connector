@@ -56,6 +56,7 @@ import org.mule.modules.neo4j.model.BaseEntity;
 import org.mule.modules.neo4j.model.CypherQuery;
 import org.mule.modules.neo4j.model.CypherQueryResult;
 import org.mule.modules.neo4j.model.Data;
+import org.mule.modules.neo4j.model.Fullpath;
 import org.mule.modules.neo4j.model.IndexedNode;
 import org.mule.modules.neo4j.model.NewNodeIndex;
 import org.mule.modules.neo4j.model.NewRelationship;
@@ -204,6 +205,10 @@ public class Neo4jConnector implements MuleContextAware
         // NOOP
     };
     private static final TypeReference<Collection<Path>> PATHS_TYPE_REFERENCE = new TypeReference<Collection<Path>>()
+    {
+        // NOOP
+    };
+    private static final TypeReference<Collection<Fullpath>> FULLPATHS_TYPE_REFERENCE = new TypeReference<Collection<Fullpath>>()
     {
         // NOOP
     };
@@ -1580,6 +1585,36 @@ public class Neo4jConnector implements MuleContextAware
     {
         return traverse(node, order, uniqueness, maxDepth, relationships, returnFilter, pruneEvaluator,
             TraversalResult.PATH, PATHS_TYPE_REFERENCE);
+    }
+
+    /**
+     * Perform a node traversal, returning {@link Fullpath} instances.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:traverseForFullpaths}
+     * 
+     * @param node the start {@link Node}.
+     * @param order the order to visit the nodes.
+     * @param uniqueness how uniquess should be calculated.
+     * @param maxDepth the maximum depth from the start node after which results must be pruned.
+     * @param relationships the relationship types and directions that must be followed.
+     * @param returnFilter a filter that determines if the current position should be included in
+     *            the result.
+     * @param pruneEvaluator an evaluator that determines of traversal should stop or continue.
+     * @return a {@link Collection} of {@link Fullpath}, never null but potentially empty.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
+    @Processor
+    public Collection<Fullpath> traverseForFullpaths(@RefOnly final Node node,
+                                                     final TraversalQuery.Order order,
+                                                     final TraversalQuery.Uniqueness uniqueness,
+                                                     @Optional final Integer maxDepth,
+                                                     @Optional final List<RelationshipQuery> relationships,
+                                                     @Optional final TraversalScript returnFilter,
+                                                     @Optional final TraversalScript pruneEvaluator)
+        throws MuleException
+    {
+        return traverse(node, order, uniqueness, maxDepth, relationships, returnFilter, pruneEvaluator,
+            TraversalResult.FULLPATH, FULLPATHS_TYPE_REFERENCE);
     }
 
     private void refreshAuthorization()
