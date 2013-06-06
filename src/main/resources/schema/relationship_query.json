@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties" : {
+    "direction": {
+      "type": "string",
+      "enum" : ["all", "in", "out"]
+    },
+    "type": {
+      "type": "string"
+    }
+  }
+}

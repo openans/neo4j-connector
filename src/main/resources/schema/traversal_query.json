@@ -1,0 +1,29 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties" : {
+    "order" : {
+      "type": "string",
+      "enum" : ["breadth_first", "depth_first"]
+    },
+    "relationships" : {
+      "type": "array",
+      "items" : {
+        "$ref" : "relationship_query.json"
+      }
+    },
+    "uniqueness" : {
+      "type": "string",
+      "enum" : ["node_global", "none", "relationship_global", "node_path", "relationship_path"]
+    },
+    "return_filter" : {
+      "$ref": "traversal_script.json"
+    },
+    "prune_evaluator" : {
+      "$ref": "traversal_script.json"
+    },
+    "max_depth" : {
+      "type": "integer"
+    }
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "javaType" : "org.mule.modules.neo4j.model.TraversalScript",
+  "properties" : {
+    "name" : {
+      "type": "string"
+    },
+    "language" : {
+      "type": "string"
+    },
+    "body" : {
+      "type": "string"
+    }
+  }
+}

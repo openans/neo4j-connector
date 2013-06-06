@@ -284,4 +284,20 @@
 <!-- END_INCLUDE(neo4j:findNodesByQuery) -->
 
 <!-- BEGIN_INCLUDE(neo4j:findNodesByQuery-order) -->
+<neo4j:find-nodes-by-query indexName="anIndexName"
+       query="aKey:aValue" order="RELEVANCE" />
 <!-- END_INCLUDE(neo4j:findNodesByQuery-order) -->
+
+<!-- BEGIN_INCLUDE(neo4j:traverseForNodes) -->
+<neo4j:traverse-for-nodes node-ref="#[aNode]"
+    order="BREADTH_FIRST" maxDepth="3" uniqueness="NODE_GLOBAL">
+    <neo4j:relationships>
+        <neo4j:relationship direction="ALL" type="likes" />
+        <neo4j:relationship direction="ALL" type="hates" />
+    </neo4j:relationships>
+    <neo4j:return-filter language="javascript"
+        body="position.length() &lt; 3;" />
+    <neo4j:prune-evaluator language="builtin"
+        name="none" />
+</neo4j:traverse-for-nodes>
+<!-- END_INCLUDE(neo4j:traverseForNodes) -->
