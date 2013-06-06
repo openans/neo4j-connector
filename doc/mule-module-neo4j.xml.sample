@@ -277,3 +277,11 @@
 <neo4j:find-nodes-by-index indexName="anIndexName"
        key="aKey" value="aValue" />
 <!-- END_INCLUDE(neo4j:findNodesByIndex) -->
+
+<!-- BEGIN_INCLUDE(neo4j:findNodesByQuery) -->
+<neo4j:find-nodes-by-query indexName="anIndexName"
+       query="aKey:aValue" />
+<!-- END_INCLUDE(neo4j:findNodesByQuery) -->
+
+<!-- BEGIN_INCLUDE(neo4j:findNodesByQuery-order) -->
+<!-- END_INCLUDE(neo4j:findNodesByQuery-order) -->

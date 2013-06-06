@@ -137,6 +137,11 @@ public class Neo4jConnector implements MuleContextAware
         public abstract String getTypeRelationshipsUriPattern(Node node);
     }
 
+    public static enum QueryResultOrder
+    {
+        INDEX, RELEVANCE, SCORE
+    };
+
     private static final TypeReference<ServiceRoot> SERVICE_ROOT_TYPE_REFERENCE = new TypeReference<ServiceRoot>()
     {
         // NOOP
@@ -1228,7 +1233,7 @@ public class Neo4jConnector implements MuleContextAware
      * @param provider the provider for the new node index.
      * @return the created {@link NodeIndex}.
      * @throws MuleException if anything goes wrong with the operation.
-     * @Deprecated since version 2.0
+     * @Deprecated since Neo4j 2.0.0
      */
     @Processor
     public NodeIndex createNodeIndex(final String indexName,
@@ -1262,7 +1267,7 @@ public class Neo4jConnector implements MuleContextAware
      * @param failIfNotFound if true, an exception will be thrown if the node index is not found and
      *            couldn't be deleted.
      * @throws MuleException if anything goes wrong with the operation.
-     * @Deprecated since version 2.0
+     * @Deprecated since Neo4j 2.0.0
      */
     @Processor
     public void deleteNodeIndex(final String indexName,
@@ -1281,7 +1286,7 @@ public class Neo4jConnector implements MuleContextAware
      * 
      * @return a {@link Collection} of {@link NodeIndex}es, never null but can be empty.
      * @throws MuleException if anything goes wrong with the operation.
-     * @Deprecated since version 2.0
+     * @Deprecated since Neo4j 2.0.0
      */
     @Processor
     public Collection<NodeIndex> getNodeIndexes() throws MuleException
@@ -1321,7 +1326,7 @@ public class Neo4jConnector implements MuleContextAware
      * @param value the value to use with the index entry.
      * @return an {@link IndexedNode} instance.
      * @throws MuleException if anything goes wrong with the operation.
-     * @Deprecated since version 2.0
+     * @Deprecated since Neo4j 2.0.0
      */
     @Processor
     public IndexedNode addNodeToIndex(final String indexName,
@@ -1358,7 +1363,7 @@ public class Neo4jConnector implements MuleContextAware
      * @param value the value for which entries will be removed.
      * @param failIfNotFound if true, an exception will be thrown if no index entry can be deleted.
      * @throws MuleException if anything goes wrong with the operation.
-     * @Deprecated since version 2.0
+     * @Deprecated since Neo4j 2.0.0
      */
     @Processor
     public void removeNodeIndexEntries(final String indexName,
@@ -1397,7 +1402,7 @@ public class Neo4jConnector implements MuleContextAware
      * @param value the value to use.
      * @return a {@link Collection} of {@link IndexedNode}s, never null but possibly empty.
      * @throws MuleException if anything goes wrong with the operation.
-     * @Deprecated since version 2.0
+     * @Deprecated since Neo4j 2.0.0
      */
     @Processor
     public Collection<IndexedNode> findNodesByIndex(final String indexName,
@@ -1410,8 +1415,31 @@ public class Neo4jConnector implements MuleContextAware
             SC_OK);
     }
 
-    // TODO add findNodesByQuery
-    // http://docs.neo4j.org/chunked/milestone/rest-api-indexes.html#rest-api-find-node-by-query
+    /**
+     * Find nodes by index queyr.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:findNodesByQuery}
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:findNodesByQuery-order}
+     * 
+     * @param indexName the name of the index to use for the search.
+     * @param query the query to run.
+     * @param order the desired {@link QueryResultOrder}.
+     * @return a {@link Collection} of {@link IndexedNode}s, never null but possibly empty.
+     * @throws MuleException if anything goes wrong with the operation.
+     * @Deprecated since Neo4j 2.0.0
+     */
+    @Processor
+    public Collection<IndexedNode> findNodesByQuery(final String indexName,
+                                                    final String query,
+                                                    @Optional final QueryResultOrder order)
+        throws MuleException
+    {
+        logDeprecatedIn2OrAbove("findNodesByIndex");
+
+        return getEntity(getNodeIndexUri(indexName), INDEXED_NODES_TYPE_REFERENCE, SC_OK, "query", query,
+            "order", order == null ? null : order.toString().toLowerCase());
+    }
 
     private void refreshAuthorization()
     {

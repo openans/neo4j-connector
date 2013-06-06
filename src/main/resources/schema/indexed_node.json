@@ -8,6 +8,9 @@
   "properties" : {
     "indexed": {
       "type": "string"
+    },
+    "score": {
+      "type": "number"
     }
   }
 }

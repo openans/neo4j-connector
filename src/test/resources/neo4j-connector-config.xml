@@ -223,6 +223,21 @@
         <logger level="INFO" category="neo4j.tests"
             message="Find Nodes by Index: #[message.payload]" />
 
+        <neo4j:find-nodes-by-query indexName="#[randomNodeIndexName]"
+            query="not:found" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Find Nodes by Query (No Result): #[message.payload]" />
+
+        <neo4j:find-nodes-by-query indexName="#[randomNodeIndexName]"
+            query="aKey:aValue" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Find Nodes by Query: #[message.payload]" />
+
+        <neo4j:find-nodes-by-query indexName="#[randomNodeIndexName]"
+            query="aKey:aValue" order="RELEVANCE" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Find Nodes by Query (with Order): #[message.payload]" />
+
         <neo4j:remove-node-index-entries
             indexName="#[randomNodeIndexName]" node-ref="#[firstNode]" key="aKey"
             value="aValue" />
