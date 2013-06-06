@@ -97,7 +97,7 @@
 <!-- END_INCLUDE(neo4j:getNodeRelationships) -->
 <!-- BEGIN_INCLUDE(neo4j:getNodeRelationships-singleType) -->
 <neo4j:get-node-relationships node-ref="#[aNode]"
-    direction="OUTGOING">
+    direction="OUT">
     <neo4j:types>
         <neo4j:type>likes</neo4j:type>
     </neo4j:types>
@@ -105,7 +105,7 @@
 <!-- END_INCLUDE(neo4j:getNodeRelationships-singleType) -->
 <!-- BEGIN_INCLUDE(neo4j:getNodeRelationships-multipleTypes) -->
 <neo4j:get-node-relationships node-ref="#[aNode]"
-    direction="INCOMING">
+    direction="IN">
     <neo4j:types>
         <neo4j:type>loves</neo4j:type>
         <neo4j:type>hates</neo4j:type>

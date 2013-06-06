@@ -65,8 +65,11 @@ import org.mule.modules.neo4j.model.NodeIndex;
 import org.mule.modules.neo4j.model.NodeIndexConfiguration;
 import org.mule.modules.neo4j.model.NodeIndexingRequest;
 import org.mule.modules.neo4j.model.Relationship;
+import org.mule.modules.neo4j.model.RelationshipQuery;
+import org.mule.modules.neo4j.model.ReturnFilter;
 import org.mule.modules.neo4j.model.SchemaIndex;
 import org.mule.modules.neo4j.model.ServiceRoot;
+import org.mule.modules.neo4j.model.TraversalQuery;
 import org.mule.transformer.types.MimeTypes;
 import org.mule.transport.http.HttpConnector;
 import org.mule.transport.http.HttpConstants;
@@ -103,7 +106,7 @@ public class Neo4jConnector implements MuleContextAware
                 return node.getAllTypedRelationships();
             }
         },
-        INCOMING
+        IN
         {
             @Override
             public String getRelationshipsUri(final Node node)
@@ -117,7 +120,7 @@ public class Neo4jConnector implements MuleContextAware
                 return node.getIncomingTypedRelationships();
             }
         },
-        OUTGOING
+        OUT
         {
             @Override
             public String getRelationshipsUri(final Node node)
@@ -217,6 +220,7 @@ public class Neo4jConnector implements MuleContextAware
     private static final String PROPERTY_KEY_TEMPLATE = "{key}";
     private static final String LABEL_TEMPLATE = "{label}";
     private static final String TYPE_LIST_TEMPLATE = "{-list|&|types}";
+    private static final String RETURN_TYPE_TEMPLATE = "{returnType}";
 
     /**
      * The user used to authenticate to Neo4j.
@@ -410,8 +414,22 @@ public class Neo4jConnector implements MuleContextAware
                                   final Set<Integer> expectedStatusCodes,
                                   final Object... queryParameters) throws MuleException
     {
+        if (LOGGER.isDebugEnabled())
+        {
+            LOGGER.debug(String.format(
+                "Sending HTTP request:%n  URI: %s%n  Entity: %s%n  Request Properties: %s%n"
+                                + "  Response Type: %s%n  Expected Status Codes: %s%n  Query Parameters: %s",
+                uri, entity, requestProperties, responseType, expectedStatusCodes,
+                Arrays.toString(queryParameters)));
+        }
+
         final MuleMessage response = muleContext.getClient().send(buildUri(uri, queryParameters), entity,
             requestProperties);
+
+        if (LOGGER.isDebugEnabled())
+        {
+            LOGGER.debug("Received HTTP response: " + response);
+        }
 
         final Integer responseStatusCode = Integer.valueOf((String) response.getInboundProperty(HttpConnector.HTTP_STATUS_PROPERTY));
 
@@ -1439,6 +1457,29 @@ public class Neo4jConnector implements MuleContextAware
 
         return getEntity(getNodeIndexUri(indexName), INDEXED_NODES_TYPE_REFERENCE, SC_OK, "query", query,
             "order", order == null ? null : order.toString().toLowerCase());
+    }
+
+    // TODO test, doc
+    @Processor
+    public Collection<Node> traverseForNodes(@RefOnly final Node node,
+                                             final TraversalQuery.Order order,
+                                             final TraversalQuery.Uniqueness uniqueness,
+                                             @Optional final Integer maxDepth,
+                                             @Optional final List<RelationshipQuery> relationships,
+                                             @Optional final ReturnFilter returnFilter,
+                                             @Optional final ReturnFilter pruneEvaluator)
+        throws MuleException
+    {
+        final String traverseUri = StringUtils.replace(node.getTraverse(), RETURN_TYPE_TEMPLATE, "node");
+
+        final TraversalQuery traversalQuery = new TraversalQuery().withOrder(order)
+            .withUniqueness(uniqueness)
+            .withMaxDepth(maxDepth)
+            .withRelationships(relationships)
+            .withPruneEvaluator(pruneEvaluator)
+            .withReturnFilter(returnFilter);
+
+        return postEntity(traverseUri, traversalQuery, NODES_TYPE_REFERENCE, SC_OK);
     }
 
     private void refreshAuthorization()

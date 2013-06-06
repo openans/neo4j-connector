@@ -106,12 +106,12 @@
             message="Get ALL Node Relationships: #[message.payload]" />
 
         <neo4j:get-node-relationships node-ref="#[firstNode]"
-            direction="OUTGOING" />
+            direction="OUT" />
         <logger level="INFO" category="neo4j.tests"
             message="Get OUTGOING Node Relationships: #[message.payload]" />
 
         <neo4j:get-node-relationships node-ref="#[firstNode]"
-            direction="INCOMING" />
+            direction="IN" />
         <logger level="INFO" category="neo4j.tests"
             message="Get INCOMING Node Relationships: #[message.payload]" />
 
@@ -126,7 +126,7 @@
             message="Get ALL Node Relationships with Multiple Types: #[message.payload]" />
 
         <neo4j:get-node-relationships node-ref="#[secondNode]"
-            direction="OUTGOING">
+            direction="OUT">
             <neo4j:types>
                 <neo4j:type>second</neo4j:type>
             </neo4j:types>
@@ -135,7 +135,7 @@
             message="Get OUTGOING Node Relationships with Single Type: #[message.payload]" />
 
         <neo4j:get-node-relationships node-ref="#[secondNode]"
-            direction="INCOMING">
+            direction="IN">
             <neo4j:types>
                 <neo4j:type>second</neo4j:type>
             </neo4j:types>
@@ -178,6 +178,20 @@
             relationshipId="#[firstRelationship.id]" />
         <logger level="INFO" category="neo4j.tests"
             message="Delete Relationship by ID: #[message.payload]" />
+
+        <neo4j:traverse-for-nodes node-ref="#[firstNode]"
+            order="BREADTH_FIRST" maxDepth="3" uniqueness="NODE_GLOBAL">
+            <neo4j:relationships>
+                <neo4j:relationship direction="ALL" type="first" />
+                <neo4j:relationship direction="ALL" type="second" />
+            </neo4j:relationships>
+            <neo4j:return-filter language="javascript"
+                body="position.length() &lt; 3;" />
+            <neo4j:prune-evaluator language="builtin"
+                name="none" />
+        </neo4j:traverse-for-nodes>
+        <logger level="INFO" category="neo4j.tests"
+            message="Traverse for Nodes: #[message.payload]" />
 
         <neo4j:delete-relationship relationship-ref="#[secondRelationship]"
             failIfNotFound="true" />
