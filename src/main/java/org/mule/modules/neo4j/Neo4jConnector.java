@@ -62,6 +62,8 @@ import org.mule.modules.neo4j.model.NewSchemaIndex;
 import org.mule.modules.neo4j.model.Node;
 import org.mule.modules.neo4j.model.NodeIndex;
 import org.mule.modules.neo4j.model.NodeIndexConfiguration;
+import org.mule.modules.neo4j.model.NodeIndexingRequest;
+import org.mule.modules.neo4j.model.NodeIndexingResult;
 import org.mule.modules.neo4j.model.Relationship;
 import org.mule.modules.neo4j.model.SchemaIndex;
 import org.mule.modules.neo4j.model.ServiceRoot;
@@ -90,13 +92,13 @@ public class Neo4jConnector implements MuleContextAware
         ALL
         {
             @Override
-            public String getRelationshipsUrl(final Node node)
+            public String getRelationshipsUri(final Node node)
             {
                 return node.getAllRelationships();
             }
 
             @Override
-            public String getTypeRelationshipsUrlPattern(final Node node)
+            public String getTypeRelationshipsUriPattern(final Node node)
             {
                 return node.getAllTypedRelationships();
             }
@@ -104,13 +106,13 @@ public class Neo4jConnector implements MuleContextAware
         INCOMING
         {
             @Override
-            public String getRelationshipsUrl(final Node node)
+            public String getRelationshipsUri(final Node node)
             {
                 return node.getIncomingRelationships();
             }
 
             @Override
-            public String getTypeRelationshipsUrlPattern(final Node node)
+            public String getTypeRelationshipsUriPattern(final Node node)
             {
                 return node.getIncomingTypedRelationships();
             }
@@ -118,21 +120,21 @@ public class Neo4jConnector implements MuleContextAware
         OUTGOING
         {
             @Override
-            public String getRelationshipsUrl(final Node node)
+            public String getRelationshipsUri(final Node node)
             {
                 return node.getOutgoingRelationships();
             }
 
             @Override
-            public String getTypeRelationshipsUrlPattern(final Node node)
+            public String getTypeRelationshipsUriPattern(final Node node)
             {
                 return node.getOutgoingTypedRelationships();
             }
         };
 
-        public abstract String getRelationshipsUrl(Node node);
+        public abstract String getRelationshipsUri(Node node);
 
-        public abstract String getTypeRelationshipsUrlPattern(Node node);
+        public abstract String getTypeRelationshipsUriPattern(Node node);
     }
 
     private static final TypeReference<ServiceRoot> SERVICE_ROOT_TYPE_REFERENCE = new TypeReference<ServiceRoot>()
@@ -176,6 +178,10 @@ public class Neo4jConnector implements MuleContextAware
         // NOOP
     };
     private static final TypeReference<Map<String, Map<String, String>>> NODE_INDEXES_TYPE_REFERENCE = new TypeReference<Map<String, Map<String, String>>>()
+    {
+        // NOOP
+    };
+    private static final TypeReference<NodeIndexingResult> NODE_INDEXING_RESULT_TYPE_REFERENCE = new TypeReference<NodeIndexingResult>()
     {
         // NOOP
     };
@@ -297,19 +303,24 @@ public class Neo4jConnector implements MuleContextAware
         serviceRoot = null;
     }
 
-    private String getNodeUrl(final long nodeId)
+    private String getNodeUri(final long nodeId)
     {
         return serviceRoot.getNode() + "/" + nodeId;
     }
 
-    private String getRelationshipUrl(final long relationshipId)
+    private String getRelationshipUri(final long relationshipId)
     {
         return serviceRoot.getRelationship() + "/" + relationshipId;
     }
 
-    private String getSchemaIndexUrl(final String label)
+    private String getSchemaIndexUri(final String label)
     {
         return StringUtils.replace(serviceRoot.getSchemaIndex(), LABEL_TEMPLATE, label);
+    }
+
+    private String getNodeIndexUri(final String indexName)
+    {
+        return serviceRoot.getNodeIndex() + "/" + indexName;
     }
 
     private <T> T getEntity(final String uri,
@@ -502,12 +513,12 @@ public class Neo4jConnector implements MuleContextAware
 
     private void deleteEntity(final BaseEntity entity, final boolean failIfNotFound) throws MuleException
     {
-        deleteEntityByUrl(entity.getSelf(), failIfNotFound);
+        deleteEntityByUri(entity.getSelf(), failIfNotFound);
     }
 
-    private void deleteEntityByUrl(final String entityUrl, final boolean failIfNotFound) throws MuleException
+    private void deleteEntityByUri(final String entityUri, final boolean failIfNotFound) throws MuleException
     {
-        deleteEntity(entityUrl, failIfNotFound ? SC_NO_CONTENT : SC_NO_CONTENT_OR_NOT_FOUND);
+        deleteEntity(entityUri, failIfNotFound ? SC_NO_CONTENT : SC_NO_CONTENT_OR_NOT_FOUND);
     }
 
     private void setPropertiesOnEntity(final Map<String, Object> properties, final BaseEntity entity)
@@ -619,7 +630,7 @@ public class Neo4jConnector implements MuleContextAware
     public Node getNodeById(final long nodeId, @Optional @Default("false") final boolean failIfNotFound)
         throws MuleException
     {
-        return getEntity(getNodeUrl(nodeId), NODE_TYPE_REFERENCE, failIfNotFound ? SC_OK : SC_OK_OR_NOT_FOUND);
+        return getEntity(getNodeUri(nodeId), NODE_TYPE_REFERENCE, failIfNotFound ? SC_OK : SC_OK_OR_NOT_FOUND);
     }
 
     /**
@@ -725,7 +736,7 @@ public class Neo4jConnector implements MuleContextAware
     public void deleteNodeById(final long nodeId, @Optional @Default("false") final boolean failIfNotFound)
         throws MuleException
     {
-        deleteEntityByUrl(getNodeUrl(nodeId), failIfNotFound);
+        deleteEntityByUri(getNodeUri(nodeId), failIfNotFound);
     }
 
     /**
@@ -767,7 +778,7 @@ public class Neo4jConnector implements MuleContextAware
                                             @Optional @Default("false") final boolean failIfNotFound)
         throws MuleException
     {
-        return getEntity(getRelationshipUrl(relationshipId), RELATIONSHIP_TYPE_REFERENCE,
+        return getEntity(getRelationshipUri(relationshipId), RELATIONSHIP_TYPE_REFERENCE,
             failIfNotFound ? SC_OK : SC_OK_OR_NOT_FOUND);
     }
 
@@ -796,10 +807,10 @@ public class Neo4jConnector implements MuleContextAware
         final Data data = convertMapToData(properties);
 
         final NewRelationship newRelationship = new NewRelationship().withType(type)
-            .withTo(getNodeUrl(toNodeId))
+            .withTo(getNodeUri(toNodeId))
             .withData(data);
 
-        return postEntity(getNodeUrl(fromNodeId) + "/relationships", newRelationship,
+        return postEntity(getNodeUri(fromNodeId) + "/relationships", newRelationship,
             RELATIONSHIP_TYPE_REFERENCE, SC_CREATED);
     }
 
@@ -853,7 +864,7 @@ public class Neo4jConnector implements MuleContextAware
                                        @Optional @Default("false") final boolean failIfNotFound)
         throws MuleException
     {
-        deleteEntityByUrl(getRelationshipUrl(relationshipId), failIfNotFound);
+        deleteEntityByUri(getRelationshipUri(relationshipId), failIfNotFound);
     }
 
     /**
@@ -968,20 +979,20 @@ public class Neo4jConnector implements MuleContextAware
         throws MuleException
     {
 
-        String relationshipsUrl;
+        String relationshipsUri;
 
         if (CollectionUtils.isEmpty(types))
         {
-            relationshipsUrl = direction.getRelationshipsUrl(node);
+            relationshipsUri = direction.getRelationshipsUri(node);
         }
         else
         {
-            final String relationshipsUrlPattern = direction.getTypeRelationshipsUrlPattern(node);
-            relationshipsUrl = StringUtils.replace(relationshipsUrlPattern, TYPE_LIST_TEMPLATE,
+            final String relationshipsUriPattern = direction.getTypeRelationshipsUriPattern(node);
+            relationshipsUri = StringUtils.replace(relationshipsUriPattern, TYPE_LIST_TEMPLATE,
                 StringUtils.join(types, '&'));
         }
 
-        return getEntity(relationshipsUrl, RELATIONSHIPS_TYPE_REFERENCE, SC_OK);
+        return getEntity(relationshipsUri, RELATIONSHIPS_TYPE_REFERENCE, SC_OK);
     }
 
     /**
@@ -1067,7 +1078,7 @@ public class Neo4jConnector implements MuleContextAware
     {
         ensureVersion2OrAbove();
 
-        deleteEntityByUrl(node.getLabels() + "/" + label, true);
+        deleteEntityByUri(node.getLabels() + "/" + label, true);
     }
 
     /**
@@ -1152,7 +1163,7 @@ public class Neo4jConnector implements MuleContextAware
 
         Validate.notEmpty(propertyKeys, "propertyKeys can not be empty");
 
-        return postEntity(getSchemaIndexUrl(label), new NewSchemaIndex().withPropertyKeys(propertyKeys),
+        return postEntity(getSchemaIndexUri(label), new NewSchemaIndex().withPropertyKeys(propertyKeys),
             SCHEMA_INDEX_TYPE_REFERENCE, SC_OK);
     }
 
@@ -1171,7 +1182,7 @@ public class Neo4jConnector implements MuleContextAware
     {
         ensureVersion2OrAbove();
 
-        return getEntity(getSchemaIndexUrl(label), SCHEMA_INDEXES_TYPE_REFERENCE, SC_OK);
+        return getEntity(getSchemaIndexUri(label), SCHEMA_INDEXES_TYPE_REFERENCE, SC_OK);
     }
 
     /**
@@ -1197,7 +1208,7 @@ public class Neo4jConnector implements MuleContextAware
     {
         ensureVersion2OrAbove();
 
-        deleteEntityByUrl(getSchemaIndexUrl(label) + "/" + propertyKey, failIfNotFound);
+        deleteEntityByUri(getSchemaIndexUri(label) + "/" + propertyKey, failIfNotFound);
     }
 
     /**
@@ -1254,9 +1265,9 @@ public class Neo4jConnector implements MuleContextAware
                                 @Optional @Default("false") final boolean failIfNotFound)
         throws MuleException
     {
-        logDeprecatedIn2OrAbove("createNodeIndex");
+        logDeprecatedIn2OrAbove("deleteNodeIndex");
 
-        deleteEntityByUrl(serviceRoot.getNodeIndex() + "/" + indexName, failIfNotFound);
+        deleteEntityByUri(getNodeIndexUri(indexName), failIfNotFound);
     }
 
     /**
@@ -1271,8 +1282,10 @@ public class Neo4jConnector implements MuleContextAware
     @Processor
     public Collection<NodeIndex> getNodeIndexes() throws MuleException
     {
-        // the Neo4j returns an object instead of an array for the list of indexes :(
-        // so we need to manually convert this mess into proper objects
+        logDeprecatedIn2OrAbove("getNodeIndexes");
+
+        // the Neo4j returns an object instead of an array for the list of indexes
+        // so we need to manually convert it into a proper collection :(
         final Map<String, Map<String, String>> rawNodeIndexes = getEntity(serviceRoot.getNodeIndex(),
             NODE_INDEXES_TYPE_REFERENCE, SC_OK_OR_NO_CONTENT);
 
@@ -1291,6 +1304,81 @@ public class Neo4jConnector implements MuleContextAware
         }
 
         return nodeIndexes;
+    }
+
+    /**
+     * Add a {@link Node} to an index.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:addNodeToIndex}
+     * 
+     * @param indexName the name of the index to add the node to.
+     * @param node the node to add.
+     * @param key the key to use with the index entry.
+     * @param value the value to use with the index entry.
+     * @return a {@link NodeIndexingResult} instance.
+     * @throws MuleException if anything goes wrong with the operation.
+     * @Deprecated since version 2.0
+     */
+    @Processor
+    public NodeIndexingResult addNodeToIndex(final String indexName,
+                                             @RefOnly final Node node,
+                                             final String key,
+                                             final String value) throws MuleException
+    {
+        logDeprecatedIn2OrAbove("addNodeToIndex");
+
+        final NodeIndexingRequest nodeIndexingRequest = new NodeIndexingRequest().withKey(key)
+            .withValue(value)
+            .withUri(node.getSelf());
+
+        return postEntity(getNodeIndexUri(indexName), nodeIndexingRequest,
+            NODE_INDEXING_RESULT_TYPE_REFERENCE, SC_CREATED);
+    }
+
+    /**
+     * Remove node index entries.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:removeNodeIndexEntries}
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample
+     * neo4j:removeNodeIndexEntries-failIfNotFound}
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:removeNodeIndexEntries-key}
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample
+     * neo4j:removeNodeIndexEntries-keyAndValue}
+     * 
+     * @param indexName the name of the index to remove entries from.
+     * @param node the node for which entries will be removed.
+     * @param key the key for which entries will be removed.
+     * @param value the value for which entries will be removed.
+     * @param failIfNotFound if true, an exception will be thrown if no index entry can be deleted.
+     * @throws MuleException if anything goes wrong with the operation.
+     * @Deprecated since version 2.0
+     */
+    @Processor
+    public void removeNodeIndexEntries(final String indexName,
+                                       @RefOnly final Node node,
+                                       @Optional final String key,
+                                       @Optional final String value,
+                                       @Optional @Default("false") final boolean failIfNotFound)
+        throws MuleException
+    {
+        final StringBuilder uriBuilder = new StringBuilder(getNodeIndexUri(indexName));
+
+        if (StringUtils.isNotBlank(key))
+        {
+            uriBuilder.append("/").append(key);
+
+            if (StringUtils.isNotBlank(value))
+            {
+                uriBuilder.append("/").append(value);
+            }
+        }
+
+        uriBuilder.append("/").append(node.getId());
+
+        deleteEntityByUri(uriBuilder.toString(), failIfNotFound);
     }
 
     private void refreshAuthorization()

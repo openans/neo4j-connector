@@ -1,0 +1,12 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "extends" : {
+    "$ref" : "node.json"
+  },
+  "properties" : {
+    "indexed": {
+      "type": "string"
+    }
+  }
+}

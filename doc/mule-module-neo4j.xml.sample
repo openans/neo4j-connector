@@ -238,13 +238,37 @@
 <!-- END_INCLUDE(neo4j:createNodeIndex-withConfiguration) -->
 
 <!-- BEGIN_INCLUDE(neo4j:deleteSchemaIndex) -->
-<neo4j:delete-node-index indexName="aIndexName" />
+<neo4j:delete-node-index indexName="anIndexName" />
 <!-- END_INCLUDE(neo4j:deleteSchemaIndex) -->
 
 <!-- BEGIN_INCLUDE(neo4j:deleteSchemaIndex-failIfNotFound) -->
-<neo4j:delete-node-index indexName="aIndexName" failIfNotFound="true" />
+<neo4j:delete-node-index indexName="anIndexName" failIfNotFound="true" />
 <!-- END_INCLUDE(neo4j:deleteSchemaIndex-failIfNotFound) -->
 
 <!-- BEGIN_INCLUDE(neo4j:getNodeIndexes) -->
 <neo4j:get-node-indexes />
 <!-- END_INCLUDE(neo4j:getNodeIndexes) -->
+
+<!-- BEGIN_INCLUDE(neo4j:addNodeToIndex) -->
+<neo4j:add-node-to-index indexName="anIndexName"
+       node-ref="#[aNode]" key="aKey" value="aValue" />
+<!-- END_INCLUDE(neo4j:addNodeToIndex) -->
+
+<!-- BEGIN_INCLUDE(neo4j:removeNodeIndexEntries) -->
+<neo4j:remove-node-index-entries indexName="anIndexName" node-ref="#[aNode]" />
+<!-- END_INCLUDE(neo4j:removeNodeIndexEntries) -->
+
+<!-- BEGIN_INCLUDE(neo4j:removeNodeIndexEntries-failIfNotFound) -->
+<neo4j:remove-node-index-entries indexName="anIndexName"
+       node-ref="#[aNode]" failIfNotFound="false" />
+<!-- END_INCLUDE(neo4j:removeNodeIndexEntries-failIfNotFound) -->
+
+<!-- BEGIN_INCLUDE(neo4j:removeNodeIndexEntries-key) -->
+<neo4j:remove-node-index-entries indexName="anIndexName"
+       node-ref="#[aNode]" key="aKey" />
+<!-- END_INCLUDE(neo4j:removeNodeIndexEntries-key) -->
+
+<!-- BEGIN_INCLUDE(neo4j:removeNodeIndexEntries-keyAndValue) -->
+<neo4j:remove-node-index-entries indexName="anIndexName"
+       node-ref="#[aNode]" key="aKey" value="aValue" />
+<!-- END_INCLUDE(neo4j:removeNodeIndexEntries-keyAndValue) -->
