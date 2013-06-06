@@ -145,6 +145,11 @@ public class Neo4jConnector implements MuleContextAware
         INDEX, RELEVANCE, SCORE
     };
 
+    private static enum TraversalResult
+    {
+        NODE, RELATIONSHIP, PATH, FULLPATH;
+    }
+
     private static final TypeReference<ServiceRoot> SERVICE_ROOT_TYPE_REFERENCE = new TypeReference<ServiceRoot>()
     {
         // NOOP
@@ -1459,6 +1464,29 @@ public class Neo4jConnector implements MuleContextAware
             "order", order == null ? null : order.toString().toLowerCase());
     }
 
+    private <T> Collection<T> traverse(@RefOnly final Node node,
+                                       final TraversalQuery.Order order,
+                                       final TraversalQuery.Uniqueness uniqueness,
+                                       @Optional final Integer maxDepth,
+                                       @Optional final List<RelationshipQuery> relationships,
+                                       @Optional final TraversalScript returnFilter,
+                                       @Optional final TraversalScript pruneEvaluator,
+                                       final TraversalResult traversalResult,
+                                       final TypeReference<Collection<T>> responseType) throws MuleException
+    {
+        final String traverseUri = StringUtils.replace(node.getTraverse(), RETURN_TYPE_TEMPLATE,
+            traversalResult.toString().toLowerCase());
+
+        final TraversalQuery traversalQuery = new TraversalQuery().withOrder(order)
+            .withUniqueness(uniqueness)
+            .withMaxDepth(maxDepth)
+            .withRelationships(relationships)
+            .withPruneEvaluator(pruneEvaluator)
+            .withReturnFilter(returnFilter);
+
+        return postEntity(traverseUri, traversalQuery, responseType, SC_OK);
+    }
+
     /**
      * Perform a node traversal, returning {@link Node} instances.
      * <p>
@@ -1469,8 +1497,8 @@ public class Neo4jConnector implements MuleContextAware
      * @param uniqueness how uniquess should be calculated.
      * @param maxDepth the maximum depth from the start node after which results must be pruned.
      * @param relationships the relationship types and directions that must be followed.
-     * @param returnFilter a filter that determines if traversed nodes must be kept in the final
-     *            result.
+     * @param returnFilter a filter that determines if the current position should be included in
+     *            the result.
      * @param pruneEvaluator an evaluator that determines of traversal should stop or continue.
      * @return a {@link Collection} of {@link Node}, never null but potentially empty.
      * @throws MuleException if anything goes wrong with the operation.
@@ -1485,16 +1513,38 @@ public class Neo4jConnector implements MuleContextAware
                                              @Optional final TraversalScript pruneEvaluator)
         throws MuleException
     {
-        final String traverseUri = StringUtils.replace(node.getTraverse(), RETURN_TYPE_TEMPLATE, "node");
+        return traverse(node, order, uniqueness, maxDepth, relationships, returnFilter, pruneEvaluator,
+            TraversalResult.NODE, NODES_TYPE_REFERENCE);
+    }
 
-        final TraversalQuery traversalQuery = new TraversalQuery().withOrder(order)
-            .withUniqueness(uniqueness)
-            .withMaxDepth(maxDepth)
-            .withRelationships(relationships)
-            .withPruneEvaluator(pruneEvaluator)
-            .withReturnFilter(returnFilter);
-
-        return postEntity(traverseUri, traversalQuery, NODES_TYPE_REFERENCE, SC_OK);
+    /**
+     * Perform a node traversal, returning {@link Relationship} instances.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:traverseForRelationships}
+     * 
+     * @param node the start {@link Node}.
+     * @param order the order to visit the nodes.
+     * @param uniqueness how uniquess should be calculated.
+     * @param maxDepth the maximum depth from the start node after which results must be pruned.
+     * @param relationships the relationship types and directions that must be followed.
+     * @param returnFilter a filter that determines if the current position should be included in
+     *            the result.
+     * @param pruneEvaluator an evaluator that determines of traversal should stop or continue.
+     * @return a {@link Collection} of {@link Relationship}, never null but potentially empty.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
+    @Processor
+    public Collection<Relationship> traverseForRelationships(@RefOnly final Node node,
+                                                             final TraversalQuery.Order order,
+                                                             final TraversalQuery.Uniqueness uniqueness,
+                                                             @Optional final Integer maxDepth,
+                                                             @Optional final List<RelationshipQuery> relationships,
+                                                             @Optional final TraversalScript returnFilter,
+                                                             @Optional final TraversalScript pruneEvaluator)
+        throws MuleException
+    {
+        return traverse(node, order, uniqueness, maxDepth, relationships, returnFilter, pruneEvaluator,
+            TraversalResult.RELATIONSHIP, RELATIONSHIPS_TYPE_REFERENCE);
     }
 
     private void refreshAuthorization()
