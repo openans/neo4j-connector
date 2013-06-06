@@ -4,6 +4,7 @@
   "extends" : {
     "$ref" : "base_entity.json"
   },
+  "javaType" : "org.mule.modules.neo4j.model.Node",
   "properties" : {
     "paged_traverse": {
       "type": "string"

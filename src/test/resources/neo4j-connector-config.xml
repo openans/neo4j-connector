@@ -218,12 +218,20 @@
         <logger level="INFO" category="neo4j.tests"
             message="Add Node to Index: #[message.payload]" />
 
-        <neo4j:remove-node-index-entries indexName="#[randomNodeIndexName]"
-            node-ref="#[firstNode]" key="aKey" value="aValue" />
-        <neo4j:remove-node-index-entries indexName="#[randomNodeIndexName]"
-            node-ref="#[firstNode]" key="aKey" failIfNotFound="false" />
-        <neo4j:remove-node-index-entries indexName="#[randomNodeIndexName]"
-            node-ref="#[firstNode]" failIfNotFound="false" />
+        <neo4j:find-nodes-by-index indexName="#[randomNodeIndexName]"
+            key="aKey" value="aValue" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Find Nodes by Index: #[message.payload]" />
+
+        <neo4j:remove-node-index-entries
+            indexName="#[randomNodeIndexName]" node-ref="#[firstNode]" key="aKey"
+            value="aValue" />
+        <neo4j:remove-node-index-entries
+            indexName="#[randomNodeIndexName]" node-ref="#[firstNode]" key="aKey"
+            failIfNotFound="false" />
+        <neo4j:remove-node-index-entries
+            indexName="#[randomNodeIndexName]" node-ref="#[firstNode]"
+            failIfNotFound="false" />
 
         <neo4j:delete-node-index indexName="#[randomNodeIndexName]"
             failIfNotFound="true" />

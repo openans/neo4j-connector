@@ -272,3 +272,8 @@
 <neo4j:remove-node-index-entries indexName="anIndexName"
        node-ref="#[aNode]" key="aKey" value="aValue" />
 <!-- END_INCLUDE(neo4j:removeNodeIndexEntries-keyAndValue) -->
+
+<!-- BEGIN_INCLUDE(neo4j:findNodesByIndex) -->
+<neo4j:find-nodes-by-index indexName="anIndexName"
+       key="aKey" value="aValue" />
+<!-- END_INCLUDE(neo4j:findNodesByIndex) -->

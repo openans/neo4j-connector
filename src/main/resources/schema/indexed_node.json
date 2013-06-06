@@ -1,6 +1,7 @@
 {
   "type": "object",
   "additionalProperties": false,
+  "javaType" : "org.mule.modules.neo4j.model.IndexedNode",
   "extends" : {
     "$ref" : "node.json"
   },

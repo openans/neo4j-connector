@@ -56,6 +56,7 @@ import org.mule.modules.neo4j.model.BaseEntity;
 import org.mule.modules.neo4j.model.CypherQuery;
 import org.mule.modules.neo4j.model.CypherQueryResult;
 import org.mule.modules.neo4j.model.Data;
+import org.mule.modules.neo4j.model.IndexedNode;
 import org.mule.modules.neo4j.model.NewNodeIndex;
 import org.mule.modules.neo4j.model.NewRelationship;
 import org.mule.modules.neo4j.model.NewSchemaIndex;
@@ -63,7 +64,6 @@ import org.mule.modules.neo4j.model.Node;
 import org.mule.modules.neo4j.model.NodeIndex;
 import org.mule.modules.neo4j.model.NodeIndexConfiguration;
 import org.mule.modules.neo4j.model.NodeIndexingRequest;
-import org.mule.modules.neo4j.model.NodeIndexingResult;
 import org.mule.modules.neo4j.model.Relationship;
 import org.mule.modules.neo4j.model.SchemaIndex;
 import org.mule.modules.neo4j.model.ServiceRoot;
@@ -181,7 +181,11 @@ public class Neo4jConnector implements MuleContextAware
     {
         // NOOP
     };
-    private static final TypeReference<NodeIndexingResult> NODE_INDEXING_RESULT_TYPE_REFERENCE = new TypeReference<NodeIndexingResult>()
+    private static final TypeReference<IndexedNode> INDEXED_NODE_TYPE_REFERENCE = new TypeReference<IndexedNode>()
+    {
+        // NOOP
+    };
+    private static final TypeReference<Collection<IndexedNode>> INDEXED_NODES_TYPE_REFERENCE = new TypeReference<Collection<IndexedNode>>()
     {
         // NOOP
     };
@@ -1315,15 +1319,15 @@ public class Neo4jConnector implements MuleContextAware
      * @param node the node to add.
      * @param key the key to use with the index entry.
      * @param value the value to use with the index entry.
-     * @return a {@link NodeIndexingResult} instance.
+     * @return an {@link IndexedNode} instance.
      * @throws MuleException if anything goes wrong with the operation.
      * @Deprecated since version 2.0
      */
     @Processor
-    public NodeIndexingResult addNodeToIndex(final String indexName,
-                                             @RefOnly final Node node,
-                                             final String key,
-                                             final String value) throws MuleException
+    public IndexedNode addNodeToIndex(final String indexName,
+                                      @RefOnly final Node node,
+                                      final String key,
+                                      final String value) throws MuleException
     {
         logDeprecatedIn2OrAbove("addNodeToIndex");
 
@@ -1331,8 +1335,8 @@ public class Neo4jConnector implements MuleContextAware
             .withValue(value)
             .withUri(node.getSelf());
 
-        return postEntity(getNodeIndexUri(indexName), nodeIndexingRequest,
-            NODE_INDEXING_RESULT_TYPE_REFERENCE, SC_CREATED);
+        return postEntity(getNodeIndexUri(indexName), nodeIndexingRequest, INDEXED_NODE_TYPE_REFERENCE,
+            SC_CREATED);
     }
 
     /**
@@ -1364,6 +1368,8 @@ public class Neo4jConnector implements MuleContextAware
                                        @Optional @Default("false") final boolean failIfNotFound)
         throws MuleException
     {
+        logDeprecatedIn2OrAbove("removeNodeIndexEntries");
+
         final StringBuilder uriBuilder = new StringBuilder(getNodeIndexUri(indexName));
 
         if (StringUtils.isNotBlank(key))
@@ -1380,6 +1386,32 @@ public class Neo4jConnector implements MuleContextAware
 
         deleteEntityByUri(uriBuilder.toString(), failIfNotFound);
     }
+
+    /**
+     * Find nodes by exact index match.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:findNodesByIndex}
+     * 
+     * @param indexName the name of the index to use for the search.
+     * @param key the key to use.
+     * @param value the value to use.
+     * @return a {@link Collection} of {@link IndexedNode}s, never null but possibly empty.
+     * @throws MuleException if anything goes wrong with the operation.
+     * @Deprecated since version 2.0
+     */
+    @Processor
+    public Collection<IndexedNode> findNodesByIndex(final String indexName,
+                                                    final String key,
+                                                    final String value) throws MuleException
+    {
+        logDeprecatedIn2OrAbove("findNodesByIndex");
+
+        return getEntity(getNodeIndexUri(indexName) + "/" + key + "/" + value, INDEXED_NODES_TYPE_REFERENCE,
+            SC_OK);
+    }
+
+    // TODO add findNodesByQuery
+    // http://docs.neo4j.org/chunked/milestone/rest-api-indexes.html#rest-api-find-node-by-query
 
     private void refreshAuthorization()
     {
