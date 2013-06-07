@@ -12,10 +12,18 @@
 <!-- END_INCLUDE(neo4j:getServiceRoot) -->
 
 <!-- BEGIN_INCLUDE(neo4j:runCypherQuery) -->
-<neo4j:run-cypher-query>
-    <neo4j:cypher-query query="start x = node(0) match x -[r]-> n return type(r)" />
-</neo4j:run-cypher-query>
+<neo4j:run-cypher-query
+       query="start x  = node(0) match x -[r]-> n return type(r)" />
 <!-- END_INCLUDE(neo4j:runCypherQuery) -->
+
+<!-- BEGIN_INCLUDE(neo4j:runCypherQuery-withParams) -->
+<neo4j:run-cypher-query
+    query="start x  = node({startNodeId}) match x -[r]-> n return type(r)">
+    <neo4j:params>
+        <neo4j:param key="startNodeId" value-ref="#[0]" />
+    </neo4j:params>
+</neo4j:run-cypher-query>
+<!-- END_INCLUDE(neo4j:runCypherQuery-withParams) -->
 
 <!-- BEGIN_INCLUDE(neo4j:getNodeById) -->
 <neo4j:get-node-by-id nodeId="37800000" />

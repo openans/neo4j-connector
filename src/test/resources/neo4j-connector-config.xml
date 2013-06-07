@@ -16,12 +16,19 @@
         <set-variable variableName="serviceRoot" value="#[message.payload]" />
         <logger level="INFO" category="neo4j.tests" message="Service root: #[serviceRoot]" />
 
-        <neo4j:run-cypher-query>
-            <neo4j:cypher-query
-                query="start x  = node(0) match x -[r]-> n return type(r)" />
+        <neo4j:run-cypher-query
+            query="start x  = node(0) match x -[r]-> n return type(r)" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Run Cypher Query: #[message.payload]" />
+
+        <neo4j:run-cypher-query
+            query="start x  = node({startNodeId}) match x -[r]-> n return type(r)">
+            <neo4j:params>
+                <neo4j:param key="startNodeId" value-ref="#[0]" />
+            </neo4j:params>
         </neo4j:run-cypher-query>
         <logger level="INFO" category="neo4j.tests"
-            message="Cypher Query Result: #[message.payload]" />
+            message="Run Cypher Query with Params: #[message.payload]" />
 
         <neo4j:get-node-by-id nodeId="0" />
         <logger level="INFO" category="neo4j.tests"
@@ -234,7 +241,7 @@
 
         <neo4j:traverse-for-path-with-algorithm
             fromNode-ref="#[firstNode]" toNode-ref="#[secondNode]" algorithm="SHORTEST_PATH"
-            relationshipType="second" maxDepth="3"  failIfNotFound="true" />
+            relationshipType="second" maxDepth="3" failIfNotFound="true" />
         <logger level="INFO" category="neo4j.tests"
             message="Traverse For Path With Algorithm: #[message.payload]" />
 

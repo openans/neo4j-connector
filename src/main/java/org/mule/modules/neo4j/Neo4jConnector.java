@@ -58,6 +58,7 @@ import org.mule.api.callback.SourceCallback;
 import org.mule.api.context.MuleContextAware;
 import org.mule.modules.neo4j.model.BaseEntity;
 import org.mule.modules.neo4j.model.CypherQuery;
+import org.mule.modules.neo4j.model.CypherQueryParams;
 import org.mule.modules.neo4j.model.CypherQueryResult;
 import org.mule.modules.neo4j.model.Data;
 import org.mule.modules.neo4j.model.Fullpath;
@@ -728,19 +729,32 @@ public class Neo4jConnector implements MuleContextAware
      * Run a cypher query.
      * <p>
      * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:runCypherQuery}
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:runCypherQuery-withParams}
      * 
-     * @param cypherQuery the query to execute
-     * @param includeStatistics defines if meta data about the query must be returned
-     * @param profile defines if a profile of the executed query must be returned
+     * @param query the query to execute.
+     * @param params the parameters to use.
+     * @param includeStatistics defines if meta data about the query must be returned.
+     * @param profile defines if a profile of the executed query must be returned.
      * @return a {@link CypherQueryResult}.
      * @throws MuleException if anything goes wrong with the operation.
      */
     @Processor
-    public CypherQueryResult runCypherQuery(final CypherQuery cypherQuery,
+    public CypherQueryResult runCypherQuery(final String query,
+                                            @Optional final Map<String, Object> params,
                                             @Optional @Default("false") final boolean includeStatistics,
                                             @Optional @Default("false") final boolean profile)
         throws MuleException
     {
+        final CypherQuery cypherQuery = new CypherQuery().withQuery(query);
+
+        if (MapUtils.isNotEmpty(params))
+        {
+            final CypherQueryParams cypherQueryParams = new CypherQueryParams();
+            cypherQueryParams.getAdditionalProperties().putAll(params);
+            cypherQuery.setParams(cypherQueryParams);
+        }
+
         return postEntity(serviceRoot.getCypher(), cypherQuery, CYPHER_QUERY_RESULT_TYPE_REFERENCE, SC_OK,
             "includeStats", includeStatistics, "profile", profile);
     }
