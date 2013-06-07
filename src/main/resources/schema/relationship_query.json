@@ -1,6 +1,7 @@
 {
   "type": "object",
   "additionalProperties": false,
+  "javaType" : "org.mule.modules.neo4j.model.RelationshipQuery",
   "properties" : {
     "direction": {
       "type": "string",

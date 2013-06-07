@@ -70,8 +70,12 @@ import org.mule.modules.neo4j.model.NodeIndex;
 import org.mule.modules.neo4j.model.NodeIndexConfiguration;
 import org.mule.modules.neo4j.model.NodeIndexingRequest;
 import org.mule.modules.neo4j.model.Path;
+import org.mule.modules.neo4j.model.PathQuery;
+import org.mule.modules.neo4j.model.PathQuery.Algorithm;
+import org.mule.modules.neo4j.model.PathQueryResult;
 import org.mule.modules.neo4j.model.Relationship;
 import org.mule.modules.neo4j.model.RelationshipQuery;
+import org.mule.modules.neo4j.model.RelationshipQuery.Direction;
 import org.mule.modules.neo4j.model.SchemaIndex;
 import org.mule.modules.neo4j.model.ServiceRoot;
 import org.mule.modules.neo4j.model.TraversalQuery;
@@ -81,6 +85,7 @@ import org.mule.transport.http.HttpConnector;
 import org.mule.transport.http.HttpConstants;
 import org.mule.util.CaseInsensitiveHashMap;
 import org.mule.util.CollectionUtils;
+import org.mule.util.IOUtils;
 import org.mule.util.MapUtils;
 import org.mule.util.StringUtils;
 
@@ -214,6 +219,14 @@ public class Neo4jConnector implements MuleContextAware
         // NOOP
     };
     private static final TypeReference<Collection<Fullpath>> FULLPATHS_TYPE_REFERENCE = new TypeReference<Collection<Fullpath>>()
+    {
+        // NOOP
+    };
+    private static final TypeReference<PathQueryResult> PATH_QUERY_RESULT_TYPE_REFERENCE = new TypeReference<PathQueryResult>()
+    {
+        // NOOP
+    };
+    private static final TypeReference<Collection<PathQueryResult>> PATH_QUERY_RESULTS_TYPE_REFERENCE = new TypeReference<Collection<PathQueryResult>>()
     {
         // NOOP
     };
@@ -491,14 +504,7 @@ public class Neo4jConnector implements MuleContextAware
         {
             if (LOGGER.isDebugEnabled())
             {
-                try
-                {
-                    LOGGER.debug("Received payload with unexpected status: " + response.getPayloadAsString());
-                }
-                catch (final Exception e)
-                {
-                    // not much to do
-                }
+                LOGGER.debug("Received payload with unexpected status: " + renderMessageAsString(response));
             }
 
             throw new DefaultMuleException("Received status code: " + responseStatusCode
@@ -517,23 +523,54 @@ public class Neo4jConnector implements MuleContextAware
     }
 
     private <T> T deserializeJsonToEntity(final TypeReference<T> responseType, final MuleMessage response)
-        throws DefaultMuleException
+        throws MuleException
     {
         try
         {
-            final T entity = OBJECT_MAPPER.readValue((InputStream) response.getPayload(), responseType);
+            T entity;
+
+            if (LOGGER.isDebugEnabled())
+            {
+                response.setPayload(IOUtils.toByteArray((InputStream) response.getPayload()));
+                entity = OBJECT_MAPPER.readValue((byte[]) response.getPayload(), responseType);
+            }
+            else
+            {
+                entity = OBJECT_MAPPER.readValue((InputStream) response.getPayload(), responseType);
+            }
 
             if (entity instanceof BaseEntity)
             {
                 final BaseEntity baseEntity = (BaseEntity) entity;
                 baseEntity.setId(StringUtils.substringAfterLast(baseEntity.getSelf(), "/"));
+
+                if (baseEntity instanceof Node)
+                {
+                    // hack courtesy of https://github.com/neo4j/neo4j/issues/866
+                    final Node node = (Node) baseEntity;
+                    node.setPath(baseEntity.getSelf() + "/path");
+                    node.setPaths(baseEntity.getSelf() + "/paths");
+                }
             }
 
             return entity;
         }
         catch (final IOException ioe)
         {
-            throw new DefaultMuleException("Failed to deserialize from JSON: " + response, ioe);
+            throw new DefaultMuleException("Failed to deserialize to: " + responseType.getType() + " from: "
+                                           + renderMessageAsString(response), ioe);
+        }
+    }
+
+    private static String renderMessageAsString(final MuleMessage message)
+    {
+        try
+        {
+            return message.getPayloadAsString();
+        }
+        catch (final Exception e)
+        {
+            return message.toString();
         }
     }
 
@@ -1872,6 +1909,90 @@ public class Neo4jConnector implements MuleContextAware
         traversePaged(node, order, uniqueness, maxDepth, relationships, returnFilter, pruneEvaluator,
             pageSize, leaseTimeSeconds, muleEvent, sourceCallback, TraversalResult.FULLPATH,
             FULLPATHS_TYPE_REFERENCE);
+    }
+
+    private <T> T traverseWithAlgorithm(final Node toNode,
+                                        final Algorithm algorithm,
+                                        final String relationshipType,
+                                        final String costProperty,
+                                        final Double defaultCost,
+                                        final String requestUri,
+                                        final TypeReference<T> responseType,
+                                        final Set<Integer> expectedStatusCodes) throws MuleException
+    {
+        final PathQuery pathQuery = new PathQuery().withTo(toNode.getSelf())
+            .withAlgorithm(algorithm)
+            .withCostProperty(costProperty)
+            .withDefaultCost(defaultCost)
+            .withRelationships(
+                new RelationshipQuery().withDirection(Direction.OUT).withType(relationshipType));
+
+        return postEntity(requestUri, pathQuery, responseType, expectedStatusCodes);
+    }
+
+    /**
+     * Traverse nodes with a particular algorithm, returning the first successful path found.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:traverseForPathWithAlgorithm}
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample
+     * neo4j:traverseForPathWithAlgorithm-failIfNotFound}
+     * 
+     * @param fromNode the {@link Node} where traversal should start.
+     * @param toNode the {@link Node} where traversal should end.
+     * @param algorithm the {@link Algorithm} to use for the traversal.
+     * @param relationshipType the type of relationship to traverse.
+     * @param maxDepth the maximum depth from the start node below which traversal must stop.
+     * @param costProperty the property that contains the cost of traversal.
+     * @param defaultCost the default cost of the traversal.
+     * @param failIfNotFound if true, an exception will be thrown if no path can be found, otherwise
+     *            null will be returned.
+     * @return a single {@link PathQueryResult} instance.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
+    @Processor
+    public PathQueryResult traverseForPathWithAlgorithm(@RefOnly final Node fromNode,
+                                                        @RefOnly final Node toNode,
+                                                        final Algorithm algorithm,
+                                                        final String relationshipType,
+                                                        @Optional @Default("1") final int maxDepth,
+                                                        @Optional final String costProperty,
+                                                        @Optional final Double defaultCost,
+                                                        @Optional @Default("false") final boolean failIfNotFound)
+        throws MuleException
+    {
+        return traverseWithAlgorithm(toNode, algorithm, relationshipType, costProperty, defaultCost,
+            fromNode.getPath(), PATH_QUERY_RESULT_TYPE_REFERENCE, failIfNotFound ? SC_OK : SC_OK_OR_NOT_FOUND);
+    }
+
+    /**
+     * Traverse nodes with a particular algorithm, returning all the successful paths found.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:traverseForPathsWithAlgorithm}
+     * 
+     * @param fromNode the {@link Node} where traversal should start.
+     * @param toNode the {@link Node} where traversal should end.
+     * @param algorithm the {@link Algorithm} to use for the traversal.
+     * @param relationshipType the type of relationship to traverse.
+     * @param maxDepth the maximum depth from the start node below which traversal must stop.
+     * @param costProperty the property that contains the cost of traversal.
+     * @param defaultCost the default cost of the traversal.
+     * @return a {@link Collection} of {@link PathQueryResult} instances, never null but potentially
+     *         empty.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
+    @Processor
+    public Collection<PathQueryResult> traverseForPathsWithAlgorithm(@RefOnly final Node fromNode,
+                                                                     @RefOnly final Node toNode,
+                                                                     final Algorithm algorithm,
+                                                                     final String relationshipType,
+                                                                     @Optional @Default("1") final int maxDepth,
+                                                                     @Optional final String costProperty,
+                                                                     @Optional final Double defaultCost)
+        throws MuleException
+    {
+        return traverseWithAlgorithm(toNode, algorithm, relationshipType, costProperty, defaultCost,
+            fromNode.getPaths(), PATH_QUERY_RESULTS_TYPE_REFERENCE, SC_OK);
     }
 
     private void refreshAuthorization()

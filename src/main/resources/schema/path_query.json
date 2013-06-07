@@ -1,0 +1,25 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties" : {
+    "algorithm": {
+      "type": "string",
+      "enum" : ["shortestPath", "allSimplePaths", "allPaths", "dijkstra"]
+    },
+    "to": {
+      "type": "string"
+    },
+    "relationships": {
+      "$ref": "relationship_query.json"
+    },
+    "max_depth": {
+      "type": "integer"
+    },
+    "cost_property": {
+      "type": "string"
+    },
+    "default_cost": {
+      "type": "number"
+    }
+  }
+}

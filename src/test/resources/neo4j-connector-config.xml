@@ -170,15 +170,6 @@
         <neo4j:delete-relationship-properties
             relationship-ref="#[secondRelationship]" />
 
-        <neo4j:delete-relationship-by-id
-            relationshipId="#[firstRelationship.id]" failIfNotFound="true" />
-        <logger level="INFO" category="neo4j.tests"
-            message="Delete Relationship by ID (fail if not found): #[message.payload]" />
-        <neo4j:delete-relationship-by-id
-            relationshipId="#[firstRelationship.id]" />
-        <logger level="INFO" category="neo4j.tests"
-            message="Delete Relationship by ID: #[message.payload]" />
-
         <neo4j:traverse-for-nodes node-ref="#[firstNode]"
             order="BREADTH_FIRST" maxDepth="3" uniqueness="NODE_GLOBAL">
             <neo4j:relationships>
@@ -240,6 +231,30 @@
         <flow-ref name="traverseForRelationshipsWithPaging" />
         <flow-ref name="traverseForPathsWithPaging" />
         <flow-ref name="traverseForFullpathsWithPaging" />
+
+        <neo4j:traverse-for-path-with-algorithm
+            fromNode-ref="#[firstNode]" toNode-ref="#[secondNode]" algorithm="SHORTEST_PATH"
+            relationshipType="second" maxDepth="3"  failIfNotFound="true" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Traverse For Path With Algorithm: #[message.payload]" />
+
+        <neo4j:traverse-for-path-with-algorithm
+            fromNode-ref="#[firstNode]" toNode-ref="#[secondNode]" algorithm="SHORTEST_PATH"
+            relationshipType="missing" maxDepth="3" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Traverse For Path With Algorithm (Not Found): #[message.payload]" />
+
+        <neo4j:traverse-for-paths-with-algorithm
+            fromNode-ref="#[firstNode]" toNode-ref="#[secondNode]" algorithm="SHORTEST_PATH"
+            relationshipType="second" maxDepth="3" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Traverse For Paths With Algorithm: #[message.payload]" />
+
+        <neo4j:traverse-for-paths-with-algorithm
+            fromNode-ref="#[firstNode]" toNode-ref="#[secondNode]" algorithm="SHORTEST_PATH"
+            relationshipType="missing" maxDepth="3" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Traverse For Paths With Algorithm (Nothing Found): #[message.payload]" />
 
         <neo4j:delete-relationship relationship-ref="#[secondRelationship]"
             failIfNotFound="true" />
@@ -309,6 +324,15 @@
         <neo4j:remove-node-index-entries
             indexName="#[randomNodeIndexName]" node-ref="#[firstNode]"
             failIfNotFound="false" />
+
+        <neo4j:delete-relationship-by-id
+            relationshipId="#[firstRelationship.id]" failIfNotFound="true" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Delete Relationship by ID (fail if not found): #[message.payload]" />
+        <neo4j:delete-relationship-by-id
+            relationshipId="#[firstRelationship.id]" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Delete Relationship by ID: #[message.payload]" />
 
         <neo4j:delete-node-index indexName="#[randomNodeIndexName]"
             failIfNotFound="true" />
@@ -395,7 +419,7 @@
             propertyKey="#[randomPropertyKey]" />
     </flow>
 
-    <flow name="traverseForNodesWithPaging"  processingStrategy="synchronous">
+    <flow name="traverseForNodesWithPaging" processingStrategy="synchronous">
         <neo4j:traverse-for-nodes-with-paging
             node-ref="#[firstNode]" order="BREADTH_FIRST" maxDepth="3"
             uniqueness="NODE_GLOBAL" pageSize="1">
@@ -412,7 +436,7 @@
             message="Traverse for Nodes With Paging: #[message.payload]" />
     </flow>
 
-    <flow name="traverseForRelationshipsWithPaging"  processingStrategy="synchronous">
+    <flow name="traverseForRelationshipsWithPaging" processingStrategy="synchronous">
         <neo4j:traverse-for-relationships-with-paging
             node-ref="#[firstNode]" order="BREADTH_FIRST" maxDepth="3"
             uniqueness="NODE_GLOBAL" pageSize="1">
@@ -429,7 +453,7 @@
             message="Traverse for Relationships With Paging: #[message.payload]" />
     </flow>
 
-    <flow name="traverseForPathsWithPaging"  processingStrategy="synchronous">
+    <flow name="traverseForPathsWithPaging" processingStrategy="synchronous">
         <neo4j:traverse-for-paths-with-paging
             node-ref="#[firstNode]" order="BREADTH_FIRST" maxDepth="3"
             uniqueness="NODE_GLOBAL" pageSize="1">
@@ -446,7 +470,7 @@
             message="Traverse for Paths With Paging: #[message.payload]" />
     </flow>
 
-    <flow name="traverseForFullpathsWithPaging"  processingStrategy="synchronous">
+    <flow name="traverseForFullpathsWithPaging" processingStrategy="synchronous">
         <neo4j:traverse-for-fullpaths-with-paging
             node-ref="#[firstNode]" order="BREADTH_FIRST" maxDepth="3"
             uniqueness="NODE_GLOBAL" pageSize="1">

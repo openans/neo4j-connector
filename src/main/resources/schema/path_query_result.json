@@ -1,0 +1,30 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties" : {
+    "start": {
+      "type": "string"
+    },
+    "end": {
+      "type": "string"
+    },
+    "length": {
+      "type": "integer"
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "nodes": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "weight": {
+      "type": "number"
+    }
+  }
+}

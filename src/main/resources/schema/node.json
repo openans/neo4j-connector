@@ -35,6 +35,12 @@
     },
     "labels": {
       "type": "string"
+    },
+    "path": {
+      "type": "string"
+    },
+    "paths": {
+      "type": "string"
     }
   }
 }

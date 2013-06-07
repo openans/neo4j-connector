@@ -403,3 +403,21 @@
         name="none" />
 </neo4j:traverse-for-fullpaths-with-paging>
 <!-- END_INCLUDE(neo4j:traverseForFullpathsWithPaging) -->
+
+<!-- BEGIN_INCLUDE(neo4j:traverseForPathWithAlgorithm) -->
+<neo4j:traverse-for-path-with-algorithm
+    fromNode-ref="#[startNode]" toNode-ref="#[endNode]" algorithm="SHORTEST_PATH"
+    relationshipType="aType" maxDepth="3" />
+<!-- END_INCLUDE(neo4j:traverseForPathWithAlgorithm) -->
+
+<!-- BEGIN_INCLUDE(neo4j:traverseForPathWithAlgorithm-failIfNotFound) -->
+<neo4j:traverse-for-path-with-algorithm
+    fromNode-ref="#[startNode]" toNode-ref="#[endNode]" algorithm="SHORTEST_PATH"
+    relationshipType="aType" maxDepth="3" failIfNotFound="true" />
+<!-- END_INCLUDE(neo4j:traverseForPathWithAlgorithm-failIfNotFound) -->
+
+<!-- BEGIN_INCLUDE(neo4j:traverseForPathsWithAlgorithm) -->
+<neo4j:traverse-for-paths-with-algorithm
+    fromNode-ref="#[startNode]" toNode-ref="#[endNode]" algorithm="SHORTEST_PATH"
+    relationshipType="aType" maxDepth="3" />
+<!-- END_INCLUDE(neo4j:traverseForPathsWithAlgorithm) -->
