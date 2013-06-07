@@ -237,6 +237,9 @@
             message="Traverse for Full Paths: #[message.payload]" />
 
         <flow-ref name="traverseForNodesWithPaging" />
+        <flow-ref name="traverseForRelationshipsWithPaging" />
+        <flow-ref name="traverseForPathsWithPaging" />
+        <flow-ref name="traverseForFullpathsWithPaging" />
 
         <neo4j:delete-relationship relationship-ref="#[secondRelationship]"
             failIfNotFound="true" />
@@ -407,5 +410,56 @@
         </neo4j:traverse-for-nodes-with-paging>
         <logger level="INFO" category="neo4j.tests"
             message="Traverse for Nodes With Paging: #[message.payload]" />
+    </flow>
+
+    <flow name="traverseForRelationshipsWithPaging"  processingStrategy="synchronous">
+        <neo4j:traverse-for-relationships-with-paging
+            node-ref="#[firstNode]" order="BREADTH_FIRST" maxDepth="3"
+            uniqueness="NODE_GLOBAL" pageSize="1">
+            <neo4j:relationships>
+                <neo4j:relationship direction="ALL" type="first" />
+                <neo4j:relationship direction="ALL" type="second" />
+            </neo4j:relationships>
+            <neo4j:return-filter language="javascript"
+                body="position.length() &lt; 3;" />
+            <neo4j:prune-evaluator language="builtin"
+                name="none" />
+        </neo4j:traverse-for-relationships-with-paging>
+        <logger level="INFO" category="neo4j.tests"
+            message="Traverse for Relationships With Paging: #[message.payload]" />
+    </flow>
+
+    <flow name="traverseForPathsWithPaging"  processingStrategy="synchronous">
+        <neo4j:traverse-for-paths-with-paging
+            node-ref="#[firstNode]" order="BREADTH_FIRST" maxDepth="3"
+            uniqueness="NODE_GLOBAL" pageSize="1">
+            <neo4j:relationships>
+                <neo4j:relationship direction="ALL" type="first" />
+                <neo4j:relationship direction="ALL" type="second" />
+            </neo4j:relationships>
+            <neo4j:return-filter language="javascript"
+                body="position.length() &lt; 3;" />
+            <neo4j:prune-evaluator language="builtin"
+                name="none" />
+        </neo4j:traverse-for-paths-with-paging>
+        <logger level="INFO" category="neo4j.tests"
+            message="Traverse for Paths With Paging: #[message.payload]" />
+    </flow>
+
+    <flow name="traverseForFullpathsWithPaging"  processingStrategy="synchronous">
+        <neo4j:traverse-for-fullpaths-with-paging
+            node-ref="#[firstNode]" order="BREADTH_FIRST" maxDepth="3"
+            uniqueness="NODE_GLOBAL" pageSize="1">
+            <neo4j:relationships>
+                <neo4j:relationship direction="ALL" type="first" />
+                <neo4j:relationship direction="ALL" type="second" />
+            </neo4j:relationships>
+            <neo4j:return-filter language="javascript"
+                body="position.length() &lt; 3;" />
+            <neo4j:prune-evaluator language="builtin"
+                name="none" />
+        </neo4j:traverse-for-fullpaths-with-paging>
+        <logger level="INFO" category="neo4j.tests"
+            message="Traverse for Fullpaths With Paging: #[message.payload]" />
     </flow>
 </mule>

@@ -1670,7 +1670,73 @@ public class Neo4jConnector implements MuleContextAware
             TraversalResult.FULLPATH, FULLPATHS_TYPE_REFERENCE);
     }
 
-    // TODO test, doc
+    private <T> void traversePaged(final Node node,
+                                   final TraversalQuery.Order order,
+                                   final TraversalQuery.Uniqueness uniqueness,
+                                   final Integer maxDepth,
+                                   final List<RelationshipQuery> relationships,
+                                   final TraversalScript returnFilter,
+                                   final TraversalScript pruneEvaluator,
+                                   final int pageSize,
+                                   final int leaseTimeSeconds,
+                                   final MuleEvent muleEvent,
+                                   final SourceCallback sourceCallback,
+                                   final TraversalResult traversalResult,
+                                   final TypeReference<Collection<T>> responseType) throws MuleException
+    {
+        final String pagedTraverseUri = StringUtils.replace(node.getPagedTraverse(),
+            RETURN_TYPE_TEMPLATE + PAGINATION_PARAMS_TEMPLATE, traversalResult.toString().toLowerCase());
+
+        final TraversalQuery traversalQuery = new TraversalQuery().withOrder(order)
+            .withUniqueness(uniqueness)
+            .withMaxDepth(maxDepth)
+            .withRelationships(relationships)
+            .withPruneEvaluator(pruneEvaluator)
+            .withReturnFilter(returnFilter);
+
+        final HttpResponse<Collection<T>> httpResponse = sendRequestWithEntity(HttpConstants.METHOD_POST,
+            pagedTraverseUri, traversalQuery, responseType, SC_CREATED, "pageSize", pageSize, "leaseTime",
+            leaseTimeSeconds);
+
+        // dispatch the initial response
+        final DefaultMuleEvent initialResponseEvent = new DefaultMuleEvent(new DefaultMuleMessage(
+            httpResponse.getEntity(), muleEvent.getMessage(), muleContext), muleEvent);
+
+        sourceCallback.processEvent(initialResponseEvent);
+
+        // fetch and dispatch the next pages until 404
+        final String nextPageUri = httpResponse.getHeaders().get(HttpConstants.HEADER_LOCATION);
+
+        Collection<T> nextPage;
+        while ((nextPage = getEntity(nextPageUri, responseType, SC_OK_OR_NOT_FOUND)) != null)
+        {
+            final DefaultMuleEvent nextPageResponseEvent = new DefaultMuleEvent(new DefaultMuleMessage(
+                nextPage, muleEvent.getMessage(), muleContext), muleEvent);
+
+            sourceCallback.processEvent(nextPageResponseEvent);
+        }
+    }
+
+    /**
+     * Perform a paged node traversal, dispatching {@link Node} instances to the rest of the flow.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:traverseForNodesWithPaging}
+     * 
+     * @param node the start {@link Node}.
+     * @param order the order to visit the nodes.
+     * @param uniqueness how uniquess should be calculated.
+     * @param maxDepth the maximum depth from the start node after which results must be pruned.
+     * @param relationships the relationship types and directions that must be followed.
+     * @param returnFilter a filter that determines if the current position should be included in
+     *            the result.
+     * @param pruneEvaluator an evaluator that determines of traversal should stop or continue.
+     * @param pageSize the size of the result page.
+     * @param leaseTimeSeconds the time during which the paged results will be accessible.
+     * @param muleEvent the {@link MuleEvent} being processed.
+     * @param sourceCallback the {@link SourceCallback} invoked for each result page.
+     * @return a {@link Collection} of {@link Node}, never null but potentially empty.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
     @Processor(intercepting = true)
     @Inject
     public void traverseForNodesWithPaging(@RefOnly final Node node,
@@ -1685,43 +1751,128 @@ public class Neo4jConnector implements MuleContextAware
                                            final MuleEvent muleEvent,
                                            final SourceCallback sourceCallback) throws MuleException
     {
-
-        final String pagedTraverseUri = StringUtils.replace(node.getPagedTraverse(),
-            RETURN_TYPE_TEMPLATE + PAGINATION_PARAMS_TEMPLATE, "node");
-
-        final TraversalQuery traversalQuery = new TraversalQuery().withOrder(order)
-            .withUniqueness(uniqueness)
-            .withMaxDepth(maxDepth)
-            .withRelationships(relationships)
-            .withPruneEvaluator(pruneEvaluator)
-            .withReturnFilter(returnFilter);
-
-        final HttpResponse<Collection<Node>> httpResponse = sendRequestWithEntity(HttpConstants.METHOD_POST,
-            pagedTraverseUri, traversalQuery, NODES_TYPE_REFERENCE, SC_CREATED, "pageSize", pageSize,
-            "leaseTime", leaseTimeSeconds);
-
-        // dispatch the initial response
-        final DefaultMuleEvent initialResponseEvent = new DefaultMuleEvent(new DefaultMuleMessage(
-            httpResponse.getEntity(), muleEvent.getMessage(), muleContext), muleEvent);
-
-        sourceCallback.processEvent(initialResponseEvent);
-
-        // fetch and dispatch the next pages until 404
-        final String nextPageUri = httpResponse.getHeaders().get(HttpConstants.HEADER_LOCATION);
-
-        Collection<Node> nextPage;
-        while ((nextPage = getEntity(nextPageUri, NODES_TYPE_REFERENCE, SC_OK_OR_NOT_FOUND)) != null)
-        {
-            final DefaultMuleEvent nextPageResponseEvent = new DefaultMuleEvent(new DefaultMuleMessage(
-                nextPage, muleEvent.getMessage(), muleContext), muleEvent);
-
-            sourceCallback.processEvent(nextPageResponseEvent);
-        }
+        traversePaged(node, order, uniqueness, maxDepth, relationships, returnFilter, pruneEvaluator,
+            pageSize, leaseTimeSeconds, muleEvent, sourceCallback, TraversalResult.NODE, NODES_TYPE_REFERENCE);
     }
 
-    // TODO add traverseForRelationships
-    // TODO add traverseForPaths
-    // TODO add traverseForFullpaths
+    /**
+     * Perform a paged node traversal, dispatching {@link Relationship} instances to the rest of the
+     * flow.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample
+     * neo4j:traverseForRelationshipsWithPaging}
+     * 
+     * @param node the start {@link Node}.
+     * @param order the order to visit the nodes.
+     * @param uniqueness how uniquess should be calculated.
+     * @param maxDepth the maximum depth from the start node after which results must be pruned.
+     * @param relationships the relationship types and directions that must be followed.
+     * @param returnFilter a filter that determines if the current position should be included in
+     *            the result.
+     * @param pruneEvaluator an evaluator that determines of traversal should stop or continue.
+     * @param pageSize the size of the result page.
+     * @param leaseTimeSeconds the time during which the paged results will be accessible.
+     * @param muleEvent the {@link MuleEvent} being processed.
+     * @param sourceCallback the {@link SourceCallback} invoked for each result page.
+     * @return a {@link Collection} of {@link Node}, never null but potentially empty.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
+    @Processor(intercepting = true)
+    @Inject
+    public void traverseForRelationshipsWithPaging(@RefOnly final Node node,
+                                                   final TraversalQuery.Order order,
+                                                   final TraversalQuery.Uniqueness uniqueness,
+                                                   @Optional final Integer maxDepth,
+                                                   @Optional final List<RelationshipQuery> relationships,
+                                                   @Optional final TraversalScript returnFilter,
+                                                   @Optional final TraversalScript pruneEvaluator,
+                                                   @Optional @Default("50") final int pageSize,
+                                                   @Optional @Default("60") final int leaseTimeSeconds,
+                                                   final MuleEvent muleEvent,
+                                                   final SourceCallback sourceCallback) throws MuleException
+    {
+        traversePaged(node, order, uniqueness, maxDepth, relationships, returnFilter, pruneEvaluator,
+            pageSize, leaseTimeSeconds, muleEvent, sourceCallback, TraversalResult.RELATIONSHIP,
+            RELATIONSHIPS_TYPE_REFERENCE);
+    }
+
+    /**
+     * Perform a paged node traversal, dispatching {@link Path} instances to the rest of the flow.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:traverseForPathsWithPaging}
+     * 
+     * @param node the start {@link Node}.
+     * @param order the order to visit the nodes.
+     * @param uniqueness how uniquess should be calculated.
+     * @param maxDepth the maximum depth from the start node after which results must be pruned.
+     * @param relationships the relationship types and directions that must be followed.
+     * @param returnFilter a filter that determines if the current position should be included in
+     *            the result.
+     * @param pruneEvaluator an evaluator that determines of traversal should stop or continue.
+     * @param pageSize the size of the result page.
+     * @param leaseTimeSeconds the time during which the paged results will be accessible.
+     * @param muleEvent the {@link MuleEvent} being processed.
+     * @param sourceCallback the {@link SourceCallback} invoked for each result page.
+     * @return a {@link Collection} of {@link Node}, never null but potentially empty.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
+    @Processor(intercepting = true)
+    @Inject
+    public void traverseForPathsWithPaging(@RefOnly final Node node,
+                                           final TraversalQuery.Order order,
+                                           final TraversalQuery.Uniqueness uniqueness,
+                                           @Optional final Integer maxDepth,
+                                           @Optional final List<RelationshipQuery> relationships,
+                                           @Optional final TraversalScript returnFilter,
+                                           @Optional final TraversalScript pruneEvaluator,
+                                           @Optional @Default("50") final int pageSize,
+                                           @Optional @Default("60") final int leaseTimeSeconds,
+                                           final MuleEvent muleEvent,
+                                           final SourceCallback sourceCallback) throws MuleException
+    {
+        traversePaged(node, order, uniqueness, maxDepth, relationships, returnFilter, pruneEvaluator,
+            pageSize, leaseTimeSeconds, muleEvent, sourceCallback, TraversalResult.PATH, PATHS_TYPE_REFERENCE);
+    }
+
+    /**
+     * Perform a paged node traversal, dispatching {@link Fullpath} instances to the rest of the
+     * flow.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:traverseForFullpathsWithPaging}
+     * 
+     * @param node the start {@link Node}.
+     * @param order the order to visit the nodes.
+     * @param uniqueness how uniquess should be calculated.
+     * @param maxDepth the maximum depth from the start node after which results must be pruned.
+     * @param relationships the relationship types and directions that must be followed.
+     * @param returnFilter a filter that determines if the current position should be included in
+     *            the result.
+     * @param pruneEvaluator an evaluator that determines of traversal should stop or continue.
+     * @param pageSize the size of the result page.
+     * @param leaseTimeSeconds the time during which the paged results will be accessible.
+     * @param muleEvent the {@link MuleEvent} being processed.
+     * @param sourceCallback the {@link SourceCallback} invoked for each result page.
+     * @return a {@link Collection} of {@link Node}, never null but potentially empty.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
+    @Processor(intercepting = true)
+    @Inject
+    public void traverseForFullpathsWithPaging(@RefOnly final Node node,
+                                               final TraversalQuery.Order order,
+                                               final TraversalQuery.Uniqueness uniqueness,
+                                               @Optional final Integer maxDepth,
+                                               @Optional final List<RelationshipQuery> relationships,
+                                               @Optional final TraversalScript returnFilter,
+                                               @Optional final TraversalScript pruneEvaluator,
+                                               @Optional @Default("50") final int pageSize,
+                                               @Optional @Default("60") final int leaseTimeSeconds,
+                                               final MuleEvent muleEvent,
+                                               final SourceCallback sourceCallback) throws MuleException
+    {
+        traversePaged(node, order, uniqueness, maxDepth, relationships, returnFilter, pruneEvaluator,
+            pageSize, leaseTimeSeconds, muleEvent, sourceCallback, TraversalResult.FULLPATH,
+            FULLPATHS_TYPE_REFERENCE);
+    }
 
     private void refreshAuthorization()
     {
