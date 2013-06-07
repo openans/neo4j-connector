@@ -236,6 +236,8 @@
         <logger level="INFO" category="neo4j.tests"
             message="Traverse for Full Paths: #[message.payload]" />
 
+        <flow-ref name="traverseForNodesWithPaging" />
+
         <neo4j:delete-relationship relationship-ref="#[secondRelationship]"
             failIfNotFound="true" />
         <logger level="INFO" category="neo4j.tests"
@@ -328,7 +330,7 @@
             message="Get Relationship Types: #[message.payload]" />
     </flow>
 
-    <flow name="version2Tests">
+    <flow name="version2Tests" processingStrategy="synchronous">
         <neo4j:add-node-label node-ref="#[firstNode]"
             label="firstLabel" />
 
@@ -388,5 +390,22 @@
             propertyKey="#[randomPropertyKey]" failIfNotFound="true" />
         <neo4j:delete-schema-index label="firstLabel"
             propertyKey="#[randomPropertyKey]" />
+    </flow>
+
+    <flow name="traverseForNodesWithPaging"  processingStrategy="synchronous">
+        <neo4j:traverse-for-nodes-with-paging
+            node-ref="#[firstNode]" order="BREADTH_FIRST" maxDepth="3"
+            uniqueness="NODE_GLOBAL" pageSize="1">
+            <neo4j:relationships>
+                <neo4j:relationship direction="ALL" type="first" />
+                <neo4j:relationship direction="ALL" type="second" />
+            </neo4j:relationships>
+            <neo4j:return-filter language="javascript"
+                body="position.length() &lt; 3;" />
+            <neo4j:prune-evaluator language="builtin"
+                name="none" />
+        </neo4j:traverse-for-nodes-with-paging>
+        <logger level="INFO" category="neo4j.tests"
+            message="Traverse for Nodes With Paging: #[message.payload]" />
     </flow>
 </mule>

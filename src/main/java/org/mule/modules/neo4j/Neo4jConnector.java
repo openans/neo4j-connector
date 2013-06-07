@@ -33,10 +33,13 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
+import org.mule.DefaultMuleEvent;
+import org.mule.DefaultMuleMessage;
 import org.mule.api.ConnectionException;
 import org.mule.api.ConnectionExceptionCode;
 import org.mule.api.DefaultMuleException;
 import org.mule.api.MuleContext;
+import org.mule.api.MuleEvent;
 import org.mule.api.MuleException;
 import org.mule.api.MuleMessage;
 import org.mule.api.MuleRuntimeException;
@@ -51,6 +54,7 @@ import org.mule.api.annotations.param.ConnectionKey;
 import org.mule.api.annotations.param.Default;
 import org.mule.api.annotations.param.Optional;
 import org.mule.api.annotations.param.RefOnly;
+import org.mule.api.callback.SourceCallback;
 import org.mule.api.context.MuleContextAware;
 import org.mule.modules.neo4j.model.BaseEntity;
 import org.mule.modules.neo4j.model.CypherQuery;
@@ -75,6 +79,7 @@ import org.mule.modules.neo4j.model.TraversalScript;
 import org.mule.transformer.types.MimeTypes;
 import org.mule.transport.http.HttpConnector;
 import org.mule.transport.http.HttpConstants;
+import org.mule.util.CaseInsensitiveHashMap;
 import org.mule.util.CollectionUtils;
 import org.mule.util.MapUtils;
 import org.mule.util.StringUtils;
@@ -213,6 +218,28 @@ public class Neo4jConnector implements MuleContextAware
         // NOOP
     };
 
+    private static class HttpResponse<T>
+    {
+        private final T entity;
+        private final Map<String, String> headers;
+
+        public HttpResponse(final T entity, final Map<String, String> headers)
+        {
+            this.entity = entity;
+            this.headers = headers;
+        }
+
+        public T getEntity()
+        {
+            return entity;
+        }
+
+        public Map<String, String> getHeaders()
+        {
+            return headers;
+        }
+    }
+
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final Log LOGGER = LogFactory.getLog(Neo4jConnector.class);
 
@@ -236,6 +263,7 @@ public class Neo4jConnector implements MuleContextAware
     private static final String LABEL_TEMPLATE = "{label}";
     private static final String TYPE_LIST_TEMPLATE = "{-list|&|types}";
     private static final String RETURN_TYPE_TEMPLATE = "{returnType}";
+    private static final String PAGINATION_PARAMS_TEMPLATE = "{?pageSize,leaseTime}";
 
     /**
      * The user used to authenticate to Neo4j.
@@ -357,7 +385,7 @@ public class Neo4jConnector implements MuleContextAware
                             final Object... queryParameters) throws MuleException
     {
         return sendHttpRequest(uri, null, getRequestProperties(HttpConstants.METHOD_GET), responseType,
-            expectedStatusCodes, queryParameters);
+            expectedStatusCodes, queryParameters).getEntity();
     }
 
     private void deleteEntity(final String uri, final Set<Integer> expectedStatusCodes) throws MuleException
@@ -373,24 +401,24 @@ public class Neo4jConnector implements MuleContextAware
                              final Object... queryParameters) throws MuleException
     {
         return sendRequestWithEntity(HttpConstants.METHOD_POST, uri, entity, responseType,
-            expectedStatusCodes, queryParameters);
+            expectedStatusCodes, queryParameters).getEntity();
     }
 
-    private <T> T putEntity(final String uri,
-                            final Object entity,
-                            final Set<Integer> expectedStatusCodes,
-                            final Object... queryParameters) throws MuleException
+    private void putEntity(final String uri,
+                           final Object entity,
+                           final Set<Integer> expectedStatusCodes,
+                           final Object... queryParameters) throws MuleException
     {
-        return sendRequestWithEntity(HttpConstants.METHOD_PUT, uri, entity, null, expectedStatusCodes,
+        sendRequestWithEntity(HttpConstants.METHOD_PUT, uri, entity, null, expectedStatusCodes,
             queryParameters);
     }
 
-    private <T> T sendRequestWithEntity(final String httpMethod,
-                                        final String uri,
-                                        final Object entity,
-                                        final TypeReference<T> responseType,
-                                        final Set<Integer> expectedStatusCodes,
-                                        final Object... queryParameters) throws MuleException
+    private <T> HttpResponse<T> sendRequestWithEntity(final String httpMethod,
+                                                      final String uri,
+                                                      final Object entity,
+                                                      final TypeReference<T> responseType,
+                                                      final Set<Integer> expectedStatusCodes,
+                                                      final Object... queryParameters) throws MuleException
     {
         Validate.isTrue(ENTITY_CARRYING_HTTP_METHODS.contains(httpMethod),
             "Only entity carrying HTTP methods are supported: " + ENTITY_CARRYING_HTTP_METHODS);
@@ -422,24 +450,35 @@ public class Neo4jConnector implements MuleContextAware
         }
     }
 
-    private <T> T sendHttpRequest(final String uri,
-                                  final Object entity,
-                                  final Map<String, Object> requestProperties,
-                                  final TypeReference<T> responseType,
-                                  final Set<Integer> expectedStatusCodes,
-                                  final Object... queryParameters) throws MuleException
+    private <T> HttpResponse<T> sendHttpRequest(final String uri,
+                                                final String jsonEntityOrNull,
+                                                final Map<String, Object> requestProperties,
+                                                final TypeReference<T> responseType,
+                                                final Set<Integer> expectedStatusCodes,
+                                                final Object... queryParameters) throws MuleException
     {
+        final String fullUri = buildUri(uri, queryParameters);
+
         if (LOGGER.isDebugEnabled())
         {
             LOGGER.debug(String.format(
-                "Sending HTTP request:%n  URI: %s%n  Entity: %s%n  Request Properties: %s%n"
-                                + "  Response Type: %s%n  Expected Status Codes: %s%n  Query Parameters: %s",
-                uri, entity, requestProperties, responseType, expectedStatusCodes,
-                Arrays.toString(queryParameters)));
+                "Sending HTTP request:%n  URI: %s%n  JSON Entity: %s%n  Request Properties: %s%n"
+                                + "  Response Type: %s%n  Expected Status Codes: %s", fullUri,
+                jsonEntityOrNull, requestProperties, responseType, expectedStatusCodes));
         }
 
-        final MuleMessage response = muleContext.getClient().send(buildUri(uri, queryParameters), entity,
+        final MuleMessage response = muleContext.getClient().send(fullUri, jsonEntityOrNull,
             requestProperties);
+
+        @SuppressWarnings("unchecked")
+        final Map<String, String> responseHeaders = new CaseInsensitiveHashMap();
+        for (final String headerName : response.getInboundPropertyNames())
+        {
+            if (HttpConstants.RESPONSE_HEADER_NAMES.containsKey(headerName))
+            {
+                responseHeaders.put(headerName, response.<String> getInboundProperty(headerName));
+            }
+        }
 
         if (LOGGER.isDebugEnabled())
         {
@@ -450,16 +489,31 @@ public class Neo4jConnector implements MuleContextAware
 
         if (!expectedStatusCodes.contains(responseStatusCode))
         {
+            if (LOGGER.isDebugEnabled())
+            {
+                try
+                {
+                    LOGGER.debug("Received payload with unexpected status: " + response.getPayloadAsString());
+                }
+                catch (final Exception e)
+                {
+                    // not much to do
+                }
+            }
+
             throw new DefaultMuleException("Received status code: " + responseStatusCode
                                            + " but was expecting: " + expectedStatusCodes);
         }
 
         if (NO_RESPONSE_STATUSES.contains(responseStatusCode))
         {
-            return null;
+            return new HttpResponse<T>(null, responseHeaders);
         }
-
-        return deserializeJsonToEntity(responseType, response);
+        else
+        {
+            final T entity = deserializeJsonToEntity(responseType, response);
+            return new HttpResponse<T>(entity, responseHeaders);
+        }
     }
 
     private <T> T deserializeJsonToEntity(final TypeReference<T> responseType, final MuleMessage response)
@@ -510,19 +564,16 @@ public class Neo4jConnector implements MuleContextAware
             return uri;
         }
 
-        final StringBuilder queryBuilder = new StringBuilder(uri).append("?");
+        final StringBuilder queryBuilder = new StringBuilder();
         for (final Entry<String, String> queryParam : queryParams.entrySet())
         {
-            if (queryBuilder.length() != 0)
-            {
-                queryBuilder.append("&");
-            }
-            queryBuilder.append(urlEncode(queryParam.getKey()))
+            queryBuilder.append(queryBuilder.length() != 0 ? "&" : "?")
+                .append(urlEncode(queryParam.getKey()))
                 .append("=")
                 .append(urlEncode(queryParam.getValue()));
         }
 
-        return queryBuilder.toString();
+        return uri + queryBuilder.toString();
     }
 
     private static String urlEncode(final String s)
@@ -541,7 +592,9 @@ public class Neo4jConnector implements MuleContextAware
     {
         final Map<String, Object> properties = new HashMap<String, Object>();
 
-        properties.put(HttpConstants.HEADER_ACCEPT, MimeTypes.JSON);
+        // TODO uncomment when https://github.com/neo4j/neo4j/issues/862 is fixed
+        // properties.put(HttpConstants.HEADER_ACCEPT, MimeTypes.JSON);
+
         properties.put(HttpConnector.HTTP_METHOD_PROPERTY, method);
         properties.put(HEADER_STREAMING, streaming);
 
@@ -1474,13 +1527,13 @@ public class Neo4jConnector implements MuleContextAware
             "order", order == null ? null : order.toString().toLowerCase());
     }
 
-    private <T> Collection<T> traverse(@RefOnly final Node node,
+    private <T> Collection<T> traverse(final Node node,
                                        final TraversalQuery.Order order,
                                        final TraversalQuery.Uniqueness uniqueness,
-                                       @Optional final Integer maxDepth,
-                                       @Optional final List<RelationshipQuery> relationships,
-                                       @Optional final TraversalScript returnFilter,
-                                       @Optional final TraversalScript pruneEvaluator,
+                                       final Integer maxDepth,
+                                       final List<RelationshipQuery> relationships,
+                                       final TraversalScript returnFilter,
+                                       final TraversalScript pruneEvaluator,
                                        final TraversalResult traversalResult,
                                        final TypeReference<Collection<T>> responseType) throws MuleException
     {
@@ -1616,6 +1669,59 @@ public class Neo4jConnector implements MuleContextAware
         return traverse(node, order, uniqueness, maxDepth, relationships, returnFilter, pruneEvaluator,
             TraversalResult.FULLPATH, FULLPATHS_TYPE_REFERENCE);
     }
+
+    // TODO test, doc
+    @Processor(intercepting = true)
+    @Inject
+    public void traverseForNodesWithPaging(@RefOnly final Node node,
+                                           final TraversalQuery.Order order,
+                                           final TraversalQuery.Uniqueness uniqueness,
+                                           @Optional final Integer maxDepth,
+                                           @Optional final List<RelationshipQuery> relationships,
+                                           @Optional final TraversalScript returnFilter,
+                                           @Optional final TraversalScript pruneEvaluator,
+                                           @Optional @Default("50") final int pageSize,
+                                           @Optional @Default("60") final int leaseTimeSeconds,
+                                           final MuleEvent muleEvent,
+                                           final SourceCallback sourceCallback) throws MuleException
+    {
+
+        final String pagedTraverseUri = StringUtils.replace(node.getPagedTraverse(),
+            RETURN_TYPE_TEMPLATE + PAGINATION_PARAMS_TEMPLATE, "node");
+
+        final TraversalQuery traversalQuery = new TraversalQuery().withOrder(order)
+            .withUniqueness(uniqueness)
+            .withMaxDepth(maxDepth)
+            .withRelationships(relationships)
+            .withPruneEvaluator(pruneEvaluator)
+            .withReturnFilter(returnFilter);
+
+        final HttpResponse<Collection<Node>> httpResponse = sendRequestWithEntity(HttpConstants.METHOD_POST,
+            pagedTraverseUri, traversalQuery, NODES_TYPE_REFERENCE, SC_CREATED, "pageSize", pageSize,
+            "leaseTime", leaseTimeSeconds);
+
+        // dispatch the initial response
+        final DefaultMuleEvent initialResponseEvent = new DefaultMuleEvent(new DefaultMuleMessage(
+            httpResponse.getEntity(), muleEvent.getMessage(), muleContext), muleEvent);
+
+        sourceCallback.processEvent(initialResponseEvent);
+
+        // fetch and dispatch the next pages until 404
+        final String nextPageUri = httpResponse.getHeaders().get(HttpConstants.HEADER_LOCATION);
+
+        Collection<Node> nextPage;
+        while ((nextPage = getEntity(nextPageUri, NODES_TYPE_REFERENCE, SC_OK_OR_NOT_FOUND)) != null)
+        {
+            final DefaultMuleEvent nextPageResponseEvent = new DefaultMuleEvent(new DefaultMuleMessage(
+                nextPage, muleEvent.getMessage(), muleContext), muleEvent);
+
+            sourceCallback.processEvent(nextPageResponseEvent);
+        }
+    }
+
+    // TODO add traverseForRelationships
+    // TODO add traverseForPaths
+    // TODO add traverseForFullpaths
 
     private void refreshAuthorization()
     {

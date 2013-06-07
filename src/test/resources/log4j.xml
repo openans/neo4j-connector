@@ -12,7 +12,7 @@
     </appender>
 
     <logger name="org.mule.modules.neo4j.Neo4jConnector">
-        <level value="ERROR" />
+        <level value="WARN" />
     </logger>
 
     <logger name="neo4j.tests">
