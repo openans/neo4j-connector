@@ -57,6 +57,9 @@ import org.mule.api.annotations.param.RefOnly;
 import org.mule.api.callback.SourceCallback;
 import org.mule.api.context.MuleContextAware;
 import org.mule.modules.neo4j.model.BaseEntity;
+import org.mule.modules.neo4j.model.BatchJob;
+import org.mule.modules.neo4j.model.BatchJobResult;
+import org.mule.modules.neo4j.model.ConfigurableBatchJob;
 import org.mule.modules.neo4j.model.CypherQuery;
 import org.mule.modules.neo4j.model.CypherQueryParams;
 import org.mule.modules.neo4j.model.CypherQueryResult;
@@ -228,6 +231,10 @@ public class Neo4jConnector implements MuleContextAware
         // NOOP
     };
     private static final TypeReference<Collection<PathQueryResult>> PATH_QUERY_RESULTS_TYPE_REFERENCE = new TypeReference<Collection<PathQueryResult>>()
+    {
+        // NOOP
+    };
+    private static final TypeReference<Collection<BatchJobResult>> BATCH_JOB_RESULTS_TYPE_REFERENCE = new TypeReference<Collection<BatchJobResult>>()
     {
         // NOOP
     };
@@ -478,7 +485,8 @@ public class Neo4jConnector implements MuleContextAware
             LOGGER.debug(String.format(
                 "Sending HTTP request:%n  URI: %s%n  JSON Entity: %s%n  Request Properties: %s%n"
                                 + "  Response Type: %s%n  Expected Status Codes: %s", fullUri,
-                jsonEntityOrNull, requestProperties, responseType, expectedStatusCodes));
+                jsonEntityOrNull, requestProperties, responseType == null ? null : responseType.getType(),
+                expectedStatusCodes));
         }
 
         final MuleMessage response = muleContext.getClient().send(fullUri, jsonEntityOrNull,
@@ -2007,6 +2015,32 @@ public class Neo4jConnector implements MuleContextAware
     {
         return traverseWithAlgorithm(toNode, algorithm, relationshipType, costProperty, defaultCost,
             fromNode.getPaths(), PATH_QUERY_RESULTS_TYPE_REFERENCE, SC_OK);
+    }
+
+    /**
+     * Execute a batch of jobs. <b>This method doesn't function properly for the moment.</b>
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:executeBatch}
+     * 
+     * @param jobs the batch to execute.
+     * @return a {@link Collection} of {@link BatchJobResult}, never null but possibly empty.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
+    // FIXME remove warning when DEVKIT-309/DEVKIT-317/DEVKIT-350 (same issue 3 times) is finally
+    // fixed.
+    @Processor
+    public Collection<BatchJobResult> executeBatch(final List<ConfigurableBatchJob> jobs)
+        throws MuleException
+    {
+        Validate.notEmpty(jobs, "jobs can not be empty");
+
+        final List<BatchJob> batch = new ArrayList<BatchJob>();
+        for (final ConfigurableBatchJob job : jobs)
+        {
+            batch.add(job.toBatchJob());
+        }
+
+        return postEntity(serviceRoot.getBatch(), batch, BATCH_JOB_RESULTS_TYPE_REFERENCE, SC_OK);
     }
 
     private void refreshAuthorization()

@@ -263,6 +263,23 @@
         <logger level="INFO" category="neo4j.tests"
             message="Traverse For Paths With Algorithm (Nothing Found): #[message.payload]" />
 
+        <neo4j:execute-batch>
+            <neo4j:jobs>
+                <neo4j:job method="PUT" to="/node/#[firstNode.id]/properties">
+                    <neo4j:body-entries>
+                        <neo4j:body-entry key="age" value-ref="#[1]" />
+                    </neo4j:body-entries>
+                </neo4j:job>
+                <neo4j:job method="GET" to="/node/#[firstNode.id]" />
+                <neo4j:job method="POST" to="/node">
+                    <neo4j:body-entries>
+                        <neo4j:body-entry key="age" value-ref="#[1]" />
+                    </neo4j:body-entries>
+                </neo4j:job>
+            </neo4j:jobs>
+        </neo4j:execute-batch>
+        <logger level="INFO" category="neo4j.tests" message="Execute Batch: #[message.payload]" />
+
         <neo4j:delete-relationship relationship-ref="#[secondRelationship]"
             failIfNotFound="true" />
         <logger level="INFO" category="neo4j.tests"

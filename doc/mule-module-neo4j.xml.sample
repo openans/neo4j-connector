@@ -13,12 +13,12 @@
 
 <!-- BEGIN_INCLUDE(neo4j:runCypherQuery) -->
 <neo4j:run-cypher-query
-       query="start x  = node(0) match x -[r]-> n return type(r)" />
+       query="start x = node(0) match x -[r]-> n return type(r)" />
 <!-- END_INCLUDE(neo4j:runCypherQuery) -->
 
 <!-- BEGIN_INCLUDE(neo4j:runCypherQuery-withParams) -->
 <neo4j:run-cypher-query
-    query="start x  = node({startNodeId}) match x -[r]-> n return type(r)">
+    query="start x = node({startNodeId}) match x -[r]-> n return type(r)">
     <neo4j:params>
         <neo4j:param key="startNodeId" value-ref="#[0]" />
     </neo4j:params>
@@ -429,3 +429,21 @@
     fromNode-ref="#[startNode]" toNode-ref="#[endNode]" algorithm="SHORTEST_PATH"
     relationshipType="aType" maxDepth="3" />
 <!-- END_INCLUDE(neo4j:traverseForPathsWithAlgorithm) -->
+
+<!-- BEGIN_INCLUDE(neo4j:executeBatch) -->
+<neo4j:execute-batch>
+    <neo4j:jobs>
+        <neo4j:job method="PUT" to="/node/#[firstNode.id]/properties">
+            <neo4j:body-entries>
+                <neo4j:body-entry key="age" value-ref="#[1]" />
+            </neo4j:body-entries>
+        </neo4j:job>
+        <neo4j:job method="GET" to="/node/#[firstNode.id]" />
+        <neo4j:job method="POST" to="/node">
+            <neo4j:body-entries>
+                <neo4j:body-entry key="age" value-ref="#[1]" />
+            </neo4j:body-entries>
+        </neo4j:job>
+    </neo4j:jobs>
+</neo4j:execute-batch>
+<!-- END_INCLUDE(neo4j:executeBatch) -->
