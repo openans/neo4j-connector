@@ -2043,6 +2043,15 @@ public class Neo4jConnector implements MuleContextAware
         return postEntity(serviceRoot.getBatch(), batch, BATCH_JOB_RESULTS_TYPE_REFERENCE, SC_OK);
     }
 
+    // TODO support unique indexes
+    // http://docs.neo4j.org/chunked/milestone/rest-api-unique-indexes.html
+
+    // TODO support legacy auto indexing
+    // http://docs.neo4j.org/chunked/milestone/rest-api-auto-indexes.html
+
+    // TODO support configurable legacy auto indexing
+    // http://docs.neo4j.org/chunked/milestone/rest-api-configurable-auto-indexes.html
+
     private void refreshAuthorization()
     {
         if ((StringUtils.isEmpty(user)) && (StringUtils.isEmpty(password)))
