@@ -1,0 +1,12 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "extends" : {
+    "$ref" : "base_batch_job.json"
+  },
+  "properties" : {
+    "body": {
+      "$ref": "data.json"
+    }
+  }
+}

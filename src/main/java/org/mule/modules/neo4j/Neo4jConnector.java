@@ -1378,8 +1378,9 @@ public class Neo4jConnector implements MuleContextAware
      * @param provider the provider for the new node index.
      * @return the created {@link NodeIndex}.
      * @throws MuleException if anything goes wrong with the operation.
-     * @Deprecated since Neo4j 2.0.0
+     * @deprecated since Neo4j 2.0.0
      */
+    @Deprecated
     @Processor
     public NodeIndex createNodeIndex(final String indexName,
                                      @Optional final String type,
@@ -1412,8 +1413,9 @@ public class Neo4jConnector implements MuleContextAware
      * @param failIfNotFound if true, an exception will be thrown if the node index is not found and
      *            couldn't be deleted.
      * @throws MuleException if anything goes wrong with the operation.
-     * @Deprecated since Neo4j 2.0.0
+     * @deprecated since Neo4j 2.0.0
      */
+    @Deprecated
     @Processor
     public void deleteNodeIndex(final String indexName,
                                 @Optional @Default("false") final boolean failIfNotFound)
@@ -1431,8 +1433,9 @@ public class Neo4jConnector implements MuleContextAware
      * 
      * @return a {@link Collection} of {@link NodeIndex}es, never null but can be empty.
      * @throws MuleException if anything goes wrong with the operation.
-     * @Deprecated since Neo4j 2.0.0
+     * @deprecated since Neo4j 2.0.0
      */
+    @Deprecated
     @Processor
     public Collection<NodeIndex> getNodeIndexes() throws MuleException
     {
@@ -1471,8 +1474,9 @@ public class Neo4jConnector implements MuleContextAware
      * @param value the value to use with the index entry.
      * @return an {@link IndexedNode} instance.
      * @throws MuleException if anything goes wrong with the operation.
-     * @Deprecated since Neo4j 2.0.0
+     * @deprecated since Neo4j 2.0.0
      */
+    @Deprecated
     @Processor
     public IndexedNode addNodeToIndex(final String indexName,
                                       @RefOnly final Node node,
@@ -1508,8 +1512,9 @@ public class Neo4jConnector implements MuleContextAware
      * @param value the value for which entries will be removed.
      * @param failIfNotFound if true, an exception will be thrown if no index entry can be deleted.
      * @throws MuleException if anything goes wrong with the operation.
-     * @Deprecated since Neo4j 2.0.0
+     * @deprecated since Neo4j 2.0.0
      */
+    @Deprecated
     @Processor
     public void removeNodeIndexEntries(final String indexName,
                                        @RefOnly final Node node,
@@ -1547,8 +1552,9 @@ public class Neo4jConnector implements MuleContextAware
      * @param value the value to use.
      * @return a {@link Collection} of {@link IndexedNode}s, never null but possibly empty.
      * @throws MuleException if anything goes wrong with the operation.
-     * @Deprecated since Neo4j 2.0.0
+     * @deprecated since Neo4j 2.0.0
      */
+    @Deprecated
     @Processor
     public Collection<IndexedNode> findNodesByIndex(final String indexName,
                                                     final String key,
@@ -1572,8 +1578,9 @@ public class Neo4jConnector implements MuleContextAware
      * @param order the desired {@link QueryResultOrder}.
      * @return a {@link Collection} of {@link IndexedNode}s, never null but possibly empty.
      * @throws MuleException if anything goes wrong with the operation.
-     * @Deprecated since Neo4j 2.0.0
+     * @deprecated since Neo4j 2.0.0
      */
+    @Deprecated
     @Processor
     public Collection<IndexedNode> findNodesByQuery(final String indexName,
                                                     final String query,
