@@ -1,10 +1,17 @@
 {
   "type": "object",
   "additionalProperties": false,
-  "extends" : {
-    "$ref" : "base_batch_job.json"
-  },
   "properties" : {
+    "method": {
+      "type": "string",
+      "enum": ["GET", "POST", "PUT", "DELETE", "PATCH", "HEAD", "OPTIONS"]
+    },
+    "id": {
+      "type": "integer"
+    },
+    "to": {
+      "type": "string"
+    },
     "body": {
       "$ref": "data.json"
     }

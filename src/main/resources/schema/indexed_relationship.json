@@ -1,0 +1,13 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "javaType" : "org.mule.modules.neo4j.model.IndexedRelationship",
+  "extends" : {
+    "$ref" : "relationship.json"
+  },
+  "properties" : {
+    "indexed": {
+      "type": "string"
+    }
+  }
+}

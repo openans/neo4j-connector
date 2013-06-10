@@ -64,17 +64,6 @@
 <neo4j:get-relationship-by-id relationshipId="1" failIfNotFound="true" />
 <!-- END_INCLUDE(neo4j:getRelationshipById-failIfNotFound) -->
 
-<!-- BEGIN_INCLUDE(neo4j:createRelationshipByIds) -->
-<neo4j:create-relationship-by-ids fromNodeId="1" toNodeId="2" type="test" />
-<!-- END_INCLUDE(neo4j:createRelationshipByIds) -->
-<!-- BEGIN_INCLUDE(neo4j:createRelationshipByIds-withProperties) -->
-<neo4j:create-relationship-by-ids fromNodeId="1" toNodeId="2" type="test">
-    <neo4j:properties>
-        <neo4j:property key="foo">bar</neo4j:property>
-    </neo4j:properties>
-</neo4j:create-relationship-by-ids>
-<!-- END_INCLUDE(neo4j:createRelationshipByIds-withProperties) -->
-
 <!-- BEGIN_INCLUDE(neo4j:createRelationship) -->
 <neo4j:create-relationship fromNode-ref="#[sourceNode]" toNode-ref="#[targetNode]" type="test" />
 <!-- END_INCLUDE(neo4j:createRelationship) -->
@@ -477,3 +466,15 @@
     </neo4j:properties>
 </neo4j:create-unique-node-or-fail>
 <!-- END_INCLUDE(neo4j:createUniqueNodeOrFail-withProperties) -->
+
+<!-- BEGIN_INCLUDE(neo4j:getOrCreateUniqueRelationship) -->
+<neo4j:get-or-create-unique-relationship
+       relationshipName="aRelationshipName" type="aType" key="anIndexKey"
+       value="aValue" startNode-ref="#[firstNode]" endNode-ref="#[secondNode]" />
+<!-- END_INCLUDE(neo4j:getOrCreateUniqueRelationship) -->
+
+<!-- BEGIN_INCLUDE(neo4j:createUniqueRelationshipOrFail) -->
+<neo4j:create-unique-relationship-or-fail
+       relationshipName="aRelationshipName" type="aType" key="anIndexKey"
+       value="aValue" startNode-ref="#[firstNode]" endNode-ref="#[secondNode]" />
+<!-- END_INCLUDE(neo4j:createUniqueRelationshipOrFail) -->

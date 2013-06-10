@@ -66,10 +66,12 @@ import org.mule.modules.neo4j.model.CypherQueryResult;
 import org.mule.modules.neo4j.model.Data;
 import org.mule.modules.neo4j.model.Fullpath;
 import org.mule.modules.neo4j.model.IndexedNode;
+import org.mule.modules.neo4j.model.IndexedRelationship;
 import org.mule.modules.neo4j.model.NewNodeIndex;
 import org.mule.modules.neo4j.model.NewRelationship;
 import org.mule.modules.neo4j.model.NewSchemaIndex;
 import org.mule.modules.neo4j.model.NewUniqueNode;
+import org.mule.modules.neo4j.model.NewUniqueRelationship;
 import org.mule.modules.neo4j.model.Node;
 import org.mule.modules.neo4j.model.NodeIndex;
 import org.mule.modules.neo4j.model.NodeIndexConfiguration;
@@ -219,6 +221,10 @@ public class Neo4jConnector implements MuleContextAware
     {
         // NOOP
     };
+    private static final TypeReference<IndexedRelationship> INDEXED_RELATIONSHIP_TYPE_REFERENCE = new TypeReference<IndexedRelationship>()
+    {
+        // NOOP
+    };
     private static final TypeReference<Collection<Path>> PATHS_TYPE_REFERENCE = new TypeReference<Collection<Path>>()
     {
         // NOOP
@@ -288,6 +294,8 @@ public class Neo4jConnector implements MuleContextAware
     private static final String TYPE_LIST_TEMPLATE = "{-list|&|types}";
     private static final String RETURN_TYPE_TEMPLATE = "{returnType}";
     private static final String PAGINATION_PARAMS_TEMPLATE = "{?pageSize,leaseTime}";
+    private static final String CREATE_OR_FAIL_UNIQUENESS = "create_or_fail";
+    private static final String GET_OR_CREATE_UNIQUENESS = "get_or_create";
 
     /**
      * The user used to authenticate to Neo4j.
@@ -403,6 +411,11 @@ public class Neo4jConnector implements MuleContextAware
         return serviceRoot.getNodeIndex() + "/" + indexName;
     }
 
+    private String getRelationshipIndexUri(final String relationshipName)
+    {
+        return serviceRoot.getRelationshipIndex() + "/" + relationshipName;
+    }
+
     private <T> T getEntity(final String uri,
                             final TypeReference<T> responseType,
                             final Set<Integer> expectedStatusCodes,
@@ -435,6 +448,43 @@ public class Neo4jConnector implements MuleContextAware
     {
         sendRequestWithEntity(HttpConstants.METHOD_PUT, uri, entity, null, expectedStatusCodes,
             queryParameters);
+    }
+
+    private IndexedNode postUniqueNodeEntity(final String indexName,
+                                             final String key,
+                                             final String value,
+                                             final Map<String, Object> properties,
+                                             final String uniqueness,
+                                             final Set<Integer> expectedStatusCodes) throws MuleException
+    {
+        final Data data = convertMapToData(properties);
+
+        final NewUniqueNode newUniqueNode = new NewUniqueNode().withKey(key)
+            .withValue(value)
+            .withProperties(data);
+
+        return postEntity(getNodeIndexUri(indexName), newUniqueNode, INDEXED_NODE_TYPE_REFERENCE,
+            expectedStatusCodes, "uniqueness", uniqueness);
+    }
+
+    private IndexedRelationship postUniqueRelationshipEntity(final String relationshipName,
+                                                             final String type,
+                                                             final String key,
+                                                             final String value,
+                                                             final Node startNode,
+                                                             final Node endNode,
+                                                             final String uniqueness,
+                                                             final Set<Integer> expectedStatusCodes)
+        throws MuleException
+    {
+        final NewUniqueRelationship newUniqueRelationship = new NewUniqueRelationship().withType(type)
+            .withKey(key)
+            .withValue(value)
+            .withStart(startNode.getSelf())
+            .withEnd(endNode.getSelf());
+
+        return postEntity(getRelationshipIndexUri(relationshipName), newUniqueRelationship,
+            INDEXED_RELATIONSHIP_TYPE_REFERENCE, expectedStatusCodes, "uniqueness", uniqueness);
     }
 
     private <T> HttpResponse<T> sendRequestWithEntity(final String httpMethod,
@@ -829,17 +879,8 @@ public class Neo4jConnector implements MuleContextAware
                                              @Optional final Map<String, Object> properties)
         throws MuleException
     {
-        final NewUniqueNode newUniqueNode = new NewUniqueNode().withKey(key).withValue(value);
-
-        if (MapUtils.isNotEmpty(properties))
-        {
-            final Data data = new Data();
-            data.getAdditionalProperties().putAll(properties);
-            newUniqueNode.setProperties(data);
-        }
-
-        return postEntity(getNodeIndexUri(indexName), newUniqueNode, INDEXED_NODE_TYPE_REFERENCE,
-            SC_OK_OR_CREATED, "uniqueness", "get_or_create");
+        return postUniqueNodeEntity(indexName, key, value, properties, GET_OR_CREATE_UNIQUENESS,
+            SC_OK_OR_CREATED);
     }
 
     /**
@@ -864,20 +905,8 @@ public class Neo4jConnector implements MuleContextAware
                                               @Optional final Map<String, Object> properties)
         throws MuleException
     {
-        final NewUniqueNode newUniqueNode = new NewUniqueNode().withKey(key).withValue(value);
-
-        if (MapUtils.isNotEmpty(properties))
-        {
-            final Data data = new Data();
-            data.getAdditionalProperties().putAll(properties);
-            newUniqueNode.setProperties(data);
-        }
-
-        return postEntity(getNodeIndexUri(indexName), newUniqueNode, INDEXED_NODE_TYPE_REFERENCE, SC_CREATED,
-            "uniqueness", "create_or_fail");
+        return postUniqueNodeEntity(indexName, key, value, properties, CREATE_OR_FAIL_UNIQUENESS, SC_CREATED);
     }
-
-    // TODO getOrCreateUniqueRelationship
 
     /**
      * Set the properties of a {@link Node}.
@@ -1014,38 +1043,6 @@ public class Neo4jConnector implements MuleContextAware
     /**
      * Create a {@link Relationship}.
      * <p>
-     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:createRelationshipByIds}
-     * <p>
-     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample
-     * neo4j:createRelationshipByIds-withProperties}
-     * 
-     * @param fromNodeId the ID of the node where the relationship starts.
-     * @param toNodeId the ID of the node where the relationship ends.
-     * @param type the type of relationship.
-     * @param properties the properties of the relationship.
-     * @return the created {@link Relationship} instance.
-     * @throws MuleException if anything goes wrong with the operation.
-     */
-    @Processor
-    public Relationship createRelationshipByIds(final long fromNodeId,
-                                                final long toNodeId,
-                                                final String type,
-                                                @Optional final Map<String, Object> properties)
-        throws MuleException
-    {
-        final Data data = convertMapToData(properties);
-
-        final NewRelationship newRelationship = new NewRelationship().withType(type)
-            .withTo(getNodeUri(toNodeId))
-            .withData(data);
-
-        return postEntity(getNodeUri(fromNodeId) + "/relationships", newRelationship,
-            RELATIONSHIP_TYPE_REFERENCE, SC_CREATED);
-    }
-
-    /**
-     * Create a {@link Relationship}.
-     * <p>
      * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:createRelationship}
      * <p>
      * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample
@@ -1073,6 +1070,62 @@ public class Neo4jConnector implements MuleContextAware
 
         return postEntity(fromNode.getCreateRelationship(), newRelationship, RELATIONSHIP_TYPE_REFERENCE,
             SC_CREATED);
+    }
+
+    /**
+     * Get or create a unique {@link Relationship}.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:getOrCreateUniqueRelationship}
+     * 
+     * @param relationshipName the name of the relationship.
+     * @param type the type of the relationship.
+     * @param key the index key.
+     * @param value the index value.
+     * @param startNode the start {@link Node}.
+     * @param endNode the end {@link Node}.
+     * @return the pre-existing or created {@link Relationship} instance.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
+    @Processor
+    public IndexedRelationship getOrCreateUniqueRelationship(final String relationshipName,
+                                                             final String type,
+                                                             final String key,
+                                                             final String value,
+                                                             @RefOnly final Node startNode,
+                                                             @RefOnly final Node endNode
+
+    ) throws MuleException
+    {
+        return postUniqueRelationshipEntity(relationshipName, type, key, value, startNode, endNode,
+            GET_OR_CREATE_UNIQUENESS, SC_OK_OR_CREATED);
+    }
+
+    /**
+     * Create a unique {@link Relationship} or fail.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:createUniqueRelationshipOrFail}
+     * 
+     * @param relationshipName the name of the relationship.
+     * @param type the type of the relationship.
+     * @param key the index key.
+     * @param value the index value.
+     * @param startNode the start {@link Node}.
+     * @param endNode the end {@link Node}.
+     * @return the created {@link Relationship} instance.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
+    @Processor
+    public IndexedRelationship createUniqueRelationshipOrFail(final String relationshipName,
+                                                              final String type,
+                                                              final String key,
+                                                              final String value,
+                                                              @RefOnly final Node startNode,
+                                                              @RefOnly final Node endNode
+
+    ) throws MuleException
+    {
+        return postUniqueRelationshipEntity(relationshipName, type, key, value, startNode, endNode,
+            CREATE_OR_FAIL_UNIQUENESS, SC_CREATED);
     }
 
     /**
@@ -1641,6 +1694,12 @@ public class Neo4jConnector implements MuleContextAware
             SC_OK);
     }
 
+    // TODO support legacy auto indexing
+    // http://docs.neo4j.org/chunked/milestone/rest-api-auto-indexes.html
+
+    // TODO support configurable legacy auto indexing
+    // http://docs.neo4j.org/chunked/milestone/rest-api-configurable-auto-indexes.html
+
     /**
      * Find nodes by index queyr.
      * <p>
@@ -2100,7 +2159,7 @@ public class Neo4jConnector implements MuleContextAware
     }
 
     /**
-     * Execute a batch of jobs. <b>This method doesn't function properly for the moment.</b>
+     * Execute a batch of jobs.
      * <p>
      * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:executeBatch}
      * 
@@ -2108,8 +2167,6 @@ public class Neo4jConnector implements MuleContextAware
      * @return a {@link Collection} of {@link BatchJobResult}, never null but possibly empty.
      * @throws MuleException if anything goes wrong with the operation.
      */
-    // FIXME remove warning when DEVKIT-309/DEVKIT-317/DEVKIT-350 (same issue 3 times) is finally
-    // fixed.
     @Processor
     public Collection<BatchJobResult> executeBatch(final List<ConfigurableBatchJob> jobs)
         throws MuleException
@@ -2124,12 +2181,6 @@ public class Neo4jConnector implements MuleContextAware
 
         return postEntity(serviceRoot.getBatch(), batch, BATCH_JOB_RESULTS_TYPE_REFERENCE, SC_OK);
     }
-
-    // TODO support legacy auto indexing
-    // http://docs.neo4j.org/chunked/milestone/rest-api-auto-indexes.html
-
-    // TODO support configurable legacy auto indexing
-    // http://docs.neo4j.org/chunked/milestone/rest-api-configurable-auto-indexes.html
 
     private void refreshAuthorization()
     {

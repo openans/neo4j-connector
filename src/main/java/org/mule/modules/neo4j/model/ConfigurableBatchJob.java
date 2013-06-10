@@ -13,18 +13,20 @@ import java.util.Map;
 import org.mule.util.MapUtils;
 
 /**
- * This class exists only because DevKit currently chokes if {@link BatchJob} is used as a
- * <code>@Processor</code> parameter.
+ * This class exists only because DevKit+Mule chokes if {@link BatchJob} is used as a
+ * <code>@Processor</code> parameter: Mule's auto-transformation tries to deserialize its members as
+ * if they were JSON strings because of the Jackson annotations.
  */
-public class ConfigurableBatchJob extends BaseBatchJob
+public class ConfigurableBatchJob
 {
+    private BatchJob.Method method;
+    private Integer id;
+    private String to;
     private Map<String, Object> bodyEntries;
 
     public BatchJob toBatchJob()
     {
-        final BatchJob batchJob = (BatchJob) new BatchJob().withId(getId())
-            .withMethod(getMethod())
-            .withTo(getTo());
+        final BatchJob batchJob = new BatchJob().withId(getId()).withMethod(getMethod()).withTo(getTo());
 
         if (MapUtils.isNotEmpty(bodyEntries))
         {
@@ -44,5 +46,35 @@ public class ConfigurableBatchJob extends BaseBatchJob
     public void setBodyEntries(final Map<String, Object> bodyEntries)
     {
         this.bodyEntries = bodyEntries;
+    }
+
+    public BatchJob.Method getMethod()
+    {
+        return method;
+    }
+
+    public void setMethod(final BatchJob.Method method)
+    {
+        this.method = method;
+    }
+
+    public Integer getId()
+    {
+        return id;
+    }
+
+    public void setId(final Integer id)
+    {
+        this.id = id;
+    }
+
+    public String getTo()
+    {
+        return to;
+    }
+
+    public void setTo(final String to)
+    {
+        this.to = to;
     }
 }

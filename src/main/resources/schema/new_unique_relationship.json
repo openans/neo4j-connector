@@ -1,0 +1,21 @@
+{
+  "type": "object",
+  "additionalProperties": false,
+  "properties" : {
+    "key": {
+      "type": "string"
+    },
+    "value": {
+      "type": "string"
+    },
+    "start": {
+      "type": "string"
+    },
+    "end": {
+      "type": "string"
+    },
+    "type": {
+      "type": "string"
+    }
+  }
+}

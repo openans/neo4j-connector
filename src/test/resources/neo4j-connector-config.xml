@@ -74,10 +74,10 @@
         <neo4j:delete-node-property node-ref="#[secondNode]"
             key="pi" />
 
-        <neo4j:create-relationship-by-ids
-            fromNodeId="#[firstNode.id]" toNodeId="#[secondNode.id]" type="first" />
+        <neo4j:create-relationship fromNode-ref="#[firstNode]"
+            toNode-ref="#[secondNode]" type="first" />
         <logger level="INFO" category="neo4j.tests"
-            message="Create Relationship by IDs: #[message.payload]" />
+            message="Create Relationship: #[message.payload]" />
 
         <set-variable variableName="firstRelationship" value="#[message.payload]" />
 
@@ -366,16 +366,6 @@
         <logger level="INFO" category="neo4j.tests"
             message="Get Node Indexes (after delete): #[message.payload]" />
 
-        <neo4j:delete-node-by-id nodeId="#[firstNode.id]"
-            failIfNotFound="true" />
-        <logger level="INFO" category="neo4j.tests" message="Delete Node Id: #[firstNode.id]" />
-        <neo4j:delete-node-by-id nodeId="#[firstNode.id]" />
-
-        <neo4j:delete-node node-ref="#[secondNode]"
-            failIfNotFound="true" />
-        <logger level="INFO" category="neo4j.tests" message="Delete Node: #[secondNode]" />
-        <neo4j:delete-node node-ref="#[secondNode]" />
-
         <set-variable variableName="anIndexKey"
             value="#[UUID.randomUUID().toString()]" />
 
@@ -424,6 +414,43 @@
         <logger level="INFO" category="neo4j.tests"
             message="Create Unique Node or Fail with Properties: #[message.payload]" />
         <neo4j:delete-node node-ref="#[message.payload]" />
+
+        <neo4j:get-or-create-unique-relationship
+            relationshipName="aRelationshipName" type="aType" key="anIndexKey"
+            value="aValue" startNode-ref="#[firstNode]" endNode-ref="#[secondNode]" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Get or Create Unique Relationship: #[message.payload]" />
+
+        <neo4j:get-or-create-unique-relationship
+            relationshipName="aRelationshipName" type="aType" key="anIndexKey"
+            value="aValue" startNode-ref="#[firstNode]" endNode-ref="#[secondNode]" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Get or Create Unique Relationship (Same Relationship): #[message.payload]" />
+
+        <neo4j:delete-relationship relationship-ref="#[message.payload]" />
+
+        <set-variable variableName="anIndexKey"
+            value="#[UUID.randomUUID().toString()]" />
+
+        <neo4j:create-unique-relationship-or-fail
+            relationshipName="aRelationshipName" type="aType" key="#[anIndexKey]"
+            value="aValue" startNode-ref="#[firstNode]" endNode-ref="#[secondNode]" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Create Unique Relationship or Fail: #[message.payload]" />
+
+        <flow-ref name="createUniqueRelationshipOrFail" />
+
+        <neo4j:delete-relationship relationship-ref="#[message.payload]" />
+
+        <neo4j:delete-node-by-id nodeId="#[firstNode.id]"
+            failIfNotFound="true" />
+        <logger level="INFO" category="neo4j.tests" message="Delete Node Id: #[firstNode.id]" />
+        <neo4j:delete-node-by-id nodeId="#[firstNode.id]" />
+
+        <neo4j:delete-node node-ref="#[secondNode]"
+            failIfNotFound="true" />
+        <logger level="INFO" category="neo4j.tests" message="Delete Node: #[secondNode]" />
+        <neo4j:delete-node node-ref="#[secondNode]" />
 
         <neo4j:get-relationship-types />
         <logger level="INFO" category="neo4j.tests"
@@ -563,9 +590,21 @@
     <flow name="createUniqueNodeOrFail" processingStrategy="synchronous">
         <neo4j:create-unique-node-or-fail
             indexName="#[aNodeIndexName]" key="#[anIndexKey]" value="aValue" />
+
         <catch-exception-strategy>
             <logger level="INFO" category="neo4j.tests"
                 message="Create Unique Node or Fail (Expected Failure): #[message.payload]" />
+        </catch-exception-strategy>
+    </flow>
+
+    <flow name="createUniqueRelationshipOrFail" processingStrategy="synchronous">
+        <neo4j:create-unique-relationship-or-fail
+            relationshipName="aRelationshipName" type="aType" key="#[anIndexKey]"
+            value="aValue" startNode-ref="#[firstNode]" endNode-ref="#[secondNode]" />
+
+        <catch-exception-strategy>
+            <logger level="INFO" category="neo4j.tests"
+                message="Create Unique Relationship or Fail (Expected Failure): #[message.payload]" />
         </catch-exception-strategy>
     </flow>
 </mule>
