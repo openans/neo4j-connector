@@ -22,6 +22,9 @@
     "node_index": {
       "type": "string"
     },
+    "node_auto_index": {
+      "type": "string"
+    },
     "node_labels": {
       "type": "string"
     },

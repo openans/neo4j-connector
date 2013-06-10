@@ -362,6 +362,10 @@ public class Neo4jConnector implements MuleContextAware
             final String serviceRootSelf = StringUtils.substringBeforeLast(serviceRoot.getNode(), "/node");
             serviceRoot.setRelationship(serviceRootSelf + "/relationship");
 
+            // this is for legacy auto-index so didn't bother opening an issue for its absence
+            serviceRoot.setNodeAutoIndex(StringUtils.replace(serviceRoot.getNodeIndex(), "index/node",
+                "index/auto/node"));
+
             if (!isBeforeVersion2())
             {
                 // and these ones of: https://github.com/neo4j/neo4j/issues/850
@@ -1694,14 +1698,30 @@ public class Neo4jConnector implements MuleContextAware
             SC_OK);
     }
 
-    // TODO support legacy auto indexing
-    // http://docs.neo4j.org/chunked/milestone/rest-api-auto-indexes.html
+    /**
+     * Find nodes by exact match on an auto-index.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:findNodesByAutoIndex}
+     * 
+     * @param key the key to use.
+     * @param value the value to use.
+     * @return a {@link Collection} of {@link IndexedNode}s, never null but possibly empty.
+     * @throws MuleException if anything goes wrong with the operation.
+     * @deprecated since Neo4j 2.0.0
+     */
+    @Deprecated
+    @Processor
+    public Collection<IndexedNode> findNodesByAutoIndex(final String key, final String value)
+        throws MuleException
+    {
+        logDeprecatedIn2OrAbove("findNodesByAutoIndex");
 
-    // TODO support configurable legacy auto indexing
-    // http://docs.neo4j.org/chunked/milestone/rest-api-configurable-auto-indexes.html
+        return getEntity(getServiceRoot().getNodeAutoIndex() + "/" + key + "/" + value,
+            INDEXED_NODES_TYPE_REFERENCE, SC_OK);
+    }
 
     /**
-     * Find nodes by index queyr.
+     * Find nodes by index query.
      * <p>
      * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:findNodesByQuery}
      * <p>
@@ -1726,6 +1746,29 @@ public class Neo4jConnector implements MuleContextAware
         return getEntity(getNodeIndexUri(indexName), INDEXED_NODES_TYPE_REFERENCE, SC_OK, "query", query,
             "order", order == null ? null : order.toString().toLowerCase());
     }
+
+    /**
+     * Find nodes by query on an auto-index.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:findNodesByAutoIndexQuery}
+     * 
+     * @param query the query to run.
+     * @return a {@link Collection} of {@link IndexedNode}s, never null but possibly empty.
+     * @throws MuleException if anything goes wrong with the operation.
+     * @deprecated since Neo4j 2.0.0
+     */
+    @Deprecated
+    @Processor
+    public Collection<IndexedNode> findNodesByAutoIndexQuery(final String query) throws MuleException
+    {
+        logDeprecatedIn2OrAbove("findNodesByAutoIndexQuery");
+
+        return getEntity(getServiceRoot().getNodeAutoIndex(), INDEXED_NODES_TYPE_REFERENCE, SC_OK, "query",
+            query);
+    }
+
+    // TODO support configurable legacy auto indexing
+    // http://docs.neo4j.org/chunked/milestone/rest-api-configurable-auto-indexes.html
 
     private <T> Collection<T> traverse(final Node node,
                                        final TraversalQuery.Order order,

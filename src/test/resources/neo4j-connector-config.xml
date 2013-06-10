@@ -324,6 +324,11 @@
         <logger level="INFO" category="neo4j.tests"
             message="Find Nodes by Index: #[message.payload]" />
 
+        <neo4j:find-nodes-by-auto-index key="aKey"
+            value="aValue" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Find Nodes by Auto Index: #[message.payload]" />
+
         <neo4j:find-nodes-by-query indexName="#[aNodeIndexName]"
             query="not:found" />
         <logger level="INFO" category="neo4j.tests"
@@ -338,6 +343,11 @@
             query="aKey:aValue" order="RELEVANCE" />
         <logger level="INFO" category="neo4j.tests"
             message="Find Nodes by Query (with Order): #[message.payload]" />
+
+        <neo4j:find-nodes-by-auto-index-query
+            query="aKey:aValue" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Find Nodes by Auto-Index Query: #[message.payload]" />
 
         <neo4j:remove-node-index-entries
             indexName="#[aNodeIndexName]" node-ref="#[firstNode]" key="aKey"

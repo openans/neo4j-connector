@@ -478,3 +478,11 @@
        relationshipName="aRelationshipName" type="aType" key="anIndexKey"
        value="aValue" startNode-ref="#[firstNode]" endNode-ref="#[secondNode]" />
 <!-- END_INCLUDE(neo4j:createUniqueRelationshipOrFail) -->
+
+<!-- BEGIN_INCLUDE(neo4j:findNodesByAutoIndex) -->
+<neo4j:find-nodes-by-auto-index key="aKey" value="aValue" />
+<!-- END_INCLUDE(neo4j:findNodesByAutoIndex) -->
+
+<!-- BEGIN_INCLUDE(neo4j:findNodesByAutoIndexQuery) -->
+<neo4j:find-nodes-by-auto-index-query query="aKey:aValue" />
+<!-- END_INCLUDE(neo4j:findNodesByAutoIndexQuery) -->
