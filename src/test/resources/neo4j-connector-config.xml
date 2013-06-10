@@ -298,14 +298,14 @@
             </otherwise>
         </choice>
 
-        <set-variable variableName="randomNodeIndexName"
+        <set-variable variableName="aNodeIndexName"
             value="#[UUID.randomUUID().toString()]" />
 
-        <neo4j:create-node-index indexName="#[randomNodeIndexName]" />
+        <neo4j:create-node-index indexName="#[aNodeIndexName]" />
         <logger level="INFO" category="neo4j.tests"
             message="Create Node Index: #[message.payload]" />
 
-        <neo4j:create-node-index indexName="#[randomNodeIndexName]"
+        <neo4j:create-node-index indexName="#[aNodeIndexName]"
             type="exact" provider="lucene" />
         <logger level="INFO" category="neo4j.tests"
             message="Create Node Index with Configuration: #[message.payload]" />
@@ -314,39 +314,39 @@
         <logger level="INFO" category="neo4j.tests"
             message="Get Node Indexes: #[message.payload]" />
 
-        <neo4j:add-node-to-index indexName="#[randomNodeIndexName]"
+        <neo4j:add-node-to-index indexName="#[aNodeIndexName]"
             node-ref="#[firstNode]" key="aKey" value="aValue" />
         <logger level="INFO" category="neo4j.tests"
             message="Add Node to Index: #[message.payload]" />
 
-        <neo4j:find-nodes-by-index indexName="#[randomNodeIndexName]"
+        <neo4j:find-nodes-by-index indexName="#[aNodeIndexName]"
             key="aKey" value="aValue" />
         <logger level="INFO" category="neo4j.tests"
             message="Find Nodes by Index: #[message.payload]" />
 
-        <neo4j:find-nodes-by-query indexName="#[randomNodeIndexName]"
+        <neo4j:find-nodes-by-query indexName="#[aNodeIndexName]"
             query="not:found" />
         <logger level="INFO" category="neo4j.tests"
             message="Find Nodes by Query (No Result): #[message.payload]" />
 
-        <neo4j:find-nodes-by-query indexName="#[randomNodeIndexName]"
+        <neo4j:find-nodes-by-query indexName="#[aNodeIndexName]"
             query="aKey:aValue" />
         <logger level="INFO" category="neo4j.tests"
             message="Find Nodes by Query: #[message.payload]" />
 
-        <neo4j:find-nodes-by-query indexName="#[randomNodeIndexName]"
+        <neo4j:find-nodes-by-query indexName="#[aNodeIndexName]"
             query="aKey:aValue" order="RELEVANCE" />
         <logger level="INFO" category="neo4j.tests"
             message="Find Nodes by Query (with Order): #[message.payload]" />
 
         <neo4j:remove-node-index-entries
-            indexName="#[randomNodeIndexName]" node-ref="#[firstNode]" key="aKey"
+            indexName="#[aNodeIndexName]" node-ref="#[firstNode]" key="aKey"
             value="aValue" />
         <neo4j:remove-node-index-entries
-            indexName="#[randomNodeIndexName]" node-ref="#[firstNode]" key="aKey"
+            indexName="#[aNodeIndexName]" node-ref="#[firstNode]" key="aKey"
             failIfNotFound="false" />
         <neo4j:remove-node-index-entries
-            indexName="#[randomNodeIndexName]" node-ref="#[firstNode]"
+            indexName="#[aNodeIndexName]" node-ref="#[firstNode]"
             failIfNotFound="false" />
 
         <neo4j:delete-relationship-by-id
@@ -358,9 +358,9 @@
         <logger level="INFO" category="neo4j.tests"
             message="Delete Relationship by ID: #[message.payload]" />
 
-        <neo4j:delete-node-index indexName="#[randomNodeIndexName]"
+        <neo4j:delete-node-index indexName="#[aNodeIndexName]"
             failIfNotFound="true" />
-        <neo4j:delete-node-index indexName="#[randomNodeIndexName]" />
+        <neo4j:delete-node-index indexName="#[aNodeIndexName]" />
 
         <neo4j:get-node-indexes />
         <logger level="INFO" category="neo4j.tests"
@@ -375,6 +375,55 @@
             failIfNotFound="true" />
         <logger level="INFO" category="neo4j.tests" message="Delete Node: #[secondNode]" />
         <neo4j:delete-node node-ref="#[secondNode]" />
+
+        <set-variable variableName="anIndexKey"
+            value="#[UUID.randomUUID().toString()]" />
+
+        <neo4j:get-or-create-unique-node
+            indexName="#[aNodeIndexName]" key="#[anIndexKey]" value="aValue" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Get or Create Unique Node: #[message.payload]" />
+        <neo4j:get-or-create-unique-node
+            indexName="#[aNodeIndexName]" key="#[anIndexKey]" value="aValue" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Get or Create Unique Node (Same Node): #[message.payload]" />
+        <neo4j:delete-node node-ref="#[message.payload]" />
+
+        <neo4j:get-or-create-unique-node
+            indexName="#[aNodeIndexName]" key="#[UUID.randomUUID().toString()]"
+            value="aValue">
+            <neo4j:properties>
+                <neo4j:property key="pi" value-ref="#[Math.PI]" />
+                <neo4j:property key="chords">EADGBE</neo4j:property>
+            </neo4j:properties>
+        </neo4j:get-or-create-unique-node>
+        <logger level="INFO" category="neo4j.tests"
+            message="Get or Create Unique Node with Properties: #[message.payload]" />
+        <neo4j:delete-node node-ref="#[message.payload]" />
+
+        <set-variable variableName="anIndexKey"
+            value="#[UUID.randomUUID().toString()]" />
+
+        <neo4j:create-unique-node-or-fail
+            indexName="#[aNodeIndexName]" key="#[anIndexKey]" value="aValue" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Create Unique Node or Fail: #[message.payload]" />
+
+        <flow-ref name="createUniqueNodeOrFail" />
+
+        <neo4j:delete-node node-ref="#[message.payload]" />
+
+        <neo4j:create-unique-node-or-fail
+            indexName="#[aNodeIndexName]" key="#[UUID.randomUUID().toString()]"
+            value="aValue">
+            <neo4j:properties>
+                <neo4j:property key="pi" value-ref="#[Math.PI]" />
+                <neo4j:property key="chords">EADGBE</neo4j:property>
+            </neo4j:properties>
+        </neo4j:create-unique-node-or-fail>
+        <logger level="INFO" category="neo4j.tests"
+            message="Create Unique Node or Fail with Properties: #[message.payload]" />
+        <neo4j:delete-node node-ref="#[message.payload]" />
 
         <neo4j:get-relationship-types />
         <logger level="INFO" category="neo4j.tests"
@@ -422,12 +471,12 @@
         <neo4j:get-labels />
         <logger level="INFO" category="neo4j.tests" message="Get Labels: #[message.payload]" />
 
-        <set-variable variableName="randomPropertyKey"
+        <set-variable variableName="aPropertyKey"
             value="#[UUID.randomUUID().toString()]" />
 
         <neo4j:create-schema-index label="firstLabel">
             <neo4j:property-keys>
-                <neo4j:property-key>#[randomPropertyKey]</neo4j:property-key>
+                <neo4j:property-key>#[aPropertyKey]</neo4j:property-key>
             </neo4j:property-keys>
         </neo4j:create-schema-index>
         <logger level="INFO" category="neo4j.tests"
@@ -438,9 +487,9 @@
             message="Get Schema Indexes: #[message.payload]" />
 
         <neo4j:delete-schema-index label="firstLabel"
-            propertyKey="#[randomPropertyKey]" failIfNotFound="true" />
+            propertyKey="#[aPropertyKey]" failIfNotFound="true" />
         <neo4j:delete-schema-index label="firstLabel"
-            propertyKey="#[randomPropertyKey]" />
+            propertyKey="#[aPropertyKey]" />
     </flow>
 
     <flow name="traverseForNodesWithPaging" processingStrategy="synchronous">
@@ -509,5 +558,14 @@
         </neo4j:traverse-for-fullpaths-with-paging>
         <logger level="INFO" category="neo4j.tests"
             message="Traverse for Fullpaths With Paging: #[message.payload]" />
+    </flow>
+
+    <flow name="createUniqueNodeOrFail" processingStrategy="synchronous">
+        <neo4j:create-unique-node-or-fail
+            indexName="#[aNodeIndexName]" key="#[anIndexKey]" value="aValue" />
+        <catch-exception-strategy>
+            <logger level="INFO" category="neo4j.tests"
+                message="Create Unique Node or Fail (Expected Failure): #[message.payload]" />
+        </catch-exception-strategy>
     </flow>
 </mule>

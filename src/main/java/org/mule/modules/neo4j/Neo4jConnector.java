@@ -69,6 +69,7 @@ import org.mule.modules.neo4j.model.IndexedNode;
 import org.mule.modules.neo4j.model.NewNodeIndex;
 import org.mule.modules.neo4j.model.NewRelationship;
 import org.mule.modules.neo4j.model.NewSchemaIndex;
+import org.mule.modules.neo4j.model.NewUniqueNode;
 import org.mule.modules.neo4j.model.Node;
 import org.mule.modules.neo4j.model.NodeIndex;
 import org.mule.modules.neo4j.model.NodeIndexConfiguration;
@@ -273,6 +274,8 @@ public class Neo4jConnector implements MuleContextAware
         Arrays.asList(HttpConstants.SC_OK, HttpConstants.SC_NOT_FOUND)));
     private static final Set<Integer> SC_OK_OR_NO_CONTENT = Collections.unmodifiableSet(new HashSet<Integer>(
         Arrays.asList(HttpConstants.SC_OK, HttpConstants.SC_NO_CONTENT)));
+    private static final Set<Integer> SC_OK_OR_CREATED = Collections.unmodifiableSet(new HashSet<Integer>(
+        Arrays.asList(HttpConstants.SC_OK, HttpConstants.SC_CREATED)));
     private static final Set<Integer> NO_RESPONSE_STATUSES = Collections.unmodifiableSet(new HashSet<Integer>(
         Arrays.asList(HttpConstants.SC_NO_CONTENT, HttpConstants.SC_NOT_FOUND)));
     private static final Set<String> ENTITY_CARRYING_HTTP_METHODS = Collections.unmodifiableSet(new HashSet<String>(
@@ -803,6 +806,78 @@ public class Neo4jConnector implements MuleContextAware
     {
         return postEntity(serviceRoot.getNode(), properties, NODE_TYPE_REFERENCE, SC_CREATED);
     }
+
+    /**
+     * Get or create a unique {@link Node}.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:getOrCreateUniqueNode}
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample
+     * neo4j:getOrCreateUniqueNode-withProperties}
+     * 
+     * @param indexName the name of the index.
+     * @param key the key for the index.
+     * @param value the value for the index's key.
+     * @param properties the properties of the node.
+     * @return the created or pre-existing {@link Node} instance.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
+    @Processor
+    public IndexedNode getOrCreateUniqueNode(final String indexName,
+                                             final String key,
+                                             final String value,
+                                             @Optional final Map<String, Object> properties)
+        throws MuleException
+    {
+        final NewUniqueNode newUniqueNode = new NewUniqueNode().withKey(key).withValue(value);
+
+        if (MapUtils.isNotEmpty(properties))
+        {
+            final Data data = new Data();
+            data.getAdditionalProperties().putAll(properties);
+            newUniqueNode.setProperties(data);
+        }
+
+        return postEntity(getNodeIndexUri(indexName), newUniqueNode, INDEXED_NODE_TYPE_REFERENCE,
+            SC_OK_OR_CREATED, "uniqueness", "get_or_create");
+    }
+
+    /**
+     * Create a unique {@link Node} or fail.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:createUniqueNodeOrFail}
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample
+     * neo4j:createUniqueNodeOrFail-withProperties}
+     * 
+     * @param indexName the name of the index.
+     * @param key the key for the index.
+     * @param value the value for the index's key.
+     * @param properties the properties of the node.
+     * @return the created or pre-existing {@link Node} instance.
+     * @throws MuleException if anything goes wrong with the operation.
+     */
+    @Processor
+    public IndexedNode createUniqueNodeOrFail(final String indexName,
+                                              final String key,
+                                              final String value,
+                                              @Optional final Map<String, Object> properties)
+        throws MuleException
+    {
+        final NewUniqueNode newUniqueNode = new NewUniqueNode().withKey(key).withValue(value);
+
+        if (MapUtils.isNotEmpty(properties))
+        {
+            final Data data = new Data();
+            data.getAdditionalProperties().putAll(properties);
+            newUniqueNode.setProperties(data);
+        }
+
+        return postEntity(getNodeIndexUri(indexName), newUniqueNode, INDEXED_NODE_TYPE_REFERENCE, SC_CREATED,
+            "uniqueness", "create_or_fail");
+    }
+
+    // TODO getOrCreateUniqueRelationship
 
     /**
      * Set the properties of a {@link Node}.
@@ -2049,9 +2124,6 @@ public class Neo4jConnector implements MuleContextAware
 
         return postEntity(serviceRoot.getBatch(), batch, BATCH_JOB_RESULTS_TYPE_REFERENCE, SC_OK);
     }
-
-    // TODO support unique indexes
-    // http://docs.neo4j.org/chunked/milestone/rest-api-unique-indexes.html
 
     // TODO support legacy auto indexing
     // http://docs.neo4j.org/chunked/milestone/rest-api-auto-indexes.html

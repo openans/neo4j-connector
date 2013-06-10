@@ -447,3 +447,33 @@
     </neo4j:jobs>
 </neo4j:execute-batch>
 <!-- END_INCLUDE(neo4j:executeBatch) -->
+
+<!-- BEGIN_INCLUDE(neo4j:getOrCreateUniqueNode) -->
+<neo4j:get-or-create-unique-node indexName="aNodeIndexName"
+       key="anIndexKey" value="aValue" />
+<!-- END_INCLUDE(neo4j:getOrCreateUniqueNode) -->
+
+<!-- BEGIN_INCLUDE(neo4j:getOrCreateUniqueNode-withProperties) -->
+<neo4j:get-or-create-unique-node
+       indexName="aNodeIndexName" key="anIndexKey" value="aValue">
+    <neo4j:properties>
+        <neo4j:property key="pi" value-ref="#[Math.PI]" />
+        <neo4j:property key="chords">EADGBE</neo4j:property>
+    </neo4j:properties>
+</neo4j:get-or-create-unique-node>
+<!-- END_INCLUDE(neo4j:getOrCreateUniqueNode-withProperties) -->
+
+<!-- BEGIN_INCLUDE(neo4j:createUniqueNodeOrFail) -->
+<neo4j:create-unique-node-or-fail indexName="aNodeIndexName"
+       key="anIndexKey" value="aValue" />
+<!-- END_INCLUDE(neo4j:createUniqueNodeOrFail) -->
+
+<!-- BEGIN_INCLUDE(neo4j:createUniqueNodeOrFail-withProperties) -->
+<neo4j:create-unique-node-or-fail indexName="aNodeIndexName"
+       key="anIndexKey" value="aValue">
+    <neo4j:properties>
+        <neo4j:property key="pi" value-ref="#[Math.PI]" />
+        <neo4j:property key="chords">EADGBE</neo4j:property>
+    </neo4j:properties>
+</neo4j:create-unique-node-or-fail>
+<!-- END_INCLUDE(neo4j:createUniqueNodeOrFail-withProperties) -->
