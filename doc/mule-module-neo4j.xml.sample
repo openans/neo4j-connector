@@ -506,3 +506,23 @@
 <!-- BEGIN_INCLUDE(neo4j:getRelationshipIndexes) -->
 <neo4j:get-relationship-indexes />
 <!-- END_INCLUDE(neo4j:getRelationshipIndexes) -->
+
+<!-- BEGIN_INCLUDE(neo4j:getAutoindexingStatus) -->
+<neo4j:get-autoindexing-status />
+<!-- END_INCLUDE(neo4j:getAutoindexingStatus) -->
+
+<!-- BEGIN_INCLUDE(neo4j:setAutoindexingStatus) -->
+<neo4j:set-autoindexing-status status="ENABLED" />
+<!-- END_INCLUDE(neo4j:setAutoindexingStatus) -->
+
+<!-- BEGIN_INCLUDE(neo4j:getAutoindexingProperties) -->
+<neo4j:get-autoindexing-properties />
+<!-- END_INCLUDE(neo4j:getAutoindexingProperties) -->
+
+<!-- BEGIN_INCLUDE(neo4j:addAutoindexingProperty) -->
+<neo4j:add-autoindexing-property propertyName="aProperty" />
+<!-- END_INCLUDE(neo4j:addAutoindexingProperty) -->
+
+<!-- BEGIN_INCLUDE(neo4j:deleteAutoindexingProperty) -->
+<neo4j:delete-autoindexing-property propertyName="aProperty" />
+<!-- END_INCLUDE(neo4j:deleteAutoindexingProperty) -->

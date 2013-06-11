@@ -164,6 +164,11 @@ public class Neo4jConnector implements MuleContextAware
         INDEX, RELEVANCE, SCORE
     };
 
+    public static enum AutoIndexingStatus
+    {
+        ENABLED, DISABLED
+    };
+
     private static enum TraversalResult
     {
         NODE, RELATIONSHIP, PATH, FULLPATH;
@@ -242,6 +247,10 @@ public class Neo4jConnector implements MuleContextAware
         // NOOP
     };
     private static final TypeReference<Collection<BatchJobResult>> BATCH_JOB_RESULTS_TYPE_REFERENCE = new TypeReference<Collection<BatchJobResult>>()
+    {
+        // NOOP
+    };
+    private static final TypeReference<Boolean> BOOLEAN_TYPE_REFERENCE = new TypeReference<Boolean>()
     {
         // NOOP
     };
@@ -418,6 +427,16 @@ public class Neo4jConnector implements MuleContextAware
     private String getRelationshipIndexUri(final String relationshipName)
     {
         return serviceRoot.getRelationshipIndex() + "/" + relationshipName;
+    }
+
+    private String getAutoIndexingStatusUri()
+    {
+        return serviceRoot.getNodeAutoIndex() + "/status";
+    }
+
+    private String getAutoIndexingPropertiesUri()
+    {
+        return serviceRoot.getNodeAutoIndex() + "/properties";
     }
 
     private <T> T getEntity(final String uri,
@@ -1847,8 +1866,97 @@ public class Neo4jConnector implements MuleContextAware
         deleteEntityByUri(getRelationshipIndexUri(indexName), failIfNotFound);
     }
 
-    // TODO support configurable legacy auto indexing
-    // http://docs.neo4j.org/chunked/milestone/rest-api-configurable-auto-indexes.html
+    /**
+     * Get current status for autoindexing on nodes.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:getAutoindexingStatus}
+     * 
+     * @return an {@link Neo4jConnector#AutoIndexingStatus}.
+     * @throws MuleException if anything goes wrong with the operation.
+     * @deprecated since Neo4j 2.0.0
+     */
+    @Deprecated
+    @Processor
+    public AutoIndexingStatus getAutoindexingStatus() throws MuleException
+    {
+        logDeprecatedIn2OrAbove("getAutoindexingStatus");
+
+        final Boolean isEnabled = getEntity(getAutoIndexingStatusUri(), BOOLEAN_TYPE_REFERENCE, SC_OK);
+        return isEnabled ? AutoIndexingStatus.ENABLED : AutoIndexingStatus.DISABLED;
+    }
+
+    /**
+     * Enable or disable node autoindexing.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:setAutoindexingStatus}
+     * 
+     * @param status an {@link Neo4jConnector#AutoIndexingStatus}.
+     * @throws MuleException if anything goes wrong with the operation.
+     * @deprecated since Neo4j 2.0.0
+     */
+    @Deprecated
+    @Processor
+    public void setAutoindexingStatus(final AutoIndexingStatus status) throws MuleException
+    {
+        logDeprecatedIn2OrAbove("setAutoindexingStatus");
+
+        final Boolean shouldEnable = status == AutoIndexingStatus.ENABLED ? Boolean.TRUE : Boolean.FALSE;
+        putEntity(getAutoIndexingStatusUri(), shouldEnable, SC_NO_CONTENT);
+    }
+
+    /**
+     * Get the properties being autoindexed.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:getAutoindexingProperties}
+     * 
+     * @return a {@link Collection} of {@link String} instances, never null but potentially empty.
+     * @throws MuleException if anything goes wrong with the operation.
+     * @deprecated since Neo4j 2.0.0
+     */
+    @Deprecated
+    @Processor
+    public Collection<String> getAutoindexingProperties() throws MuleException
+    {
+        logDeprecatedIn2OrAbove("getAutoindexingProperties");
+
+        return getEntity(getAutoIndexingPropertiesUri(), STRINGS_TYPE_REFERENCE, SC_OK);
+    }
+
+    /**
+     * Add a property for autoindexing on nodes.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:addAutoindexingProperty}
+     * 
+     * @param propertyName the property to add.
+     * @throws MuleException if anything goes wrong with the operation.
+     * @deprecated since Neo4j 2.0.0
+     */
+    @Deprecated
+    @Processor
+    public void addAutoindexingProperty(final String propertyName) throws MuleException
+    {
+        logDeprecatedIn2OrAbove("addAutoindexingProperty");
+
+        postEntity(getAutoIndexingPropertiesUri(), propertyName, null, SC_NO_CONTENT);
+    }
+
+    /**
+     * Delete a property for autoindexing on nodes.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:deleteAutoindexingProperty}
+     * 
+     * @param propertyName the property to remove.
+     * @throws MuleException if anything goes wrong with the operation.
+     * @deprecated since Neo4j 2.0.0
+     */
+    @Deprecated
+    @Processor
+    public void deleteAutoindexingProperty(final String propertyName) throws MuleException
+    {
+        logDeprecatedIn2OrAbove("deleteAutoindexingProperty");
+
+        deleteEntityByUri(getAutoIndexingPropertiesUri() + propertyName, false);
+    }
 
     private <T> Collection<T> traverse(final Node node,
                                        final TraversalQuery.Order order,

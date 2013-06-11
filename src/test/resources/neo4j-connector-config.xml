@@ -394,9 +394,10 @@
         <logger level="INFO" category="neo4j.tests"
             message="Get Relationship Indexes: #[message.payload]" />
 
-        <neo4j:delete-relationship-index indexName="#[aRelationshipIndexName]"
-            failIfNotFound="true" />
-        <neo4j:delete-relationship-index indexName="#[aRelationshipIndexName]" />
+        <neo4j:delete-relationship-index
+            indexName="#[aRelationshipIndexName]" failIfNotFound="true" />
+        <neo4j:delete-relationship-index
+            indexName="#[aRelationshipIndexName]" />
 
         <neo4j:get-relationship-indexes />
         <logger level="INFO" category="neo4j.tests"
@@ -488,6 +489,28 @@
             failIfNotFound="true" />
         <logger level="INFO" category="neo4j.tests" message="Delete Node: #[secondNode]" />
         <neo4j:delete-node node-ref="#[secondNode]" />
+
+        <neo4j:get-autoindexing-status />
+        <logger level="INFO" category="neo4j.tests"
+            message="Get Autoindexing Status: #[message.payload]" />
+
+        <neo4j:set-autoindexing-status status="ENABLED" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Set Autoindexing Status: #[message.payload]" />
+
+        <neo4j:get-autoindexing-properties />
+        <logger level="INFO" category="neo4j.tests"
+            message="Get Autoindexing Properties: #[message.payload]" />
+
+        <neo4j:add-autoindexing-property
+            propertyName="aProperty" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Add Autoindexing Property: #[message.payload]" />
+
+        <neo4j:delete-autoindexing-property
+            propertyName="aProperty" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Delete Autoindexing Property: #[message.payload]" />
 
         <neo4j:get-relationship-types />
         <logger level="INFO" category="neo4j.tests"
