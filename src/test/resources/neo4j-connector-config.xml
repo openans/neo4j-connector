@@ -376,6 +376,33 @@
         <logger level="INFO" category="neo4j.tests"
             message="Get Node Indexes (after delete): #[message.payload]" />
 
+
+        <set-variable variableName="aRelationshipIndexName"
+            value="#[UUID.randomUUID().toString()]" />
+
+        <neo4j:create-relationship-index
+            indexName="#[aRelationshipIndexName]" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Create Relationship Index: #[message.payload]" />
+
+        <neo4j:create-relationship-index
+            indexName="#[aRelationshipIndexName]" type="exact" provider="lucene" />
+        <logger level="INFO" category="neo4j.tests"
+            message="Create Relationship Index with Configuration: #[message.payload]" />
+
+        <neo4j:get-relationship-indexes />
+        <logger level="INFO" category="neo4j.tests"
+            message="Get Relationship Indexes: #[message.payload]" />
+
+        <neo4j:delete-relationship-index indexName="#[aRelationshipIndexName]"
+            failIfNotFound="true" />
+        <neo4j:delete-relationship-index indexName="#[aRelationshipIndexName]" />
+
+        <neo4j:get-relationship-indexes />
+        <logger level="INFO" category="neo4j.tests"
+            message="Get Relationship Indexes (after delete): #[message.payload]" />
+
+
         <set-variable variableName="anIndexKey"
             value="#[UUID.randomUUID().toString()]" />
 

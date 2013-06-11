@@ -65,16 +65,16 @@ import org.mule.modules.neo4j.model.CypherQueryParams;
 import org.mule.modules.neo4j.model.CypherQueryResult;
 import org.mule.modules.neo4j.model.Data;
 import org.mule.modules.neo4j.model.Fullpath;
+import org.mule.modules.neo4j.model.Index;
+import org.mule.modules.neo4j.model.IndexConfiguration;
 import org.mule.modules.neo4j.model.IndexedNode;
 import org.mule.modules.neo4j.model.IndexedRelationship;
-import org.mule.modules.neo4j.model.NewNodeIndex;
+import org.mule.modules.neo4j.model.NewIndex;
 import org.mule.modules.neo4j.model.NewRelationship;
 import org.mule.modules.neo4j.model.NewSchemaIndex;
 import org.mule.modules.neo4j.model.NewUniqueNode;
 import org.mule.modules.neo4j.model.NewUniqueRelationship;
 import org.mule.modules.neo4j.model.Node;
-import org.mule.modules.neo4j.model.NodeIndex;
-import org.mule.modules.neo4j.model.NodeIndexConfiguration;
 import org.mule.modules.neo4j.model.NodeIndexingRequest;
 import org.mule.modules.neo4j.model.Path;
 import org.mule.modules.neo4j.model.PathQuery;
@@ -205,7 +205,7 @@ public class Neo4jConnector implements MuleContextAware
     {
         // NOOP
     };
-    private static final TypeReference<NodeIndex> NODE_INDEX_TYPE_REFERENCE = new TypeReference<NodeIndex>()
+    private static final TypeReference<Index> INDEX_TYPE_REFERENCE = new TypeReference<Index>()
     {
         // NOOP
     };
@@ -1497,6 +1497,23 @@ public class Neo4jConnector implements MuleContextAware
         deleteEntityByUri(getSchemaIndexUri(label) + "/" + propertyKey, failIfNotFound);
     }
 
+    private Index createLegacyIndex(final String indexUri,
+                                    final String indexName,
+                                    final String type,
+                                    final String provider) throws MuleException
+    {
+        final NewIndex newNodeIndex = new NewIndex().withName(indexName);
+
+        if ((StringUtils.isNotBlank(type)) || (StringUtils.isNotBlank(provider)))
+        {
+            newNodeIndex.setConfig(new IndexConfiguration().withType(type).withProvider(provider));
+        }
+
+        final Index nodeIndex = postEntity(indexUri, newNodeIndex, INDEX_TYPE_REFERENCE, SC_CREATED);
+        nodeIndex.setName(indexName);
+        return nodeIndex;
+    }
+
     /**
      * Create a node index.
      * <p>
@@ -1514,32 +1531,21 @@ public class Neo4jConnector implements MuleContextAware
      */
     @Deprecated
     @Processor
-    public NodeIndex createNodeIndex(final String indexName,
-                                     @Optional final String type,
-                                     @Optional final String provider) throws MuleException
+    public Index createNodeIndex(final String indexName,
+                                 @Optional final String type,
+                                 @Optional final String provider) throws MuleException
     {
         logDeprecatedIn2OrAbove("createNodeIndex");
 
-        final NewNodeIndex newNodeIndex = new NewNodeIndex().withName(indexName);
-
-        if ((StringUtils.isNotBlank(type)) || (StringUtils.isNotBlank(provider)))
-        {
-            newNodeIndex.setConfig(new NodeIndexConfiguration().withType(type).withProvider(provider));
-        }
-
-        final NodeIndex nodeIndex = postEntity(serviceRoot.getNodeIndex(), newNodeIndex,
-            NODE_INDEX_TYPE_REFERENCE, SC_CREATED);
-        nodeIndex.setName(indexName);
-        return nodeIndex;
+        return createLegacyIndex(serviceRoot.getNodeIndex(), indexName, type, provider);
     }
 
     /**
      * Delete a node index.
      * <p>
-     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:deleteSchemaIndex}
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:deleteNodeIndex}
      * <p>
-     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample
-     * neo4j:deleteSchemaIndex-failIfNotFound}
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:deleteNodeIndex-failIfNotFound}
      * 
      * @param indexName the name of the node index to delete.
      * @param failIfNotFound if true, an exception will be thrown if the node index is not found and
@@ -1558,6 +1564,30 @@ public class Neo4jConnector implements MuleContextAware
         deleteEntityByUri(getNodeIndexUri(indexName), failIfNotFound);
     }
 
+    private Collection<Index> getLegacyIndexes(final String indexUri) throws MuleException
+    {
+        // the Neo4j returns an object instead of an array for the list of indexes
+        // so we need to manually convert it into a proper collection :(
+        final Map<String, Map<String, String>> rawNodeIndexes = getEntity(indexUri,
+            NODE_INDEXES_TYPE_REFERENCE, SC_OK_OR_NO_CONTENT);
+
+        final List<Index> nodeIndexes = new ArrayList<Index>();
+
+        if (MapUtils.isNotEmpty(rawNodeIndexes))
+        {
+            for (final Entry<String, Map<String, String>> rawNodeIndex : rawNodeIndexes.entrySet())
+            {
+                final Index nodeIndex = new Index().withName(rawNodeIndex.getKey());
+                nodeIndex.setTemplate(rawNodeIndex.getValue().get("template"));
+                nodeIndex.setProvider(rawNodeIndex.getValue().get("provider"));
+                nodeIndex.setType(rawNodeIndex.getValue().get("type"));
+                nodeIndexes.add(nodeIndex);
+            }
+        }
+
+        return nodeIndexes;
+    }
+
     /**
      * Get all the node indexes.
      * <p>
@@ -1569,30 +1599,11 @@ public class Neo4jConnector implements MuleContextAware
      */
     @Deprecated
     @Processor
-    public Collection<NodeIndex> getNodeIndexes() throws MuleException
+    public Collection<Index> getNodeIndexes() throws MuleException
     {
         logDeprecatedIn2OrAbove("getNodeIndexes");
 
-        // the Neo4j returns an object instead of an array for the list of indexes
-        // so we need to manually convert it into a proper collection :(
-        final Map<String, Map<String, String>> rawNodeIndexes = getEntity(serviceRoot.getNodeIndex(),
-            NODE_INDEXES_TYPE_REFERENCE, SC_OK_OR_NO_CONTENT);
-
-        final List<NodeIndex> nodeIndexes = new ArrayList<NodeIndex>();
-
-        if (MapUtils.isNotEmpty(rawNodeIndexes))
-        {
-            for (final Entry<String, Map<String, String>> rawNodeIndex : rawNodeIndexes.entrySet())
-            {
-                final NodeIndex nodeIndex = new NodeIndex().withName(rawNodeIndex.getKey());
-                nodeIndex.setTemplate(rawNodeIndex.getValue().get("template"));
-                nodeIndex.setProvider(rawNodeIndex.getValue().get("provider"));
-                nodeIndex.setType(rawNodeIndex.getValue().get("type"));
-                nodeIndexes.add(nodeIndex);
-            }
-        }
-
-        return nodeIndexes;
+        return getLegacyIndexes(serviceRoot.getNodeIndex());
     }
 
     /**
@@ -1765,6 +1776,75 @@ public class Neo4jConnector implements MuleContextAware
 
         return getEntity(getServiceRoot().getNodeAutoIndex(), INDEXED_NODES_TYPE_REFERENCE, SC_OK, "query",
             query);
+    }
+
+    /**
+     * Create a relationship index.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:createRelationshipIndex}
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample
+     * neo4j:createRelationshipIndex-withConfiguration}
+     * 
+     * @param indexName the name of the new node index to create.
+     * @param type the type of the new node index.
+     * @param provider the provider for the new node index.
+     * @return the created {@link NodeIndex}.
+     * @throws MuleException if anything goes wrong with the operation.
+     * @deprecated since Neo4j 2.0.0
+     */
+    @Deprecated
+    @Processor
+    public Index createRelationshipIndex(final String indexName,
+                                         @Optional final String type,
+                                         @Optional final String provider) throws MuleException
+    {
+        logDeprecatedIn2OrAbove("createRelationshipIndex");
+
+        return createLegacyIndex(serviceRoot.getRelationshipIndex(), indexName, type, provider);
+    }
+
+    /**
+     * Get all the relationship indexes.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:getRelationshipIndexes}
+     * 
+     * @return a {@link Collection} of {@link NodeIndex}es, never null but can be empty.
+     * @throws MuleException if anything goes wrong with the operation.
+     * @deprecated since Neo4j 2.0.0
+     */
+    @Deprecated
+    @Processor
+    public Collection<Index> getRelationshipIndexes() throws MuleException
+    {
+        logDeprecatedIn2OrAbove("getRelationshipIndexes");
+
+        return getLegacyIndexes(serviceRoot.getRelationshipIndex());
+    }
+
+    /**
+     * Delete a relationship index.
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample neo4j:deleteRelationshipIndex}
+     * <p>
+     * {@sample.xml ../../../doc/mule-module-neo4j.xml.sample
+     * neo4j:deleteRelationshipIndex-failIfNotFound}
+     * 
+     * @param indexName the name of the node index to delete.
+     * @param failIfNotFound if true, an exception will be thrown if the node index is not found and
+     *            couldn't be deleted.
+     * @throws MuleException if anything goes wrong with the operation.
+     * @deprecated since Neo4j 2.0.0
+     */
+    @Deprecated
+    @Processor
+    public void deleteRelationshipIndex(final String indexName,
+                                        @Optional @Default("false") final boolean failIfNotFound)
+        throws MuleException
+    {
+        logDeprecatedIn2OrAbove("deleteRelationshipIndex");
+
+        deleteEntityByUri(getRelationshipIndexUri(indexName), failIfNotFound);
     }
 
     // TODO support configurable legacy auto indexing

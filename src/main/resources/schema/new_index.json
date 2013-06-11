@@ -1,15 +1,12 @@
 {
   "type": "object",
   "additionalProperties": false,
-  "extends" : {
-    "$ref" : "node_index_configuration.json"
-  },
   "properties" : {
     "name": {
       "type": "string"
     },
-    "template": {
-      "type": "string"
+    "config": {
+      "$ref" : "index_configuration.json"
     }
   }
 }

@@ -234,13 +234,13 @@
 <neo4j:create-node-index indexName="anIndexName" type="exact" provider="lucene" />
 <!-- END_INCLUDE(neo4j:createNodeIndex-withConfiguration) -->
 
-<!-- BEGIN_INCLUDE(neo4j:deleteSchemaIndex) -->
+<!-- BEGIN_INCLUDE(neo4j:deleteNodeIndex) -->
 <neo4j:delete-node-index indexName="anIndexName" />
-<!-- END_INCLUDE(neo4j:deleteSchemaIndex) -->
+<!-- END_INCLUDE(neo4j:deleteNodeIndex) -->
 
-<!-- BEGIN_INCLUDE(neo4j:deleteSchemaIndex-failIfNotFound) -->
+<!-- BEGIN_INCLUDE(neo4j:deleteNodeIndex-failIfNotFound) -->
 <neo4j:delete-node-index indexName="anIndexName" failIfNotFound="true" />
-<!-- END_INCLUDE(neo4j:deleteSchemaIndex-failIfNotFound) -->
+<!-- END_INCLUDE(neo4j:deleteNodeIndex-failIfNotFound) -->
 
 <!-- BEGIN_INCLUDE(neo4j:getNodeIndexes) -->
 <neo4j:get-node-indexes />
@@ -486,3 +486,23 @@
 <!-- BEGIN_INCLUDE(neo4j:findNodesByAutoIndexQuery) -->
 <neo4j:find-nodes-by-auto-index-query query="aKey:aValue" />
 <!-- END_INCLUDE(neo4j:findNodesByAutoIndexQuery) -->
+
+<!-- BEGIN_INCLUDE(neo4j:createRelationshipIndex) -->
+<neo4j:create-relationship-index indexName="anIndexName" />
+<!-- END_INCLUDE(neo4j:createRelationshipIndex) -->
+
+<!-- BEGIN_INCLUDE(neo4j:createRelationshipIndex-withConfiguration) -->
+<neo4j:create-relationship-index indexName="anIndexName" type="exact" provider="lucene" />
+<!-- END_INCLUDE(neo4j:createRelationshipIndex-withConfiguration) -->
+
+<!-- BEGIN_INCLUDE(neo4j:deleteRelationshipIndex) -->
+<neo4j:delete-relationship-index indexName="anIndexName" />
+<!-- END_INCLUDE(neo4j:deleteRelationshipIndex) -->
+
+<!-- BEGIN_INCLUDE(neo4j:deleteRelationshipIndex-failIfNotFound) -->
+<neo4j:delete-relationship-index indexName="anIndexName" failIfNotFound="true" />
+<!-- END_INCLUDE(neo4j:deleteRelationshipIndex-failIfNotFound) -->
+
+<!-- BEGIN_INCLUDE(neo4j:getRelationshipIndexes) -->
+<neo4j:get-relationship-indexes />
+<!-- END_INCLUDE(neo4j:getRelationshipIndexes) -->
