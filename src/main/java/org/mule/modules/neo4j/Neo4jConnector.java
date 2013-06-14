@@ -617,11 +617,11 @@ public class Neo4jConnector implements MuleContextAware
             if (LOGGER.isDebugEnabled())
             {
                 response.setPayload(IOUtils.toByteArray((InputStream) response.getPayload()));
-                entity = OBJECT_MAPPER.readValue((byte[]) response.getPayload(), responseType);
+                entity = OBJECT_MAPPER.<T> readValue((byte[]) response.getPayload(), responseType);
             }
             else
             {
-                entity = OBJECT_MAPPER.readValue((InputStream) response.getPayload(), responseType);
+                entity = OBJECT_MAPPER.<T> readValue((InputStream) response.getPayload(), responseType);
             }
 
             if (entity instanceof BaseEntity)
