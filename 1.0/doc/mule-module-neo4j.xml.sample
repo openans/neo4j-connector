@@ -1,0 +1,528 @@
+<!-- BEGIN_INCLUDE(neo4j:config-no-auth) -->
+<neo4j:config />
+<!-- END_INCLUDE(neo4j:config-no-auth) -->
+
+<!-- BEGIN_INCLUDE(neo4j:config-auth) -->
+<neo4j:config user="a_user" password="@_p@$$w0rd" />
+<!-- END_INCLUDE(neo4j:config-auth) -->
+
+
+<!-- BEGIN_INCLUDE(neo4j:getServiceRoot) -->
+<neo4j:get-service-root />
+<!-- END_INCLUDE(neo4j:getServiceRoot) -->
+
+<!-- BEGIN_INCLUDE(neo4j:runCypherQuery) -->
+<neo4j:run-cypher-query
+       query="start x = node(0) match x -[r]-> n return type(r)" />
+<!-- END_INCLUDE(neo4j:runCypherQuery) -->
+
+<!-- BEGIN_INCLUDE(neo4j:runCypherQuery-withParams) -->
+<neo4j:run-cypher-query
+    query="start x = node({startNodeId}) match x -[r]-> n return type(r)">
+    <neo4j:params>
+        <neo4j:param key="startNodeId" value-ref="#[0]" />
+    </neo4j:params>
+</neo4j:run-cypher-query>
+<!-- END_INCLUDE(neo4j:runCypherQuery-withParams) -->
+
+<!-- BEGIN_INCLUDE(neo4j:getNodeById) -->
+<neo4j:get-node-by-id nodeId="37800000" />
+<!-- END_INCLUDE(neo4j:getNodeById) -->
+<!-- BEGIN_INCLUDE(neo4j:getNodeById-failIfNotFound) -->
+<neo4j:get-node-by-id nodeId="37800000" failIfNotFound="true" />
+<!-- END_INCLUDE(neo4j:getNodeById-failIfNotFound) -->
+
+<!-- BEGIN_INCLUDE(neo4j:createNode) -->
+<neo4j:create-node />
+<!-- END_INCLUDE(neo4j:createNode) -->
+<!-- BEGIN_INCLUDE(neo4j:createNode-withProperties) -->
+<neo4j:create-node>
+    <neo4j:properties>
+        <neo4j:property key="foo">bar</neo4j:property>
+    </neo4j:properties>
+</neo4j:create-node>
+<!-- END_INCLUDE(neo4j:createNode-withProperties) -->
+
+<!-- BEGIN_INCLUDE(neo4j:deleteNodeById) -->
+<neo4j:delete-node-by-id nodeId="37800000" />
+<!-- END_INCLUDE(neo4j:deleteNodeById) -->
+<!-- BEGIN_INCLUDE(neo4j:deleteNodeById-failIfNotFound) -->
+<neo4j:delete-node-by-id nodeId="37800000" failIfNotFound="true" />
+<!-- END_INCLUDE(neo4j:deleteNodeById-failIfNotFound) -->
+
+<!-- BEGIN_INCLUDE(neo4j:deleteNode) -->
+<neo4j:delete-node node-ref="#[message.payload]" />
+<!-- END_INCLUDE(neo4j:deleteNode) -->
+<!-- BEGIN_INCLUDE(neo4j:deleteNode-failIfNotFound) -->
+<neo4j:delete-node node-ref="#[message.payload]" failIfNotFound="true" />
+<!-- END_INCLUDE(neo4j:deleteNode-failIfNotFound) -->
+
+<!-- BEGIN_INCLUDE(neo4j:getRelationshipById) -->
+<neo4j:get-relationship-by-id relationshipId="1" />
+<!-- END_INCLUDE(neo4j:getRelationshipById) -->
+<!-- BEGIN_INCLUDE(neo4j:getRelationshipById-failIfNotFound) -->
+<neo4j:get-relationship-by-id relationshipId="1" failIfNotFound="true" />
+<!-- END_INCLUDE(neo4j:getRelationshipById-failIfNotFound) -->
+
+<!-- BEGIN_INCLUDE(neo4j:createRelationship) -->
+<neo4j:create-relationship fromNode-ref="#[sourceNode]" toNode-ref="#[targetNode]" type="test" />
+<!-- END_INCLUDE(neo4j:createRelationship) -->
+<!-- BEGIN_INCLUDE(neo4j:createRelationship-withProperties) -->
+<neo4j:create-relationship fromNode-ref="#[sourceNode]" toNode-ref="#[targetNode]" type="test">
+    <neo4j:properties>
+        <neo4j:property key="foo">bar</neo4j:property>
+    </neo4j:properties>
+</neo4j:create-relationship>
+<!-- END_INCLUDE(neo4j:createRelationship-withProperties) -->
+
+<!-- BEGIN_INCLUDE(neo4j:deleteRelationshipById) -->
+<neo4j:delete-relationship-by-id relationshipId="1" />
+<!-- END_INCLUDE(neo4j:deleteRelationshipById) -->
+<!-- BEGIN_INCLUDE(neo4j:deleteRelationshipById-failIfNotFound) -->
+<neo4j:delete-relationship-by-id relationshipId="1" failIfNotFound="true" />
+<!-- END_INCLUDE(neo4j:deleteRelationshipById-failIfNotFound) -->
+
+<!-- BEGIN_INCLUDE(neo4j:deleteRelationship) -->
+<neo4j:delete-relationship relationship-ref="#[myRelationship]" />
+<!-- END_INCLUDE(neo4j:deleteRelationship) -->
+<!-- BEGIN_INCLUDE(neo4j:deleteRelationship-failIfNotFound) -->
+<neo4j:delete-relationship relationship-ref="#[myRelationship]" failIfNotFound="true" />
+<!-- END_INCLUDE(neo4j:deleteRelationship-failIfNotFound) -->
+
+<!-- BEGIN_INCLUDE(neo4j:getNodeRelationships) -->
+<neo4j:get-node-relationships node-ref="#[aNode]" direction="ALL" />
+<!-- END_INCLUDE(neo4j:getNodeRelationships) -->
+<!-- BEGIN_INCLUDE(neo4j:getNodeRelationships-singleType) -->
+<neo4j:get-node-relationships node-ref="#[aNode]"
+    direction="OUT">
+    <neo4j:types>
+        <neo4j:type>likes</neo4j:type>
+    </neo4j:types>
+</neo4j:get-node-relationships>
+<!-- END_INCLUDE(neo4j:getNodeRelationships-singleType) -->
+<!-- BEGIN_INCLUDE(neo4j:getNodeRelationships-multipleTypes) -->
+<neo4j:get-node-relationships node-ref="#[aNode]"
+    direction="IN">
+    <neo4j:types>
+        <neo4j:type>loves</neo4j:type>
+        <neo4j:type>hates</neo4j:type>
+    </neo4j:types>
+</neo4j:get-node-relationships>
+<!-- END_INCLUDE(neo4j:getNodeRelationships-multipleTypes) -->
+
+<!-- BEGIN_INCLUDE(neo4j:setRelationshipProperties) -->
+<neo4j:set-relationship-properties relationship-ref="#[aRelationship]">
+    <neo4j:properties>
+        <neo4j:property key="pi" value-ref="#[Math.PI]" />
+        <neo4j:property key="chords">EADGBE</neo4j:property>
+    </neo4j:properties>
+</neo4j:set-relationship-properties>
+<!-- END_INCLUDE(neo4j:setRelationshipProperties) -->
+<!-- BEGIN_INCLUDE(neo4j:setRelationshipProperty) -->
+<neo4j:set-relationship-property relationship-ref="#[aRelationship]"
+       key="pi" value-ref="#[Math.PI]" />
+<!-- END_INCLUDE(neo4j:setRelationshipProperty) -->
+
+<!-- BEGIN_INCLUDE(neo4j:getRelationshipTypes) -->
+<neo4j:get-relationship-types />
+<!-- END_INCLUDE(neo4j:getRelationshipTypes) -->
+
+<!-- BEGIN_INCLUDE(neo4j:setNodeProperties) -->
+<neo4j:set-node-properties node-ref="#[aNode]">
+    <neo4j:properties>
+        <neo4j:property key="foo">bar</neo4j:property>
+    </neo4j:properties>
+</neo4j:set-node-properties>
+<!-- END_INCLUDE(neo4j:setNodeProperties) -->
+
+<!-- BEGIN_INCLUDE(neo4j:setNodeProperty) -->
+<neo4j:set-node-property node-ref="#[aNode]"
+       key="pi" value-ref="#[Math.PI]" />
+<!-- END_INCLUDE(neo4j:setNodeProperty) -->
+
+<!-- BEGIN_INCLUDE(neo4j:deleteNodeProperty) -->
+<neo4j:delete-node-property node-ref="#[aNode]" key="pi" />
+<!-- END_INCLUDE(neo4j:deleteNodeProperty) -->
+<!-- BEGIN_INCLUDE(neo4j:deleteNodeProperty-failIfNotFound) -->
+<neo4j:delete-node-property node-ref="#[aNode]"
+       key="pi" failIfNotFound="true" />
+<!-- END_INCLUDE(neo4j:deleteNodeProperty-failIfNotFound) -->
+
+<!-- BEGIN_INCLUDE(neo4j:deleteNodeProperties) -->
+<neo4j:delete-node-properties node-ref="#[aNode]" />
+<!-- END_INCLUDE(neo4j:deleteNodeProperties) -->
+
+<!-- BEGIN_INCLUDE(neo4j:deleteRelationshipProperty) -->
+<neo4j:delete-relationship-property
+       relationship-ref="#[aRelationship]" key="pi" />
+<!-- END_INCLUDE(neo4j:deleteRelationshipProperty) -->
+
+<!-- BEGIN_INCLUDE(neo4j:deleteRelationshipProperties) -->
+<neo4j:delete-relationship-properties
+       relationship-ref="#[aRelationship]" />
+<!-- END_INCLUDE(neo4j:deleteRelationshipProperties) -->
+
+<!-- BEGIN_INCLUDE(neo4j:addNodeLabel) -->
+<neo4j:add-node-label node-ref="#[aNode]" label="aLabel" />
+<!-- END_INCLUDE(neo4j:addNodeLabel) -->
+
+<!-- BEGIN_INCLUDE(neo4j:addNodeLabels) -->
+<neo4j:add-node-labels node-ref="#[aNode]">
+    <neo4j:labels>
+        <neo4j:label>aLabel</neo4j:label>
+        <neo4j:label>anotherLabel</neo4j:label>
+    </neo4j:labels>
+</neo4j:add-node-labels>
+<!-- END_INCLUDE(neo4j:addNodeLabels) -->
+
+<!-- BEGIN_INCLUDE(neo4j:setNodeLabels) -->
+<neo4j:set-node-labels node-ref="#[aNode]">
+    <neo4j:labels>
+        <neo4j:label>aLabel</neo4j:label>
+        <neo4j:label>anotherLabel</neo4j:label>
+    </neo4j:labels>
+</neo4j:set-node-labels>
+<!-- END_INCLUDE(neo4j:setNodeLabels) -->
+
+<!-- BEGIN_INCLUDE(neo4j:deleteNodeLabel) -->
+<neo4j:delete-node-label node-ref="#[aNode]" label="aLabel" />
+<!-- END_INCLUDE(neo4j:deleteNodeLabel) -->
+
+<!-- BEGIN_INCLUDE(neo4j:getNodeLabels) -->
+<neo4j:get-node-labels node-ref="#[aNode]" />
+<!-- END_INCLUDE(neo4j:getNodeLabels) -->
+
+<!-- BEGIN_INCLUDE(neo4j:getNodesByLabel) -->
+<neo4j:get-nodes-by-label label="aLabel" />
+<!-- END_INCLUDE(neo4j:getNodesByLabel) -->
+
+<!-- BEGIN_INCLUDE(neo4j:getNodesByLabel-property) -->
+<neo4j:get-nodes-by-label label="aLabel"
+       propertyName="aKey" propertyValue-ref="#['aValue']" />
+<!-- END_INCLUDE(neo4j:getNodesByLabel-property) -->
+
+<!-- BEGIN_INCLUDE(neo4j:getLabels) -->
+<neo4j:get-labels />
+<!-- END_INCLUDE(neo4j:getLabels) -->
+
+<!-- BEGIN_INCLUDE(neo4j:createSchemaIndex) -->
+<neo4j:create-schema-index label="aLabel">
+    <neo4j:property-keys>
+        <neo4j:property-key>aKey</neo4j:property-key>
+    </neo4j:property-keys>
+</neo4j:create-schema-index>
+<!-- END_INCLUDE(neo4j:createSchemaIndex) -->
+
+<!-- BEGIN_INCLUDE(neo4j:getSchemaIndexes) -->
+<neo4j:get-schema-indexes label="aLabel" />
+<!-- END_INCLUDE(neo4j:getSchemaIndexes) -->
+
+<!-- BEGIN_INCLUDE(neo4j:deleteSchemaIndex) -->
+<neo4j:delete-schema-index label="aLabel" propertyKey="aKey" />
+<!-- END_INCLUDE(neo4j:deleteSchemaIndex) -->
+
+<!-- BEGIN_INCLUDE(neo4j:deleteSchemaIndex-failIfNotFound) -->
+<neo4j:delete-schema-index label="aLabel"
+       propertyKey="aKey" failIfNotFound="true" />
+<!-- END_INCLUDE(neo4j:deleteSchemaIndex-failIfNotFound) -->
+
+<!-- BEGIN_INCLUDE(neo4j:createNodeIndex) -->
+<neo4j:create-node-index indexName="anIndexName" />
+<!-- END_INCLUDE(neo4j:createNodeIndex) -->
+
+<!-- BEGIN_INCLUDE(neo4j:createNodeIndex-withConfiguration) -->
+<neo4j:create-node-index indexName="anIndexName" type="exact" provider="lucene" />
+<!-- END_INCLUDE(neo4j:createNodeIndex-withConfiguration) -->
+
+<!-- BEGIN_INCLUDE(neo4j:deleteNodeIndex) -->
+<neo4j:delete-node-index indexName="anIndexName" />
+<!-- END_INCLUDE(neo4j:deleteNodeIndex) -->
+
+<!-- BEGIN_INCLUDE(neo4j:deleteNodeIndex-failIfNotFound) -->
+<neo4j:delete-node-index indexName="anIndexName" failIfNotFound="true" />
+<!-- END_INCLUDE(neo4j:deleteNodeIndex-failIfNotFound) -->
+
+<!-- BEGIN_INCLUDE(neo4j:getNodeIndexes) -->
+<neo4j:get-node-indexes />
+<!-- END_INCLUDE(neo4j:getNodeIndexes) -->
+
+<!-- BEGIN_INCLUDE(neo4j:addNodeToIndex) -->
+<neo4j:add-node-to-index indexName="anIndexName"
+       node-ref="#[aNode]" key="aKey" value="aValue" />
+<!-- END_INCLUDE(neo4j:addNodeToIndex) -->
+
+<!-- BEGIN_INCLUDE(neo4j:removeNodeIndexEntries) -->
+<neo4j:remove-node-index-entries indexName="anIndexName" node-ref="#[aNode]" />
+<!-- END_INCLUDE(neo4j:removeNodeIndexEntries) -->
+
+<!-- BEGIN_INCLUDE(neo4j:removeNodeIndexEntries-failIfNotFound) -->
+<neo4j:remove-node-index-entries indexName="anIndexName"
+       node-ref="#[aNode]" failIfNotFound="false" />
+<!-- END_INCLUDE(neo4j:removeNodeIndexEntries-failIfNotFound) -->
+
+<!-- BEGIN_INCLUDE(neo4j:removeNodeIndexEntries-key) -->
+<neo4j:remove-node-index-entries indexName="anIndexName"
+       node-ref="#[aNode]" key="aKey" />
+<!-- END_INCLUDE(neo4j:removeNodeIndexEntries-key) -->
+
+<!-- BEGIN_INCLUDE(neo4j:removeNodeIndexEntries-keyAndValue) -->
+<neo4j:remove-node-index-entries indexName="anIndexName"
+       node-ref="#[aNode]" key="aKey" value="aValue" />
+<!-- END_INCLUDE(neo4j:removeNodeIndexEntries-keyAndValue) -->
+
+<!-- BEGIN_INCLUDE(neo4j:findNodesByIndex) -->
+<neo4j:find-nodes-by-index indexName="anIndexName"
+       key="aKey" value="aValue" />
+<!-- END_INCLUDE(neo4j:findNodesByIndex) -->
+
+<!-- BEGIN_INCLUDE(neo4j:findNodesByQuery) -->
+<neo4j:find-nodes-by-query indexName="anIndexName"
+       query="aKey:aValue" />
+<!-- END_INCLUDE(neo4j:findNodesByQuery) -->
+
+<!-- BEGIN_INCLUDE(neo4j:findNodesByQuery-order) -->
+<neo4j:find-nodes-by-query indexName="anIndexName"
+       query="aKey:aValue" order="RELEVANCE" />
+<!-- END_INCLUDE(neo4j:findNodesByQuery-order) -->
+
+<!-- BEGIN_INCLUDE(neo4j:traverseForNodes) -->
+<neo4j:traverse-for-nodes node-ref="#[aNode]"
+    order="BREADTH_FIRST" maxDepth="3" uniqueness="NODE_GLOBAL">
+    <neo4j:relationships>
+        <neo4j:relationship direction="ALL" type="likes" />
+        <neo4j:relationship direction="ALL" type="hates" />
+    </neo4j:relationships>
+    <neo4j:return-filter language="javascript"
+        body="position.length() &lt; 3;" />
+    <neo4j:prune-evaluator language="builtin"
+        name="none" />
+</neo4j:traverse-for-nodes>
+<!-- END_INCLUDE(neo4j:traverseForNodes) -->
+
+<!-- BEGIN_INCLUDE(neo4j:traverseForRelationships) -->
+<neo4j:traverse-for-relationships node-ref="#[aNode]"
+    order="BREADTH_FIRST" maxDepth="3" uniqueness="NODE_GLOBAL">
+    <neo4j:relationships>
+        <neo4j:relationship direction="ALL" type="first" />
+        <neo4j:relationship direction="ALL" type="second" />
+    </neo4j:relationships>
+    <neo4j:return-filter language="javascript"
+        body="position.length() &lt; 3;" />
+    <neo4j:prune-evaluator language="builtin"
+        name="none" />
+</neo4j:traverse-for-relationships>
+<!-- END_INCLUDE(neo4j:traverseForRelationships) -->
+
+<!-- BEGIN_INCLUDE(neo4j:traverseForPaths) -->
+<neo4j:traverse-for-paths node-ref="#[aNode]"
+    order="BREADTH_FIRST" maxDepth="3" uniqueness="NODE_GLOBAL">
+    <neo4j:relationships>
+        <neo4j:relationship direction="ALL" type="first" />
+        <neo4j:relationship direction="ALL" type="second" />
+    </neo4j:relationships>
+    <neo4j:return-filter language="javascript"
+        body="position.length() &lt; 3;" />
+    <neo4j:prune-evaluator language="builtin"
+        name="none" />
+</neo4j:traverse-for-paths>
+<!-- END_INCLUDE(neo4j:traverseForPaths) -->
+
+<!-- BEGIN_INCLUDE(neo4j:traverseForFullpaths) -->
+<neo4j:traverse-for-fullpaths node-ref="#[aNode]"
+    order="BREADTH_FIRST" maxDepth="3" uniqueness="NODE_GLOBAL">
+    <neo4j:relationships>
+        <neo4j:relationship direction="ALL" type="first" />
+        <neo4j:relationship direction="ALL" type="second" />
+    </neo4j:relationships>
+    <neo4j:return-filter language="javascript"
+        body="position.length() &lt; 3;" />
+    <neo4j:prune-evaluator language="builtin"
+        name="none" />
+</neo4j:traverse-for-fullpaths>
+<!-- END_INCLUDE(neo4j:traverseForFullpaths) -->
+
+<!-- BEGIN_INCLUDE(neo4j:traverseForNodesWithPaging) -->
+<neo4j:traverse-for-nodes-with-paging
+    node-ref="#[aNode]" order="BREADTH_FIRST" maxDepth="3"
+    uniqueness="NODE_GLOBAL" pageSize="1">
+    <neo4j:relationships>
+        <neo4j:relationship direction="ALL" type="first" />
+        <neo4j:relationship direction="ALL" type="second" />
+    </neo4j:relationships>
+    <neo4j:return-filter language="javascript"
+        body="position.length() &lt; 3;" />
+    <neo4j:prune-evaluator language="builtin"
+        name="none" />
+</neo4j:traverse-for-nodes-with-paging>
+<!-- END_INCLUDE(neo4j:traverseForNodesWithPaging) -->
+
+<!-- BEGIN_INCLUDE(neo4j:traverseForRelationshipsWithPaging) -->
+<neo4j:traverse-for-relationships-with-paging
+    node-ref="#[aNode]" order="BREADTH_FIRST" maxDepth="3"
+    uniqueness="NODE_GLOBAL" pageSize="1">
+    <neo4j:relationships>
+        <neo4j:relationship direction="ALL" type="first" />
+        <neo4j:relationship direction="ALL" type="second" />
+    </neo4j:relationships>
+    <neo4j:return-filter language="javascript"
+        body="position.length() &lt; 3;" />
+    <neo4j:prune-evaluator language="builtin"
+        name="none" />
+</neo4j:traverse-for-relationships-with-paging>
+<!-- END_INCLUDE(neo4j:traverseForRelationshipsWithPaging) -->
+
+<!-- BEGIN_INCLUDE(neo4j:traverseForPathsWithPaging) -->
+<neo4j:traverse-for-paths-with-paging
+    node-ref="#[aNode]" order="BREADTH_FIRST" maxDepth="3"
+    uniqueness="NODE_GLOBAL" pageSize="1">
+    <neo4j:relationships>
+        <neo4j:relationship direction="ALL" type="first" />
+        <neo4j:relationship direction="ALL" type="second" />
+    </neo4j:relationships>
+    <neo4j:return-filter language="javascript"
+        body="position.length() &lt; 3;" />
+    <neo4j:prune-evaluator language="builtin"
+        name="none" />
+</neo4j:traverse-for-paths-with-paging>
+<!-- END_INCLUDE(neo4j:traverseForPathsWithPaging) -->
+
+<!-- BEGIN_INCLUDE(neo4j:traverseForFullpathsWithPaging) -->
+<neo4j:traverse-for-fullpaths-with-paging
+    node-ref="#[aNode]" order="BREADTH_FIRST" maxDepth="3"
+    uniqueness="NODE_GLOBAL" pageSize="1">
+    <neo4j:relationships>
+        <neo4j:relationship direction="ALL" type="first" />
+        <neo4j:relationship direction="ALL" type="second" />
+    </neo4j:relationships>
+    <neo4j:return-filter language="javascript"
+        body="position.length() &lt; 3;" />
+    <neo4j:prune-evaluator language="builtin"
+        name="none" />
+</neo4j:traverse-for-fullpaths-with-paging>
+<!-- END_INCLUDE(neo4j:traverseForFullpathsWithPaging) -->
+
+<!-- BEGIN_INCLUDE(neo4j:traverseForPathWithAlgorithm) -->
+<neo4j:traverse-for-path-with-algorithm
+    fromNode-ref="#[startNode]" toNode-ref="#[endNode]" algorithm="SHORTEST_PATH"
+    relationshipType="aType" maxDepth="3" />
+<!-- END_INCLUDE(neo4j:traverseForPathWithAlgorithm) -->
+
+<!-- BEGIN_INCLUDE(neo4j:traverseForPathWithAlgorithm-failIfNotFound) -->
+<neo4j:traverse-for-path-with-algorithm
+    fromNode-ref="#[startNode]" toNode-ref="#[endNode]" algorithm="SHORTEST_PATH"
+    relationshipType="aType" maxDepth="3" failIfNotFound="true" />
+<!-- END_INCLUDE(neo4j:traverseForPathWithAlgorithm-failIfNotFound) -->
+
+<!-- BEGIN_INCLUDE(neo4j:traverseForPathsWithAlgorithm) -->
+<neo4j:traverse-for-paths-with-algorithm
+    fromNode-ref="#[startNode]" toNode-ref="#[endNode]" algorithm="SHORTEST_PATH"
+    relationshipType="aType" maxDepth="3" />
+<!-- END_INCLUDE(neo4j:traverseForPathsWithAlgorithm) -->
+
+<!-- BEGIN_INCLUDE(neo4j:executeBatch) -->
+<neo4j:execute-batch>
+    <neo4j:jobs>
+        <neo4j:job method="PUT" to="/node/#[firstNode.id]/properties">
+            <neo4j:body-entries>
+                <neo4j:body-entry key="age" value-ref="#[1]" />
+            </neo4j:body-entries>
+        </neo4j:job>
+        <neo4j:job method="GET" to="/node/#[firstNode.id]" />
+        <neo4j:job method="POST" to="/node">
+            <neo4j:body-entries>
+                <neo4j:body-entry key="age" value-ref="#[1]" />
+            </neo4j:body-entries>
+        </neo4j:job>
+    </neo4j:jobs>
+</neo4j:execute-batch>
+<!-- END_INCLUDE(neo4j:executeBatch) -->
+
+<!-- BEGIN_INCLUDE(neo4j:getOrCreateUniqueNode) -->
+<neo4j:get-or-create-unique-node indexName="aNodeIndexName"
+       key="anIndexKey" value="aValue" />
+<!-- END_INCLUDE(neo4j:getOrCreateUniqueNode) -->
+
+<!-- BEGIN_INCLUDE(neo4j:getOrCreateUniqueNode-withProperties) -->
+<neo4j:get-or-create-unique-node
+       indexName="aNodeIndexName" key="anIndexKey" value="aValue">
+    <neo4j:properties>
+        <neo4j:property key="pi" value-ref="#[Math.PI]" />
+        <neo4j:property key="chords">EADGBE</neo4j:property>
+    </neo4j:properties>
+</neo4j:get-or-create-unique-node>
+<!-- END_INCLUDE(neo4j:getOrCreateUniqueNode-withProperties) -->
+
+<!-- BEGIN_INCLUDE(neo4j:createUniqueNodeOrFail) -->
+<neo4j:create-unique-node-or-fail indexName="aNodeIndexName"
+       key="anIndexKey" value="aValue" />
+<!-- END_INCLUDE(neo4j:createUniqueNodeOrFail) -->
+
+<!-- BEGIN_INCLUDE(neo4j:createUniqueNodeOrFail-withProperties) -->
+<neo4j:create-unique-node-or-fail indexName="aNodeIndexName"
+       key="anIndexKey" value="aValue">
+    <neo4j:properties>
+        <neo4j:property key="pi" value-ref="#[Math.PI]" />
+        <neo4j:property key="chords">EADGBE</neo4j:property>
+    </neo4j:properties>
+</neo4j:create-unique-node-or-fail>
+<!-- END_INCLUDE(neo4j:createUniqueNodeOrFail-withProperties) -->
+
+<!-- BEGIN_INCLUDE(neo4j:getOrCreateUniqueRelationship) -->
+<neo4j:get-or-create-unique-relationship
+       relationshipName="aRelationshipName" type="aType" key="anIndexKey"
+       value="aValue" startNode-ref="#[firstNode]" endNode-ref="#[secondNode]" />
+<!-- END_INCLUDE(neo4j:getOrCreateUniqueRelationship) -->
+
+<!-- BEGIN_INCLUDE(neo4j:createUniqueRelationshipOrFail) -->
+<neo4j:create-unique-relationship-or-fail
+       relationshipName="aRelationshipName" type="aType" key="anIndexKey"
+       value="aValue" startNode-ref="#[firstNode]" endNode-ref="#[secondNode]" />
+<!-- END_INCLUDE(neo4j:createUniqueRelationshipOrFail) -->
+
+<!-- BEGIN_INCLUDE(neo4j:findNodesByAutoIndex) -->
+<neo4j:find-nodes-by-auto-index key="aKey" value="aValue" />
+<!-- END_INCLUDE(neo4j:findNodesByAutoIndex) -->
+
+<!-- BEGIN_INCLUDE(neo4j:findNodesByAutoIndexQuery) -->
+<neo4j:find-nodes-by-auto-index-query query="aKey:aValue" />
+<!-- END_INCLUDE(neo4j:findNodesByAutoIndexQuery) -->
+
+<!-- BEGIN_INCLUDE(neo4j:createRelationshipIndex) -->
+<neo4j:create-relationship-index indexName="anIndexName" />
+<!-- END_INCLUDE(neo4j:createRelationshipIndex) -->
+
+<!-- BEGIN_INCLUDE(neo4j:createRelationshipIndex-withConfiguration) -->
+<neo4j:create-relationship-index indexName="anIndexName" type="exact" provider="lucene" />
+<!-- END_INCLUDE(neo4j:createRelationshipIndex-withConfiguration) -->
+
+<!-- BEGIN_INCLUDE(neo4j:deleteRelationshipIndex) -->
+<neo4j:delete-relationship-index indexName="anIndexName" />
+<!-- END_INCLUDE(neo4j:deleteRelationshipIndex) -->
+
+<!-- BEGIN_INCLUDE(neo4j:deleteRelationshipIndex-failIfNotFound) -->
+<neo4j:delete-relationship-index indexName="anIndexName" failIfNotFound="true" />
+<!-- END_INCLUDE(neo4j:deleteRelationshipIndex-failIfNotFound) -->
+
+<!-- BEGIN_INCLUDE(neo4j:getRelationshipIndexes) -->
+<neo4j:get-relationship-indexes />
+<!-- END_INCLUDE(neo4j:getRelationshipIndexes) -->
+
+<!-- BEGIN_INCLUDE(neo4j:getAutoindexingStatus) -->
+<neo4j:get-autoindexing-status />
+<!-- END_INCLUDE(neo4j:getAutoindexingStatus) -->
+
+<!-- BEGIN_INCLUDE(neo4j:setAutoindexingStatus) -->
+<neo4j:set-autoindexing-status status="ENABLED" />
+<!-- END_INCLUDE(neo4j:setAutoindexingStatus) -->
+
+<!-- BEGIN_INCLUDE(neo4j:getAutoindexingProperties) -->
+<neo4j:get-autoindexing-properties />
+<!-- END_INCLUDE(neo4j:getAutoindexingProperties) -->
+
+<!-- BEGIN_INCLUDE(neo4j:addAutoindexingProperty) -->
+<neo4j:add-autoindexing-property propertyName="aProperty" />
+<!-- END_INCLUDE(neo4j:addAutoindexingProperty) -->
+
+<!-- BEGIN_INCLUDE(neo4j:deleteAutoindexingProperty) -->
+<neo4j:delete-autoindexing-property propertyName="aProperty" />
+<!-- END_INCLUDE(neo4j:deleteAutoindexingProperty) -->
