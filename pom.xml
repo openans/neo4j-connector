@@ -9,7 +9,7 @@
     </parent>
 
     <groupId>org.mule.modules</groupId>
-    <artifactId>neo4j-connector</artifactId>
+    <artifactId>mule-module-neo4j</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>mule-module</packaging>
     <name>Neo4j Connector</name>
@@ -22,6 +22,8 @@
 
     <properties>
         <devkit.studio.package.skip>false</devkit.studio.package.skip>
+        <licensePath>LICENSE.md</licensePath>
+        <category>Community</category>
     </properties>
 
     <build>
