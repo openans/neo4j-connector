@@ -1,0 +1,1848 @@
+
+<!DOCTYPE html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <meta name="description" content="Documentation for Neo4j Connector." />
+
+<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico" />
+<title>
+
+  Class Index
+
+
+| Neo4j Connector
+
+</title>
+<link href="../assets/mule-developer-docs.css" rel="stylesheet" type="text/css" />
+<link href="../assets/mule-developer-prettify.css" rel="stylesheet" type="text/css" />
+<link href="../assets/customizations.css" rel="stylesheet" type="text/css" />
+<link href='http://fonts.googleapis.com/css?family=Ubuntu:300' rel='stylesheet' type='text/css'>
+<script src="../assets/search_autocomplete.js" type="text/javascript"></script>
+<script src="../assets/jquery-resizable.min.js" type="text/javascript"></script>
+<script src="../assets/jquery-toc.js" type="text/javascript"></script>
+<script src="../assets/mule-developer-docs.js" type="text/javascript"></script>
+<script src="../assets/prettify.js" type="text/javascript"></script>
+<script type="text/javascript">
+  setToRoot("../", "../assets/");
+</script>
+<script src="../assets/mule-developer-reference.js" type="text/javascript"></script>
+<script src="../assets/navtree_data.js" type="text/javascript"></script>
+<script src="../assets/customizations.js" type="text/javascript"></script>
+<noscript>
+  <style type="text/css">
+    html,body{overflow:auto;}
+    #body-content{position:relative; top:0;}
+    #doc-content{overflow:visible;border-left:3px solid #666;}
+    #side-nav{padding:0;}
+    #side-nav .toggle-list ul {display:block;}
+    #resize-packages-nav{border-bottom:3px solid #666;}
+  </style>
+</noscript>
+<script type="text/javascript" charset="utf-8">
+  var is_ssl = ("https:" == document.location.protocol);
+  var asset_host = is_ssl ? "https://s3.amazonaws.com/getsatisfaction.com/" : "http://s3.amazonaws.com/getsatisfaction.com/";
+  document.write(unescape("%3Cscript src='" + asset_host + "javascripts/feedback-v2.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+<script type="text/javascript" charset="utf-8">
+  var feedback_widget_options = {};
+
+  feedback_widget_options.display = "overlay";
+  feedback_widget_options.company = "mulesoft";
+  feedback_widget_options.placement = "right";
+  feedback_widget_options.color = "#2F74AE";
+  feedback_widget_options.style = "question";
+
+  feedback_widget_options.tag = "Neo4j Connector";
+
+  feedback_widget_options.limit = "3";
+
+  var feedback_widget = new GSFN.feedback_widget(feedback_widget_options);
+</script>
+</head>
+
+
+<div id="header">
+    <div id="headerLeft">
+    
+      <span id="masthead-title">Neo4j Connector</span>
+    
+    <ul id="header-tabs" class="java">
+    
+    	<li id="guide"><a href="../guide/install.html">
+	    	<span class="en">Install Guide</span>
+    	</a></li>
+    
+    	<li id="java"><a href="../java/packages.html">
+	    	<span class="en">Java API Reference</span>
+    	</a></li>
+    
+    	<li id="mule"><a href="../mule/modules.html">
+	    	<span class="en">Mule API Reference</span>
+    	</a></li>
+    
+    </ul>
+    </div>
+    <div id="headerRight">
+      <a href="http://www.mulesoft.com" tabindex="-1">
+      <img src="../assets//images/mulesoft-logo-final.gif" alt="MuleSoft" border="0" id="mulesoftlogo"></a><br/>
+      
+  <div id="search" >
+      <div id="searchForm">
+          <form accept-charset="utf-8" class="gsc-search-box" 
+                onsubmit="return submit_search()">
+            <table class="gsc-search-box" cellpadding="0" cellspacing="0"><tbody>
+                <tr>
+                  <td class="gsc-input">
+                    <input id="search_autocomplete" class="gsc-input" type="text" size="33" autocomplete="off"
+                      title="search developer docs" name="q"
+                      value="search developer docs"
+                      onFocus="search_focus_changed(this, true)"
+                      onBlur="search_focus_changed(this, false)"
+                      onkeydown="return search_changed(event, true, '../')"
+                      onkeyup="return search_changed(event, false, '../')" />
+                  <div id="search_filtered_div" class="no-display">
+                      <table id="search_filtered" cellspacing=0>
+                      </table>
+                  </div>
+                  </td>
+                  <td class="gsc-search-button">
+                    <input type="submit" value="Search" title="search" id="search-button" class="gsc-search-button" />
+                  </td>
+                  <td class="gsc-clear-button">
+                    <div title="clear results" class="gsc-clear-button">&nbsp;</div>
+                  </td>
+                </tr></tbody>
+              </table>
+          </form>
+      </div><!-- searchForm -->
+  </div><!-- search -->
+      
+    </div>
+</div><!-- header -->
+
+
+  <div class="g-section g-tpl-240" id="body-content">
+    <div class="g-unit g-first side-nav-resizable" id="side-nav">
+      <div id="swapper">
+        <div id="nav-panels">
+          <div id="resize-packages-nav">
+            <div id="packages-nav">
+              <div id="index-links">
+                <a href="../java/packages.html"  >Package Index</a> |
+                <a href="../java/classes.html" class="selected">Class Index</a>
+              </div>
+              <ul>
+                
+    <li class="api apilevel-">
+  <a href="../java/org/mule/modules/neo4j/package-summary.html">org.mule.modules.neo4j</a></li>
+    <li class="api apilevel-">
+  <a href="../java/org/mule/modules/neo4j/adapter/package-summary.html">org.mule.modules.neo4j.adapter</a></li>
+    <li class="api apilevel-">
+  <a href="../java/org/mule/modules/neo4j/adapters/package-summary.html">org.mule.modules.neo4j.adapters</a></li>
+    <li class="api apilevel-">
+  <a href="../java/org/mule/modules/neo4j/agents/package-summary.html">org.mule.modules.neo4j.agents</a></li>
+    <li class="api apilevel-">
+  <a href="../java/org/mule/modules/neo4j/basic/package-summary.html">org.mule.modules.neo4j.basic</a></li>
+    <li class="api apilevel-">
+  <a href="../java/org/mule/modules/neo4j/callback/package-summary.html">org.mule.modules.neo4j.callback</a></li>
+    <li class="api apilevel-">
+  <a href="../java/org/mule/modules/neo4j/config/package-summary.html">org.mule.modules.neo4j.config</a></li>
+    <li class="api apilevel-">
+  <a href="../java/org/mule/modules/neo4j/connection/package-summary.html">org.mule.modules.neo4j.connection</a></li>
+    <li class="api apilevel-">
+  <a href="../java/org/mule/modules/neo4j/connectivity/package-summary.html">org.mule.modules.neo4j.connectivity</a></li>
+    <li class="api apilevel-">
+  <a href="../java/org/mule/modules/neo4j/devkit/package-summary.html">org.mule.modules.neo4j.devkit</a></li>
+    <li class="api apilevel-">
+  <a href="../java/org/mule/modules/neo4j/model/package-summary.html">org.mule.modules.neo4j.model</a></li>
+    <li class="api apilevel-">
+  <a href="../java/org/mule/modules/neo4j/model/holders/package-summary.html">org.mule.modules.neo4j.model.holders</a></li>
+    <li class="api apilevel-">
+  <a href="../java/org/mule/modules/neo4j/model/transformers/package-summary.html">org.mule.modules.neo4j.model.transformers</a></li>
+    <li class="api apilevel-">
+  <a href="../java/org/mule/modules/neo4j/oauth/package-summary.html">org.mule.modules.neo4j.oauth</a></li>
+    <li class="api apilevel-">
+  <a href="../java/org/mule/modules/neo4j/process/package-summary.html">org.mule.modules.neo4j.process</a></li>
+    <li class="api apilevel-">
+  <a href="../java/org/mule/modules/neo4j/processors/package-summary.html">org.mule.modules.neo4j.processors</a></li>
+    <li class="api apilevel-">
+  <a href="../java/org/mule/modules/neo4j/transformers/package-summary.html">org.mule.modules.neo4j.transformers</a></li>
+              </ul><br/>
+            </div> <!-- end packages -->
+          </div> <!-- end resize-packages -->
+          <div id="classes-nav">
+              <script>
+                /*addLoadEvent(maxPackageHeight);*/
+              </script>
+              <p style="padding:10px">Select a package to view its members</p><br/>
+          </div><!-- end classes -->
+        </div><!-- end nav-panels -->
+        <div id="nav-tree" style="display:none">
+          <div id="index-links">
+            <a href="../packages.html"  >Package Index</a> | 
+            <a href="../classes.html" class="selected">Class Index</a>
+          </div>
+        </div><!-- end nav-tree -->
+      </div><!-- end swapper -->
+    </div> <!-- end side-nav -->
+    <script>
+      if (!isMobile) {
+        $("<a href='#' id='nav-swap' onclick='swapNav();return false;' style='font-size:10px;line-height:9px;margin-left:1em;text-decoration:none;'><span id='tree-link'>Use Tree Navigation</span><span id='panel-link' style='display:none'>Use Panel Navigation</span></a>").appendTo("#side-nav");
+        chooseDefaultNav();
+        if ($("#nav-tree").is(':visible')) {
+          init_default_navtree("../");
+        } else {
+          addLoadEvent(function() {
+            scrollIntoView("packages-nav");
+            scrollIntoView("classes-nav");
+          });
+        }
+        $("#swapper").css({borderBottom:"2px solid #aaa"});
+      } else {
+        swapNav(); // tree view should be used on mobile
+      }
+    </script>
+
+
+
+<div class="g-unit" id="doc-content">
+
+<div id="jd-header">
+<h1>Class Index</h1>
+</div>
+
+<div id="jd-content">
+
+<div class="jd-letterlist">
+    <a href="#letter_A">A</a>
+    <a href="#letter_B">B</a>
+    <a href="#letter_C">C</a>
+    <a href="#letter_D">D</a>
+    <a href="#letter_E">E</a>
+    <a href="#letter_F">F</a>
+    <a href="#letter_G">G</a>
+    <a href="#letter_H">H</a>
+    <a href="#letter_I">I</a>
+    <a href="#letter_M">M</a>
+    <a href="#letter_N">N</a>
+    <a href="#letter_O">O</a>
+    <a href="#letter_P">P</a>
+    <a href="#letter_R">R</a>
+    <a href="#letter_S">S</a>
+    <a href="#letter_T">T</a>
+    <a href="#letter_U">U</a>
+</div>
+
+
+
+<h2 id="letter_A">A</h2>
+<table class="jd-sumtable">
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/AbstractConnectedProcessor.html">AbstractConnectedProcessor</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/AbstractDefinitionParser.html">AbstractDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/AbstractDefinitionParser.ParseDelegate.html">AbstractDefinitionParser.ParseDelegate</a>&lt;T&gt;</td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/AbstractExpressionEvaluator.html">AbstractExpressionEvaluator</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/AbstractListeningMessageProcessor.html">AbstractListeningMessageProcessor</a>&lt;O&gt;</td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/AbstractMessageProcessor.html">AbstractMessageProcessor</a>&lt;O&gt;</td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/AddAutoindexingPropertyDefinitionParser.html">AddAutoindexingPropertyDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/AddAutoindexingPropertyMessageProcessor.html">AddAutoindexingPropertyMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">AddAutoindexingPropertyMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#addAutoindexingProperty(java.lang.String)">addAutoindexingProperty(java.lang.String)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/AddNodeLabelDefinitionParser.html">AddNodeLabelDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/AddNodeLabelMessageProcessor.html">AddNodeLabelMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">AddNodeLabelMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#addNodeLabel(org.mule.modules.neo4j.model.Node, java.lang.String)">addNodeLabel(org.mule.modules.neo4j.model.Node, java.lang.String)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/AddNodeLabelsDefinitionParser.html">AddNodeLabelsDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/AddNodeLabelsMessageProcessor.html">AddNodeLabelsMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">AddNodeLabelsMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#addNodeLabels(org.mule.modules.neo4j.model.Node, java.util.List<java.lang.String>)">addNodeLabels(org.mule.modules.neo4j.model.Node, java.util.List)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/AddNodeToIndexDefinitionParser.html">AddNodeToIndexDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/AddNodeToIndexMessageProcessor.html">AddNodeToIndexMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">AddNodeToIndexMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#addNodeToIndex(java.lang.String, org.mule.modules.neo4j.model.Node, java.lang.String, java.lang.String)">addNodeToIndex(java.lang.String, org.mule.modules.neo4j.model.Node, java.lang.String, java.lang.String)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+</table>
+
+
+<h2 id="letter_B">B</h2>
+<table class="jd-sumtable">
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/BaseEntity.html">BaseEntity</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/BaseExtensible.html">BaseExtensible</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/BatchJob.html">BatchJob</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/BatchJob.Method.html">BatchJob.Method</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/transformers/BatchJobMethodEnumTransformer.html">BatchJobMethodEnumTransformer</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/BatchJobResult.html">BatchJobResult</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+</table>
+
+
+<h2 id="letter_C">C</h2>
+<table class="jd-sumtable">
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/basic/Capabilities.html">Capabilities</a></td>
+            <td class="jd-descrcol" width="100%">This interface is implemented for every org.mule.api.annotations.Module annotated class, to dynamically query what its capabilities are.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/basic/Capability.html">Capability</a></td>
+            <td class="jd-descrcol" width="100%">Enumeration of possible capabilities of Mule modules.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/ConfigurableBatchJob.html">ConfigurableBatchJob</a></td>
+            <td class="jd-descrcol" width="100%">This class exists only because DevKit+Mule chokes if <code><a href="../java/org/mule/modules/neo4j/model/BatchJob.html">BatchJob</a></code> is used as a
+ <code>@Processor</code> parameter: Mule's auto-transformation tries to deserialize its members as
+ if they were JSON strings because of the Jackson annotations.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/holders/ConfigurableBatchJobExpressionHolder.html">ConfigurableBatchJobExpressionHolder</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/transformers/ConfigurableBatchJobExpressionHolderTransformer.html">ConfigurableBatchJobExpressionHolderTransformer</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/connection/Connection.html">Connection</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/connection/ConnectionManager.html">ConnectionManager</a>&lt;K,&nbsp;C&nbsp;extends&nbsp;<a href="../java/org/mule/modules/neo4j/connection/Connection.html">Connection</a>&gt;</td>
+            <td class="jd-descrcol" width="100%">Wrapper around org.mule.api.annotations.Connector annotated class that will infuse it with connection management capabilities.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/CreateNodeDefinitionParser.html">CreateNodeDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/CreateNodeIndexDefinitionParser.html">CreateNodeIndexDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/CreateNodeIndexMessageProcessor.html">CreateNodeIndexMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">CreateNodeIndexMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#createNodeIndex(java.lang.String, java.lang.String, java.lang.String)">createNodeIndex(java.lang.String, java.lang.String, java.lang.String)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/CreateNodeMessageProcessor.html">CreateNodeMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">CreateNodeMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#createNode(java.util.Map<java.lang.String, java.lang.Object>)">createNode(java.util.Map)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/CreateRelationshipDefinitionParser.html">CreateRelationshipDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/CreateRelationshipIndexDefinitionParser.html">CreateRelationshipIndexDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/CreateRelationshipIndexMessageProcessor.html">CreateRelationshipIndexMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">CreateRelationshipIndexMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#createRelationshipIndex(java.lang.String, java.lang.String, java.lang.String)">createRelationshipIndex(java.lang.String, java.lang.String, java.lang.String)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/CreateRelationshipMessageProcessor.html">CreateRelationshipMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">CreateRelationshipMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#createRelationship(org.mule.modules.neo4j.model.Node, org.mule.modules.neo4j.model.Node, java.lang.String, java.util.Map<java.lang.String, java.lang.Object>)">createRelationship(org.mule.modules.neo4j.model.Node, org.mule.modules.neo4j.model.Node, java.lang.String, java.util.Map)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/CreateSchemaIndexDefinitionParser.html">CreateSchemaIndexDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/CreateSchemaIndexMessageProcessor.html">CreateSchemaIndexMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">CreateSchemaIndexMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#createSchemaIndex(java.lang.String, java.util.List<java.lang.String>)">createSchemaIndex(java.lang.String, java.util.List)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/CreateUniqueNodeOrFailDefinitionParser.html">CreateUniqueNodeOrFailDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/CreateUniqueNodeOrFailMessageProcessor.html">CreateUniqueNodeOrFailMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">CreateUniqueNodeOrFailMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#createUniqueNodeOrFail(java.lang.String, java.lang.String, java.lang.String, java.util.Map<java.lang.String, java.lang.Object>)">createUniqueNodeOrFail(java.lang.String, java.lang.String, java.lang.String, java.util.Map)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/CreateUniqueRelationshipOrFailDefinitionParser.html">CreateUniqueRelationshipOrFailDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/CreateUniqueRelationshipOrFailMessageProcessor.html">CreateUniqueRelationshipOrFailMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">CreateUniqueRelationshipOrFailMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#createUniqueRelationshipOrFail(java.lang.String, java.lang.String, java.lang.String, java.lang.String, org.mule.modules.neo4j.model.Node, org.mule.modules.neo4j.model.Node)">createUniqueRelationshipOrFail(java.lang.String, java.lang.String, java.lang.String, java.lang.String, org.mule.modules.neo4j.model.Node, org.mule.modules.neo4j.model.Node)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/CypherQuery.html">CypherQuery</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/CypherQueryParams.html">CypherQueryParams</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/CypherQueryResult.html">CypherQueryResult</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+</table>
+
+
+<h2 id="letter_D">D</h2>
+<table class="jd-sumtable">
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/Data.html">Data</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/agents/DefaultSplashScreenAgent.html">DefaultSplashScreenAgent</a></td>
+            <td class="jd-descrcol" width="100%">Agent implementation to add splash screen information for DevKit extensions at application startup
+ 
+&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/DeleteAutoindexingPropertyDefinitionParser.html">DeleteAutoindexingPropertyDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/DeleteAutoindexingPropertyMessageProcessor.html">DeleteAutoindexingPropertyMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">DeleteAutoindexingPropertyMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#deleteAutoindexingProperty(java.lang.String)">deleteAutoindexingProperty(java.lang.String)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/DeleteNodeByIdDefinitionParser.html">DeleteNodeByIdDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/DeleteNodeByIdMessageProcessor.html">DeleteNodeByIdMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">DeleteNodeByIdMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#deleteNodeById(long, boolean)">deleteNodeById(long, boolean)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/DeleteNodeDefinitionParser.html">DeleteNodeDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/DeleteNodeIndexDefinitionParser.html">DeleteNodeIndexDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/DeleteNodeIndexMessageProcessor.html">DeleteNodeIndexMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">DeleteNodeIndexMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#deleteNodeIndex(java.lang.String, boolean)">deleteNodeIndex(java.lang.String, boolean)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/DeleteNodeLabelDefinitionParser.html">DeleteNodeLabelDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/DeleteNodeLabelMessageProcessor.html">DeleteNodeLabelMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">DeleteNodeLabelMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#deleteNodeLabel(org.mule.modules.neo4j.model.Node, java.lang.String)">deleteNodeLabel(org.mule.modules.neo4j.model.Node, java.lang.String)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/DeleteNodeMessageProcessor.html">DeleteNodeMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">DeleteNodeMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#deleteNode(org.mule.modules.neo4j.model.Node, boolean)">deleteNode(org.mule.modules.neo4j.model.Node, boolean)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/DeleteNodePropertiesDefinitionParser.html">DeleteNodePropertiesDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/DeleteNodePropertiesMessageProcessor.html">DeleteNodePropertiesMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">DeleteNodePropertiesMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#deleteNodeProperties(org.mule.modules.neo4j.model.Node)">deleteNodeProperties(org.mule.modules.neo4j.model.Node)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/DeleteNodePropertyDefinitionParser.html">DeleteNodePropertyDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/DeleteNodePropertyMessageProcessor.html">DeleteNodePropertyMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">DeleteNodePropertyMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#deleteNodeProperty(org.mule.modules.neo4j.model.Node, java.lang.String, boolean)">deleteNodeProperty(org.mule.modules.neo4j.model.Node, java.lang.String, boolean)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/DeleteRelationshipByIdDefinitionParser.html">DeleteRelationshipByIdDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/DeleteRelationshipByIdMessageProcessor.html">DeleteRelationshipByIdMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">DeleteRelationshipByIdMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#deleteRelationshipById(long, boolean)">deleteRelationshipById(long, boolean)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/DeleteRelationshipDefinitionParser.html">DeleteRelationshipDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/DeleteRelationshipIndexDefinitionParser.html">DeleteRelationshipIndexDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/DeleteRelationshipIndexMessageProcessor.html">DeleteRelationshipIndexMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">DeleteRelationshipIndexMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#deleteRelationshipIndex(java.lang.String, boolean)">deleteRelationshipIndex(java.lang.String, boolean)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/DeleteRelationshipMessageProcessor.html">DeleteRelationshipMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">DeleteRelationshipMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#deleteRelationship(org.mule.modules.neo4j.model.Relationship, boolean)">deleteRelationship(org.mule.modules.neo4j.model.Relationship, boolean)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/DeleteRelationshipPropertiesDefinitionParser.html">DeleteRelationshipPropertiesDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/DeleteRelationshipPropertiesMessageProcessor.html">DeleteRelationshipPropertiesMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">DeleteRelationshipPropertiesMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#deleteRelationshipProperties(org.mule.modules.neo4j.model.Relationship)">deleteRelationshipProperties(org.mule.modules.neo4j.model.Relationship)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/DeleteRelationshipPropertyDefinitionParser.html">DeleteRelationshipPropertyDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/DeleteRelationshipPropertyMessageProcessor.html">DeleteRelationshipPropertyMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">DeleteRelationshipPropertyMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#deleteRelationshipProperty(org.mule.modules.neo4j.model.Relationship, java.lang.String, boolean)">deleteRelationshipProperty(org.mule.modules.neo4j.model.Relationship, java.lang.String, boolean)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/DeleteSchemaIndexDefinitionParser.html">DeleteSchemaIndexDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/DeleteSchemaIndexMessageProcessor.html">DeleteSchemaIndexMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">DeleteSchemaIndexMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#deleteSchemaIndex(java.lang.String, java.lang.String, boolean)">deleteSchemaIndex(java.lang.String, java.lang.String, boolean)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+</table>
+
+
+<h2 id="letter_E">E</h2>
+<table class="jd-sumtable">
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/ExecuteBatchDefinitionParser.html">ExecuteBatchDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/ExecuteBatchMessageProcessor.html">ExecuteBatchMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">ExecuteBatchMessageProcessor invokes the org.mule.modules.neo4j.Neo4jConnector#executeBatch(java.util.List<org.mule.modules.neo4j.model.ConfigurableBatchJob>) method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/Extensions.html">Extensions</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+</table>
+
+
+<h2 id="letter_F">F</h2>
+<table class="jd-sumtable">
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/FindNodesByAutoIndexDefinitionParser.html">FindNodesByAutoIndexDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/FindNodesByAutoIndexMessageProcessor.html">FindNodesByAutoIndexMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">FindNodesByAutoIndexMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#findNodesByAutoIndex(java.lang.String, java.lang.String)">findNodesByAutoIndex(java.lang.String, java.lang.String)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/FindNodesByAutoIndexQueryDefinitionParser.html">FindNodesByAutoIndexQueryDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/FindNodesByAutoIndexQueryMessageProcessor.html">FindNodesByAutoIndexQueryMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">FindNodesByAutoIndexQueryMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#findNodesByAutoIndexQuery(java.lang.String)">findNodesByAutoIndexQuery(java.lang.String)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/FindNodesByIndexDefinitionParser.html">FindNodesByIndexDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/FindNodesByIndexMessageProcessor.html">FindNodesByIndexMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">FindNodesByIndexMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#findNodesByIndex(java.lang.String, java.lang.String, java.lang.String)">findNodesByIndex(java.lang.String, java.lang.String, java.lang.String)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/FindNodesByQueryDefinitionParser.html">FindNodesByQueryDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/FindNodesByQueryMessageProcessor.html">FindNodesByQueryMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">FindNodesByQueryMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#findNodesByQuery(java.lang.String, java.lang.String, org.mule.modules.neo4j.Neo4jConnector.QueryResultOrder)">findNodesByQuery(java.lang.String, java.lang.String, org.mule.modules.neo4j.Neo4jConnector.QueryResultOrder)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/Fullpath.html">Fullpath</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+</table>
+
+
+<h2 id="letter_G">G</h2>
+<table class="jd-sumtable">
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/GetAutoindexingPropertiesDefinitionParser.html">GetAutoindexingPropertiesDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/GetAutoindexingPropertiesMessageProcessor.html">GetAutoindexingPropertiesMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">GetAutoindexingPropertiesMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#getAutoindexingProperties()">getAutoindexingProperties()</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/GetAutoindexingStatusDefinitionParser.html">GetAutoindexingStatusDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/GetAutoindexingStatusMessageProcessor.html">GetAutoindexingStatusMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">GetAutoindexingStatusMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#getAutoindexingStatus()">getAutoindexingStatus()</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/GetLabelsDefinitionParser.html">GetLabelsDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/GetLabelsMessageProcessor.html">GetLabelsMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">GetLabelsMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#getLabels()">getLabels()</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/GetNodeByIdDefinitionParser.html">GetNodeByIdDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/GetNodeByIdMessageProcessor.html">GetNodeByIdMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">GetNodeByIdMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#getNodeById(long, boolean)">getNodeById(long, boolean)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/GetNodeIndexesDefinitionParser.html">GetNodeIndexesDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/GetNodeIndexesMessageProcessor.html">GetNodeIndexesMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">GetNodeIndexesMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#getNodeIndexes()">getNodeIndexes()</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/GetNodeLabelsDefinitionParser.html">GetNodeLabelsDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/GetNodeLabelsMessageProcessor.html">GetNodeLabelsMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">GetNodeLabelsMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#getNodeLabels(org.mule.modules.neo4j.model.Node)">getNodeLabels(org.mule.modules.neo4j.model.Node)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/GetNodeRelationshipsDefinitionParser.html">GetNodeRelationshipsDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/GetNodeRelationshipsMessageProcessor.html">GetNodeRelationshipsMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">GetNodeRelationshipsMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#getNodeRelationships(org.mule.modules.neo4j.model.Node, org.mule.modules.neo4j.Neo4jConnector.RelationshipDirection, java.util.List<java.lang.String>)">getNodeRelationships(org.mule.modules.neo4j.model.Node, org.mule.modules.neo4j.Neo4jConnector.RelationshipDirection, java.util.List)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/GetNodesByLabelDefinitionParser.html">GetNodesByLabelDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/GetNodesByLabelMessageProcessor.html">GetNodesByLabelMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">GetNodesByLabelMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#getNodesByLabel(java.lang.String, java.lang.String, java.lang.Object)">getNodesByLabel(java.lang.String, java.lang.String, java.lang.Object)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/GetOrCreateUniqueNodeDefinitionParser.html">GetOrCreateUniqueNodeDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/GetOrCreateUniqueNodeMessageProcessor.html">GetOrCreateUniqueNodeMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">GetOrCreateUniqueNodeMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#getOrCreateUniqueNode(java.lang.String, java.lang.String, java.lang.String, java.util.Map<java.lang.String, java.lang.Object>)">getOrCreateUniqueNode(java.lang.String, java.lang.String, java.lang.String, java.util.Map)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/GetOrCreateUniqueRelationshipDefinitionParser.html">GetOrCreateUniqueRelationshipDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/GetOrCreateUniqueRelationshipMessageProcessor.html">GetOrCreateUniqueRelationshipMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">GetOrCreateUniqueRelationshipMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#getOrCreateUniqueRelationship(java.lang.String, java.lang.String, java.lang.String, java.lang.String, org.mule.modules.neo4j.model.Node, org.mule.modules.neo4j.model.Node)">getOrCreateUniqueRelationship(java.lang.String, java.lang.String, java.lang.String, java.lang.String, org.mule.modules.neo4j.model.Node, org.mule.modules.neo4j.model.Node)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/GetRelationshipByIdDefinitionParser.html">GetRelationshipByIdDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/GetRelationshipByIdMessageProcessor.html">GetRelationshipByIdMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">GetRelationshipByIdMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#getRelationshipById(long, boolean)">getRelationshipById(long, boolean)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/GetRelationshipIndexesDefinitionParser.html">GetRelationshipIndexesDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/GetRelationshipIndexesMessageProcessor.html">GetRelationshipIndexesMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">GetRelationshipIndexesMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#getRelationshipIndexes()">getRelationshipIndexes()</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/GetRelationshipTypesDefinitionParser.html">GetRelationshipTypesDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/GetRelationshipTypesMessageProcessor.html">GetRelationshipTypesMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">GetRelationshipTypesMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#getRelationshipTypes()">getRelationshipTypes()</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/GetSchemaIndexesDefinitionParser.html">GetSchemaIndexesDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/GetSchemaIndexesMessageProcessor.html">GetSchemaIndexesMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">GetSchemaIndexesMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#getSchemaIndexes(java.lang.String)">getSchemaIndexes(java.lang.String)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/GetServiceRootDefinitionParser.html">GetServiceRootDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/GetServiceRootMessageProcessor.html">GetServiceRootMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">GetServiceRootMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#getServiceRoot()">getServiceRoot()</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+</table>
+
+
+<h2 id="letter_H">H</h2>
+<table class="jd-sumtable">
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/callback/HttpCallback.html">HttpCallback</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/adapter/HttpCallbackAdapter.html">HttpCallbackAdapter</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+</table>
+
+
+<h2 id="letter_I">I</h2>
+<table class="jd-sumtable">
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/Index.html">Index</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/IndexConfiguration.html">IndexConfiguration</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/IndexedNode.html">IndexedNode</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/IndexedRelationship.html">IndexedRelationship</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+</table>
+
+
+<h2 id="letter_M">M</h2>
+<table class="jd-sumtable">
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/process/ManagedConnectionProcessInterceptor.html">ManagedConnectionProcessInterceptor</a>&lt;T&gt;</td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/connectivity/ManagedConnectionProcessTemplate.html">ManagedConnectionProcessTemplate</a>&lt;P&gt;</td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/basic/MetadataAware.html">MetadataAware</a></td>
+            <td class="jd-descrcol" width="100%">This interface is implemented for every org.mule.api.annotations.Module and org.mule.api.annotations.Connector annotated class and its purpose is to define a contract to query the annotated class about its metadata.&nbsp;</td>
+        </tr>
+    
+    
+</table>
+
+
+<h2 id="letter_N">N</h2>
+<table class="jd-sumtable">
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></td>
+            <td class="jd-descrcol" width="100%"><p>
+ Neo4j Connector, for versions 1.9 or above.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/Neo4jConnector.AutoIndexingStatus.html">Neo4jConnector.AutoIndexingStatus</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/Neo4jConnector.QueryResultOrder.html">Neo4jConnector.QueryResultOrder</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/Neo4jConnector.RelationshipDirection.html">Neo4jConnector.RelationshipDirection</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/transformers/Neo4jConnectorAutoIndexingStatusEnumTransformer.html">Neo4jConnectorAutoIndexingStatusEnumTransformer</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/adapters/Neo4jConnectorCapabilitiesAdapter.html">Neo4jConnectorCapabilitiesAdapter</a></td>
+            <td class="jd-descrcol" width="100%">A <code>Neo4jConnectorCapabilitiesAdapter</code> is a wrapper around <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code> that implements org.mule.api.Capabilities interface.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/Neo4jConnectorConfigDefinitionParser.html">Neo4jConnectorConfigDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/connectivity/Neo4jConnectorConnectionFactory.html">Neo4jConnectorConnectionFactory</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/adapters/Neo4jConnectorConnectionIdentifierAdapter.html">Neo4jConnectorConnectionIdentifierAdapter</a></td>
+            <td class="jd-descrcol" width="100%">A <code>Neo4jConnectorConnectionIdentifierAdapter</code> is a wrapper around <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code> that implements org.mule.devkit.dynamic.api.helper.Connection interface.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/connectivity/Neo4jConnectorConnectionKey.html">Neo4jConnectorConnectionKey</a></td>
+            <td class="jd-descrcol" width="100%">A tuple of connection parameters
+ 
+&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/connectivity/Neo4jConnectorConnectionManager.html">Neo4jConnectorConnectionManager</a></td>
+            <td class="jd-descrcol" width="100%">A <code>Neo4jConnectorConnectionManager</code> is a wrapper around <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code> that adds connection management capabilities to the pojo.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/adapters/Neo4jConnectorLifecycleAdapter.html">Neo4jConnectorLifecycleAdapter</a></td>
+            <td class="jd-descrcol" width="100%">A <code>Neo4jConnectorLifecycleAdapter</code> is a wrapper around <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code> that adds lifecycle methods to the pojo.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/adapters/Neo4jConnectorMetadataAdapater.html">Neo4jConnectorMetadataAdapater</a></td>
+            <td class="jd-descrcol" width="100%">A <code>Neo4jConnectorMetadataAdapater</code> is a wrapper around <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code> that adds support for querying metadata about the extension.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/adapters/Neo4jConnectorProcessAdapter.html">Neo4jConnectorProcessAdapter</a></td>
+            <td class="jd-descrcol" width="100%">A <code>Neo4jConnectorProcessAdapter</code> is a wrapper around <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code> that enables custom processing strategies.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/transformers/Neo4jConnectorQueryResultOrderEnumTransformer.html">Neo4jConnectorQueryResultOrderEnumTransformer</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/transformers/Neo4jConnectorRelationshipDirectionEnumTransformer.html">Neo4jConnectorRelationshipDirectionEnumTransformer</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/Neo4jNamespaceHandler.html">Neo4jNamespaceHandler</a></td>
+            <td class="jd-descrcol" width="100%">Registers bean definitions parsers for handling elements in <code>http://www.mulesoft.org/schema/mule/neo4j</code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/process/NestedProcessorChain.html">NestedProcessorChain</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/NewIndex.html">NewIndex</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/NewRelationship.html">NewRelationship</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/NewSchemaIndex.html">NewSchemaIndex</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/NewUniqueNode.html">NewUniqueNode</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/NewUniqueRelationship.html">NewUniqueRelationship</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/Node.html">Node</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/holders/NodeExpressionHolder.html">NodeExpressionHolder</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/transformers/NodeExpressionHolderTransformer.html">NodeExpressionHolderTransformer</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/NodeIndexingRequest.html">NodeIndexingRequest</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/oauth/NotAuthorizedException.html">NotAuthorizedException</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+</table>
+
+
+<h2 id="letter_O">O</h2>
+<table class="jd-sumtable">
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/oauth/OAuth1Adapter.html">OAuth1Adapter</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/oauth/OAuth2Adapter.html">OAuth2Adapter</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/oauth/OAuthAdapter.html">OAuthAdapter</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/oauth/OAuthManager.html">OAuthManager</a>&lt;C&nbsp;extends&nbsp;<a href="../java/org/mule/modules/neo4j/oauth/OAuthAdapter.html">OAuthAdapter</a>&gt;</td>
+            <td class="jd-descrcol" width="100%">Wrapper around org.mule.api.annotations.oauth.OAuth annotated class that will infuse it with
+ access token management capabilities.&nbsp;</td>
+        </tr>
+    
+    
+</table>
+
+
+<h2 id="letter_P">P</h2>
+<table class="jd-sumtable">
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/Path.html">Path</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/PathQuery.html">PathQuery</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/PathQuery.Algorithm.html">PathQuery.Algorithm</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/transformers/PathQueryAlgorithmEnumTransformer.html">PathQueryAlgorithmEnumTransformer</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/PathQueryResult.html">PathQueryResult</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/Plan.html">Plan</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/adapter/PoolManager.html">PoolManager</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/process/ProcessAdapter.html">ProcessAdapter</a>&lt;O&gt;</td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/process/ProcessCallback.html">ProcessCallback</a>&lt;T,&nbsp;O&gt;</td>
+            <td class="jd-descrcol" width="100%">Callback with logic to execute within a controlled environment provided by <code><a href="../java/org/mule/modules/neo4j/process/ProcessTemplate.html">ProcessTemplate</a></code>&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/process/ProcessCallbackProcessInterceptor.html">ProcessCallbackProcessInterceptor</a>&lt;T,&nbsp;O&gt;</td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/process/ProcessInterceptor.html">ProcessInterceptor</a>&lt;T,&nbsp;O&gt;</td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/process/ProcessTemplate.html">ProcessTemplate</a>&lt;T,&nbsp;O&gt;</td>
+            <td class="jd-descrcol" width="100%">ProcessTemplate provides a processing context for message processing.&nbsp;</td>
+        </tr>
+    
+    
+</table>
+
+
+<h2 id="letter_R">R</h2>
+<table class="jd-sumtable">
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/Relationship.html">Relationship</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/holders/RelationshipExpressionHolder.html">RelationshipExpressionHolder</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/transformers/RelationshipExpressionHolderTransformer.html">RelationshipExpressionHolderTransformer</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/RelationshipQuery.html">RelationshipQuery</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/RelationshipQuery.Direction.html">RelationshipQuery.Direction</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/transformers/RelationshipQueryDirectionEnumTransformer.html">RelationshipQueryDirectionEnumTransformer</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/holders/RelationshipQueryExpressionHolder.html">RelationshipQueryExpressionHolder</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/transformers/RelationshipQueryExpressionHolderTransformer.html">RelationshipQueryExpressionHolderTransformer</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/RemoveNodeIndexEntriesDefinitionParser.html">RemoveNodeIndexEntriesDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/RemoveNodeIndexEntriesMessageProcessor.html">RemoveNodeIndexEntriesMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">RemoveNodeIndexEntriesMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#removeNodeIndexEntries(java.lang.String, org.mule.modules.neo4j.model.Node, java.lang.String, java.lang.String, boolean)">removeNodeIndexEntries(java.lang.String, org.mule.modules.neo4j.model.Node, java.lang.String, java.lang.String, boolean)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/oauth/RestoreAccessTokenCallback.html">RestoreAccessTokenCallback</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/process/RetryProcessInterceptor.html">RetryProcessInterceptor</a>&lt;T,&nbsp;O&gt;</td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/RunCypherQueryDefinitionParser.html">RunCypherQueryDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/RunCypherQueryMessageProcessor.html">RunCypherQueryMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">RunCypherQueryMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#runCypherQuery(java.lang.String, java.util.Map<java.lang.String, java.lang.Object>, boolean, boolean)">runCypherQuery(java.lang.String, java.util.Map, boolean, boolean)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+</table>
+
+
+<h2 id="letter_S">S</h2>
+<table class="jd-sumtable">
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/oauth/SaveAccessTokenCallback.html">SaveAccessTokenCallback</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/SchemaIndex.html">SchemaIndex</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/ServiceRoot.html">ServiceRoot</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/SetAutoindexingStatusDefinitionParser.html">SetAutoindexingStatusDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/SetAutoindexingStatusMessageProcessor.html">SetAutoindexingStatusMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">SetAutoindexingStatusMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#setAutoindexingStatus(org.mule.modules.neo4j.Neo4jConnector.AutoIndexingStatus)">setAutoindexingStatus(org.mule.modules.neo4j.Neo4jConnector.AutoIndexingStatus)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/SetNodeLabelsDefinitionParser.html">SetNodeLabelsDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/SetNodeLabelsMessageProcessor.html">SetNodeLabelsMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">SetNodeLabelsMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#setNodeLabels(org.mule.modules.neo4j.model.Node, java.util.List<java.lang.String>)">setNodeLabels(org.mule.modules.neo4j.model.Node, java.util.List)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/SetNodePropertiesDefinitionParser.html">SetNodePropertiesDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/SetNodePropertiesMessageProcessor.html">SetNodePropertiesMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">SetNodePropertiesMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#setNodeProperties(org.mule.modules.neo4j.model.Node, java.util.Map<java.lang.String, java.lang.Object>)">setNodeProperties(org.mule.modules.neo4j.model.Node, java.util.Map)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/SetNodePropertyDefinitionParser.html">SetNodePropertyDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/SetNodePropertyMessageProcessor.html">SetNodePropertyMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">SetNodePropertyMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#setNodeProperty(org.mule.modules.neo4j.model.Node, java.lang.String, java.lang.Object)">setNodeProperty(org.mule.modules.neo4j.model.Node, java.lang.String, java.lang.Object)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/SetRelationshipPropertiesDefinitionParser.html">SetRelationshipPropertiesDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/SetRelationshipPropertiesMessageProcessor.html">SetRelationshipPropertiesMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">SetRelationshipPropertiesMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#setRelationshipProperties(org.mule.modules.neo4j.model.Relationship, java.util.Map<java.lang.String, java.lang.Object>)">setRelationshipProperties(org.mule.modules.neo4j.model.Relationship, java.util.Map)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/SetRelationshipPropertyDefinitionParser.html">SetRelationshipPropertyDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/SetRelationshipPropertyMessageProcessor.html">SetRelationshipPropertyMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">SetRelationshipPropertyMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#setRelationshipProperty(org.mule.modules.neo4j.model.Relationship, java.lang.String, java.lang.Object)">setRelationshipProperty(org.mule.modules.neo4j.model.Relationship, java.lang.String, java.lang.Object)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/callback/SourceCallback.html">SourceCallback</a></td>
+            <td class="jd-descrcol" width="100%">Callback interface used by org.mule.api.annotations.Source annotated methods to dispatch messages.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/devkit/SplashScreenAgent.html">SplashScreenAgent</a></td>
+            <td class="jd-descrcol" width="100%">Marks DevKit org.mule.api.agent.Agent implementations to take care of logging information at Mule app level mainly for troubleshooting purposes.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/Stats.html">Stats</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/callback/StopSourceCallback.html">StopSourceCallback</a></td>
+            <td class="jd-descrcol" width="100%">Callback returned by methods that are annotated with @Source
+ <p/>
+ It will be executed when the MessageSource is being stopped.&nbsp;</td>
+        </tr>
+    
+    
+</table>
+
+
+<h2 id="letter_T">T</h2>
+<table class="jd-sumtable">
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/TraversalQuery.html">TraversalQuery</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/TraversalQuery.Order.html">TraversalQuery.Order</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/TraversalQuery.Uniqueness.html">TraversalQuery.Uniqueness</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/transformers/TraversalQueryOrderEnumTransformer.html">TraversalQueryOrderEnumTransformer</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/transformers/TraversalQueryUniquenessEnumTransformer.html">TraversalQueryUniquenessEnumTransformer</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/TraversalScript.html">TraversalScript</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/holders/TraversalScriptExpressionHolder.html">TraversalScriptExpressionHolder</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/model/transformers/TraversalScriptExpressionHolderTransformer.html">TraversalScriptExpressionHolderTransformer</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/TraverseForFullpathsDefinitionParser.html">TraverseForFullpathsDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/TraverseForFullpathsMessageProcessor.html">TraverseForFullpathsMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">TraverseForFullpathsMessageProcessor invokes the org.mule.modules.neo4j.Neo4jConnector#traverseForFullpaths(org.mule.modules.neo4j.model.Node, org.mule.modules.neo4j.model.TraversalQuery.Order, org.mule.modules.neo4j.model.TraversalQuery.Uniqueness, java.lang.Integer, java.util.List<org.mule.modules.neo4j.model.RelationshipQuery>, org.mule.modules.neo4j.model.TraversalScript, org.mule.modules.neo4j.model.TraversalScript) method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/TraverseForFullpathsWithPagingDefinitionParser.html">TraverseForFullpathsWithPagingDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/TraverseForFullpathsWithPagingMessageProcessor.html">TraverseForFullpathsWithPagingMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">TraverseForFullpathsWithPagingMessageProcessor invokes the org.mule.modules.neo4j.Neo4jConnector#traverseForFullpathsWithPaging(org.mule.modules.neo4j.model.Node, org.mule.modules.neo4j.model.TraversalQuery.Order, org.mule.modules.neo4j.model.TraversalQuery.Uniqueness, java.lang.Integer, java.util.List<org.mule.modules.neo4j.model.RelationshipQuery>, org.mule.modules.neo4j.model.TraversalScript, org.mule.modules.neo4j.model.TraversalScript, int, int, org.mule.api.MuleEvent, org.mule.api.callback.SourceCallback) method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/TraverseForNodesDefinitionParser.html">TraverseForNodesDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/TraverseForNodesMessageProcessor.html">TraverseForNodesMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">TraverseForNodesMessageProcessor invokes the org.mule.modules.neo4j.Neo4jConnector#traverseForNodes(org.mule.modules.neo4j.model.Node, org.mule.modules.neo4j.model.TraversalQuery.Order, org.mule.modules.neo4j.model.TraversalQuery.Uniqueness, java.lang.Integer, java.util.List<org.mule.modules.neo4j.model.RelationshipQuery>, org.mule.modules.neo4j.model.TraversalScript, org.mule.modules.neo4j.model.TraversalScript) method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/TraverseForNodesWithPagingDefinitionParser.html">TraverseForNodesWithPagingDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/TraverseForNodesWithPagingMessageProcessor.html">TraverseForNodesWithPagingMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">TraverseForNodesWithPagingMessageProcessor invokes the org.mule.modules.neo4j.Neo4jConnector#traverseForNodesWithPaging(org.mule.modules.neo4j.model.Node, org.mule.modules.neo4j.model.TraversalQuery.Order, org.mule.modules.neo4j.model.TraversalQuery.Uniqueness, java.lang.Integer, java.util.List<org.mule.modules.neo4j.model.RelationshipQuery>, org.mule.modules.neo4j.model.TraversalScript, org.mule.modules.neo4j.model.TraversalScript, int, int, org.mule.api.MuleEvent, org.mule.api.callback.SourceCallback) method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/TraverseForPathsDefinitionParser.html">TraverseForPathsDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/TraverseForPathsMessageProcessor.html">TraverseForPathsMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">TraverseForPathsMessageProcessor invokes the org.mule.modules.neo4j.Neo4jConnector#traverseForPaths(org.mule.modules.neo4j.model.Node, org.mule.modules.neo4j.model.TraversalQuery.Order, org.mule.modules.neo4j.model.TraversalQuery.Uniqueness, java.lang.Integer, java.util.List<org.mule.modules.neo4j.model.RelationshipQuery>, org.mule.modules.neo4j.model.TraversalScript, org.mule.modules.neo4j.model.TraversalScript) method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/TraverseForPathsWithAlgorithmDefinitionParser.html">TraverseForPathsWithAlgorithmDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/TraverseForPathsWithAlgorithmMessageProcessor.html">TraverseForPathsWithAlgorithmMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">TraverseForPathsWithAlgorithmMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#traverseForPathsWithAlgorithm(org.mule.modules.neo4j.model.Node, org.mule.modules.neo4j.model.Node, org.mule.modules.neo4j.model.PathQuery.Algorithm, java.lang.String, int, java.lang.String, java.lang.Double)">traverseForPathsWithAlgorithm(org.mule.modules.neo4j.model.Node, org.mule.modules.neo4j.model.Node, org.mule.modules.neo4j.model.PathQuery.Algorithm, java.lang.String, int, java.lang.String, java.lang.Double)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/TraverseForPathsWithPagingDefinitionParser.html">TraverseForPathsWithPagingDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/TraverseForPathsWithPagingMessageProcessor.html">TraverseForPathsWithPagingMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">TraverseForPathsWithPagingMessageProcessor invokes the org.mule.modules.neo4j.Neo4jConnector#traverseForPathsWithPaging(org.mule.modules.neo4j.model.Node, org.mule.modules.neo4j.model.TraversalQuery.Order, org.mule.modules.neo4j.model.TraversalQuery.Uniqueness, java.lang.Integer, java.util.List<org.mule.modules.neo4j.model.RelationshipQuery>, org.mule.modules.neo4j.model.TraversalScript, org.mule.modules.neo4j.model.TraversalScript, int, int, org.mule.api.MuleEvent, org.mule.api.callback.SourceCallback) method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/TraverseForPathWithAlgorithmDefinitionParser.html">TraverseForPathWithAlgorithmDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/TraverseForPathWithAlgorithmMessageProcessor.html">TraverseForPathWithAlgorithmMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">TraverseForPathWithAlgorithmMessageProcessor invokes the <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html#traverseForPathWithAlgorithm(org.mule.modules.neo4j.model.Node, org.mule.modules.neo4j.model.Node, org.mule.modules.neo4j.model.PathQuery.Algorithm, java.lang.String, int, java.lang.String, java.lang.Double, boolean)">traverseForPathWithAlgorithm(org.mule.modules.neo4j.model.Node, org.mule.modules.neo4j.model.Node, org.mule.modules.neo4j.model.PathQuery.Algorithm, java.lang.String, int, java.lang.String, java.lang.Double, boolean)</a></code> method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/TraverseForRelationshipsDefinitionParser.html">TraverseForRelationshipsDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/TraverseForRelationshipsMessageProcessor.html">TraverseForRelationshipsMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">TraverseForRelationshipsMessageProcessor invokes the org.mule.modules.neo4j.Neo4jConnector#traverseForRelationships(org.mule.modules.neo4j.model.Node, org.mule.modules.neo4j.model.TraversalQuery.Order, org.mule.modules.neo4j.model.TraversalQuery.Uniqueness, java.lang.Integer, java.util.List<org.mule.modules.neo4j.model.RelationshipQuery>, org.mule.modules.neo4j.model.TraversalScript, org.mule.modules.neo4j.model.TraversalScript) method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/config/TraverseForRelationshipsWithPagingDefinitionParser.html">TraverseForRelationshipsWithPagingDefinitionParser</a></td>
+            <td class="jd-descrcol" width="100%">&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/processors/TraverseForRelationshipsWithPagingMessageProcessor.html">TraverseForRelationshipsWithPagingMessageProcessor</a></td>
+            <td class="jd-descrcol" width="100%">TraverseForRelationshipsWithPagingMessageProcessor invokes the org.mule.modules.neo4j.Neo4jConnector#traverseForRelationshipsWithPaging(org.mule.modules.neo4j.model.Node, org.mule.modules.neo4j.model.TraversalQuery.Order, org.mule.modules.neo4j.model.TraversalQuery.Uniqueness, java.lang.Integer, java.util.List<org.mule.modules.neo4j.model.RelationshipQuery>, org.mule.modules.neo4j.model.TraversalScript, org.mule.modules.neo4j.model.TraversalScript, int, int, org.mule.api.MuleEvent, org.mule.api.callback.SourceCallback) method in <code><a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a></code>.&nbsp;</td>
+        </tr>
+    
+    
+</table>
+
+
+<h2 id="letter_U">U</h2>
+<table class="jd-sumtable">
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/oauth/UnableToAcquireAccessTokenException.html">UnableToAcquireAccessTokenException</a></td>
+            <td class="jd-descrcol" width="100%">Exception thrown when the access token needed for accessing a protected resource cannot be acquired
+ 
+&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/connection/UnableToAcquireConnectionException.html">UnableToAcquireConnectionException</a></td>
+            <td class="jd-descrcol" width="100%">Exception thrown when the connection needed for executing an
+  operation is null.&nbsp;</td>
+        </tr>
+    
+    
+        <tr class="alt-color api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/oauth/UnableToAcquireRequestTokenException.html">UnableToAcquireRequestTokenException</a></td>
+            <td class="jd-descrcol" width="100%">Exception thrown when the request token needed for building the authorization URL cannot be acquired
+ 
+&nbsp;</td>
+        </tr>
+    
+    
+        <tr class=" api apilevel-" >
+            <td class="jd-linkcol"><a href="../java/org/mule/modules/neo4j/connection/UnableToReleaseConnectionException.html">UnableToReleaseConnectionException</a></td>
+            <td class="jd-descrcol" width="100%">Exception thrown when the release connection operation of the
+  connection manager fails.&nbsp;</td>
+        </tr>
+    
+    
+</table>
+
+
+<div id="footer">
+Generated by <a href="http://www.mulesoft.com/devkit">Mule DevKit</a>. Document generation technology based on <a href="http://code.google.com/p/doclava/">Google's Doclava</a>.
+</div> <!-- end footer -->
+
+</div><!-- end jd-content -->
+</div><!-- end doc-content -->
+
+</div> <!-- end body-content --> 
+
+<script type="text/javascript">
+init(); /* initialize mule-developer-docs.js */
+</script>
+
+</body>
+</html>

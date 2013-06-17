@@ -1,0 +1,4995 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<html>
+<style>
+    .jd-hierarchy-spacer {
+        width: 15px;
+    }
+    .jd-hierarchy-data {
+        text-align: left;
+        vertical-align: top;
+    }
+</style>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+  <meta name="description" content="Documentation for Neo4j Connector." />
+
+<link rel="shortcut icon" type="image/x-icon" href="../favicon.ico" />
+<title>
+
+  Class Hierarchy
+
+
+| Neo4j Connector
+
+</title>
+<link href="../assets/mule-developer-docs.css" rel="stylesheet" type="text/css" />
+<link href="../assets/mule-developer-prettify.css" rel="stylesheet" type="text/css" />
+<link href="../assets/customizations.css" rel="stylesheet" type="text/css" />
+<link href='http://fonts.googleapis.com/css?family=Ubuntu:300' rel='stylesheet' type='text/css'>
+<script src="../assets/search_autocomplete.js" type="text/javascript"></script>
+<script src="../assets/jquery-resizable.min.js" type="text/javascript"></script>
+<script src="../assets/jquery-toc.js" type="text/javascript"></script>
+<script src="../assets/mule-developer-docs.js" type="text/javascript"></script>
+<script src="../assets/prettify.js" type="text/javascript"></script>
+<script type="text/javascript">
+  setToRoot("../", "../assets/");
+</script>
+<script src="../assets/mule-developer-reference.js" type="text/javascript"></script>
+<script src="../assets/navtree_data.js" type="text/javascript"></script>
+<script src="../assets/customizations.js" type="text/javascript"></script>
+<noscript>
+  <style type="text/css">
+    html,body{overflow:auto;}
+    #body-content{position:relative; top:0;}
+    #doc-content{overflow:visible;border-left:3px solid #666;}
+    #side-nav{padding:0;}
+    #side-nav .toggle-list ul {display:block;}
+    #resize-packages-nav{border-bottom:3px solid #666;}
+  </style>
+</noscript>
+<script type="text/javascript" charset="utf-8">
+  var is_ssl = ("https:" == document.location.protocol);
+  var asset_host = is_ssl ? "https://s3.amazonaws.com/getsatisfaction.com/" : "http://s3.amazonaws.com/getsatisfaction.com/";
+  document.write(unescape("%3Cscript src='" + asset_host + "javascripts/feedback-v2.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+<script type="text/javascript" charset="utf-8">
+  var feedback_widget_options = {};
+
+  feedback_widget_options.display = "overlay";
+  feedback_widget_options.company = "mulesoft";
+  feedback_widget_options.placement = "right";
+  feedback_widget_options.color = "#2F74AE";
+  feedback_widget_options.style = "question";
+
+  feedback_widget_options.tag = "Neo4j Connector";
+
+  feedback_widget_options.limit = "3";
+
+  var feedback_widget = new GSFN.feedback_widget(feedback_widget_options);
+</script>
+</head>
+
+
+<div id="header">
+    <div id="headerLeft">
+    
+      <span id="masthead-title">Neo4j Connector</span>
+    
+    <ul id="header-tabs" class="java">
+    
+    	<li id="guide"><a href="../guide/install.html">
+	    	<span class="en">Install Guide</span>
+    	</a></li>
+    
+    	<li id="java"><a href="../java/packages.html">
+	    	<span class="en">Java API Reference</span>
+    	</a></li>
+    
+    	<li id="mule"><a href="../mule/modules.html">
+	    	<span class="en">Mule API Reference</span>
+    	</a></li>
+    
+    </ul>
+    </div>
+    <div id="headerRight">
+      <a href="http://www.mulesoft.com" tabindex="-1">
+      <img src="../assets//images/mulesoft-logo-final.gif" alt="MuleSoft" border="0" id="mulesoftlogo"></a><br/>
+      
+  <div id="search" >
+      <div id="searchForm">
+          <form accept-charset="utf-8" class="gsc-search-box" 
+                onsubmit="return submit_search()">
+            <table class="gsc-search-box" cellpadding="0" cellspacing="0"><tbody>
+                <tr>
+                  <td class="gsc-input">
+                    <input id="search_autocomplete" class="gsc-input" type="text" size="33" autocomplete="off"
+                      title="search developer docs" name="q"
+                      value="search developer docs"
+                      onFocus="search_focus_changed(this, true)"
+                      onBlur="search_focus_changed(this, false)"
+                      onkeydown="return search_changed(event, true, '../')"
+                      onkeyup="return search_changed(event, false, '../')" />
+                  <div id="search_filtered_div" class="no-display">
+                      <table id="search_filtered" cellspacing=0>
+                      </table>
+                  </div>
+                  </td>
+                  <td class="gsc-search-button">
+                    <input type="submit" value="Search" title="search" id="search-button" class="gsc-search-button" />
+                  </td>
+                  <td class="gsc-clear-button">
+                    <div title="clear results" class="gsc-clear-button">&nbsp;</div>
+                  </td>
+                </tr></tbody>
+              </table>
+          </form>
+      </div><!-- searchForm -->
+  </div><!-- search -->
+      
+    </div>
+</div><!-- header -->
+
+
+  <div class="g-section g-tpl-240" id="body-content">
+    <div class="g-unit g-first side-nav-resizable" id="side-nav">
+      <div id="swapper">
+        <div id="nav-panels">
+          <div id="resize-packages-nav">
+            <div id="packages-nav">
+              <div id="index-links">
+                <a href="../java/packages.html"  >Package Index</a> |
+                <a href="../java/classes.html" >Class Index</a>
+              </div>
+              <ul>
+                
+    <li class="api apilevel-">
+  <a href="../java/org/mule/modules/neo4j/package-summary.html">org.mule.modules.neo4j</a></li>
+    <li class="api apilevel-">
+  <a href="../java/org/mule/modules/neo4j/adapter/package-summary.html">org.mule.modules.neo4j.adapter</a></li>
+    <li class="api apilevel-">
+  <a href="../java/org/mule/modules/neo4j/adapters/package-summary.html">org.mule.modules.neo4j.adapters</a></li>
+    <li class="api apilevel-">
+  <a href="../java/org/mule/modules/neo4j/agents/package-summary.html">org.mule.modules.neo4j.agents</a></li>
+    <li class="api apilevel-">
+  <a href="../java/org/mule/modules/neo4j/basic/package-summary.html">org.mule.modules.neo4j.basic</a></li>
+    <li class="api apilevel-">
+  <a href="../java/org/mule/modules/neo4j/callback/package-summary.html">org.mule.modules.neo4j.callback</a></li>
+    <li class="api apilevel-">
+  <a href="../java/org/mule/modules/neo4j/config/package-summary.html">org.mule.modules.neo4j.config</a></li>
+    <li class="api apilevel-">
+  <a href="../java/org/mule/modules/neo4j/connection/package-summary.html">org.mule.modules.neo4j.connection</a></li>
+    <li class="api apilevel-">
+  <a href="../java/org/mule/modules/neo4j/connectivity/package-summary.html">org.mule.modules.neo4j.connectivity</a></li>
+    <li class="api apilevel-">
+  <a href="../java/org/mule/modules/neo4j/devkit/package-summary.html">org.mule.modules.neo4j.devkit</a></li>
+    <li class="api apilevel-">
+  <a href="../java/org/mule/modules/neo4j/model/package-summary.html">org.mule.modules.neo4j.model</a></li>
+    <li class="api apilevel-">
+  <a href="../java/org/mule/modules/neo4j/model/holders/package-summary.html">org.mule.modules.neo4j.model.holders</a></li>
+    <li class="api apilevel-">
+  <a href="../java/org/mule/modules/neo4j/model/transformers/package-summary.html">org.mule.modules.neo4j.model.transformers</a></li>
+    <li class="api apilevel-">
+  <a href="../java/org/mule/modules/neo4j/oauth/package-summary.html">org.mule.modules.neo4j.oauth</a></li>
+    <li class="api apilevel-">
+  <a href="../java/org/mule/modules/neo4j/process/package-summary.html">org.mule.modules.neo4j.process</a></li>
+    <li class="api apilevel-">
+  <a href="../java/org/mule/modules/neo4j/processors/package-summary.html">org.mule.modules.neo4j.processors</a></li>
+    <li class="api apilevel-">
+  <a href="../java/org/mule/modules/neo4j/transformers/package-summary.html">org.mule.modules.neo4j.transformers</a></li>
+              </ul><br/>
+            </div> <!-- end packages -->
+          </div> <!-- end resize-packages -->
+          <div id="classes-nav">
+              <script>
+                /*addLoadEvent(maxPackageHeight);*/
+              </script>
+              <p style="padding:10px">Select a package to view its members</p><br/>
+          </div><!-- end classes -->
+        </div><!-- end nav-panels -->
+        <div id="nav-tree" style="display:none">
+          <div id="index-links">
+            <a href="../packages.html"  >Package Index</a> | 
+            <a href="../classes.html" >Class Index</a>
+          </div>
+        </div><!-- end nav-tree -->
+      </div><!-- end swapper -->
+    </div> <!-- end side-nav -->
+    <script>
+      if (!isMobile) {
+        $("<a href='#' id='nav-swap' onclick='swapNav();return false;' style='font-size:10px;line-height:9px;margin-left:1em;text-decoration:none;'><span id='tree-link'>Use Tree Navigation</span><span id='panel-link' style='display:none'>Use Panel Navigation</span></a>").appendTo("#side-nav");
+        chooseDefaultNav();
+        if ($("#nav-tree").is(':visible')) {
+          init_default_navtree("../");
+        } else {
+          addLoadEvent(function() {
+            scrollIntoView("packages-nav");
+            scrollIntoView("classes-nav");
+          });
+        }
+        $("#swapper").css({borderBottom:"2px solid #aaa"});
+      } else {
+        swapNav(); // tree view should be used on mobile
+      }
+    </script>
+
+
+
+<div class="g-unit" id="doc-content">
+
+<div id="jd-header">
+<h1>Class Hierarchy</h1>
+</div>
+
+<div id="jd-content">
+
+<div style="margin-left: 20px; margin-right: 20px;">
+
+
+
+
+<table border="0" cellpadding="0" cellspacing="1">
+<th class="jd-hierarchy-data" colspan="7">Class</th>
+<th class="jd-hierarchy-data">Interfaces</th>
+
+
+<tr>
+    
+    <td class="jd-hierarchy-data" colspan="7">
+    
+        
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/Neo4jConnector.html">Neo4jConnector</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            MuleContextAware
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/adapters/Neo4jConnectorCapabilitiesAdapter.html">Neo4jConnectorCapabilitiesAdapter</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            <a href="../java/org/mule/modules/neo4j/basic/Capabilities.html">Capabilities</a>
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="4">
+    
+        <a href="../java/org/mule/modules/neo4j/adapters/Neo4jConnectorMetadataAdapater.html">Neo4jConnectorMetadataAdapater</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            <a href="../java/org/mule/modules/neo4j/basic/MetadataAware.html">MetadataAware</a>
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/adapters/Neo4jConnectorLifecycleAdapter.html">Neo4jConnectorLifecycleAdapter</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="2">
+    
+        <a href="../java/org/mule/modules/neo4j/adapters/Neo4jConnectorProcessAdapter.html">Neo4jConnectorProcessAdapter</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            <a href="../java/org/mule/modules/neo4j/process/ProcessAdapter.html">ProcessAdapter</a>
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="1">
+    
+        <a href="../java/org/mule/modules/neo4j/adapters/Neo4jConnectorConnectionIdentifierAdapter.html">Neo4jConnectorConnectionIdentifierAdapter</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            <a href="../java/org/mule/modules/neo4j/connection/Connection.html">Connection</a>
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/agents/DefaultSplashScreenAgent.html">DefaultSplashScreenAgent</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Agent
+         &nbsp;&nbsp;
+    
+        
+            MuleContextAware
+         &nbsp;&nbsp;
+    
+        
+            <a href="../java/org/mule/modules/neo4j/devkit/SplashScreenAgent.html">SplashScreenAgent</a>
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/config/AbstractDefinitionParser.html">AbstractDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            BeanDefinitionParser
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/AddAutoindexingPropertyDefinitionParser.html">AddAutoindexingPropertyDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/AddNodeLabelDefinitionParser.html">AddNodeLabelDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/AddNodeLabelsDefinitionParser.html">AddNodeLabelsDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/AddNodeToIndexDefinitionParser.html">AddNodeToIndexDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/CreateNodeDefinitionParser.html">CreateNodeDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/CreateNodeIndexDefinitionParser.html">CreateNodeIndexDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/CreateRelationshipDefinitionParser.html">CreateRelationshipDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/CreateRelationshipIndexDefinitionParser.html">CreateRelationshipIndexDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/CreateSchemaIndexDefinitionParser.html">CreateSchemaIndexDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/CreateUniqueNodeOrFailDefinitionParser.html">CreateUniqueNodeOrFailDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/CreateUniqueRelationshipOrFailDefinitionParser.html">CreateUniqueRelationshipOrFailDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/DeleteAutoindexingPropertyDefinitionParser.html">DeleteAutoindexingPropertyDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/DeleteNodeByIdDefinitionParser.html">DeleteNodeByIdDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/DeleteNodeDefinitionParser.html">DeleteNodeDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/DeleteNodeIndexDefinitionParser.html">DeleteNodeIndexDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/DeleteNodeLabelDefinitionParser.html">DeleteNodeLabelDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/DeleteNodePropertiesDefinitionParser.html">DeleteNodePropertiesDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/DeleteNodePropertyDefinitionParser.html">DeleteNodePropertyDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/DeleteRelationshipByIdDefinitionParser.html">DeleteRelationshipByIdDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/DeleteRelationshipDefinitionParser.html">DeleteRelationshipDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/DeleteRelationshipIndexDefinitionParser.html">DeleteRelationshipIndexDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/DeleteRelationshipPropertiesDefinitionParser.html">DeleteRelationshipPropertiesDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/DeleteRelationshipPropertyDefinitionParser.html">DeleteRelationshipPropertyDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/DeleteSchemaIndexDefinitionParser.html">DeleteSchemaIndexDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/ExecuteBatchDefinitionParser.html">ExecuteBatchDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/FindNodesByAutoIndexDefinitionParser.html">FindNodesByAutoIndexDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/FindNodesByAutoIndexQueryDefinitionParser.html">FindNodesByAutoIndexQueryDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/FindNodesByIndexDefinitionParser.html">FindNodesByIndexDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/FindNodesByQueryDefinitionParser.html">FindNodesByQueryDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/GetAutoindexingPropertiesDefinitionParser.html">GetAutoindexingPropertiesDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/GetAutoindexingStatusDefinitionParser.html">GetAutoindexingStatusDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/GetLabelsDefinitionParser.html">GetLabelsDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/GetNodeByIdDefinitionParser.html">GetNodeByIdDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/GetNodeIndexesDefinitionParser.html">GetNodeIndexesDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/GetNodeLabelsDefinitionParser.html">GetNodeLabelsDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/GetNodeRelationshipsDefinitionParser.html">GetNodeRelationshipsDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/GetNodesByLabelDefinitionParser.html">GetNodesByLabelDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/GetOrCreateUniqueNodeDefinitionParser.html">GetOrCreateUniqueNodeDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/GetOrCreateUniqueRelationshipDefinitionParser.html">GetOrCreateUniqueRelationshipDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/GetRelationshipByIdDefinitionParser.html">GetRelationshipByIdDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/GetRelationshipIndexesDefinitionParser.html">GetRelationshipIndexesDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/GetRelationshipTypesDefinitionParser.html">GetRelationshipTypesDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/GetSchemaIndexesDefinitionParser.html">GetSchemaIndexesDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/GetServiceRootDefinitionParser.html">GetServiceRootDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/Neo4jConnectorConfigDefinitionParser.html">Neo4jConnectorConfigDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/RemoveNodeIndexEntriesDefinitionParser.html">RemoveNodeIndexEntriesDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/RunCypherQueryDefinitionParser.html">RunCypherQueryDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/SetAutoindexingStatusDefinitionParser.html">SetAutoindexingStatusDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/SetNodeLabelsDefinitionParser.html">SetNodeLabelsDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/SetNodePropertiesDefinitionParser.html">SetNodePropertiesDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/SetNodePropertyDefinitionParser.html">SetNodePropertyDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/SetRelationshipPropertiesDefinitionParser.html">SetRelationshipPropertiesDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/SetRelationshipPropertyDefinitionParser.html">SetRelationshipPropertyDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/TraverseForFullpathsDefinitionParser.html">TraverseForFullpathsDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/TraverseForFullpathsWithPagingDefinitionParser.html">TraverseForFullpathsWithPagingDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/TraverseForNodesDefinitionParser.html">TraverseForNodesDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/TraverseForNodesWithPagingDefinitionParser.html">TraverseForNodesWithPagingDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/TraverseForPathWithAlgorithmDefinitionParser.html">TraverseForPathWithAlgorithmDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/TraverseForPathsDefinitionParser.html">TraverseForPathsDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/TraverseForPathsWithAlgorithmDefinitionParser.html">TraverseForPathsWithAlgorithmDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/TraverseForPathsWithPagingDefinitionParser.html">TraverseForPathsWithPagingDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/TraverseForRelationshipsDefinitionParser.html">TraverseForRelationshipsDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/config/TraverseForRelationshipsWithPagingDefinitionParser.html">TraverseForRelationshipsWithPagingDefinitionParser</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/connectivity/ManagedConnectionProcessTemplate.html">ManagedConnectionProcessTemplate</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            <a href="../java/org/mule/modules/neo4j/process/ProcessTemplate.html">ProcessTemplate</a>
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/connectivity/Neo4jConnectorConnectionFactory.html">Neo4jConnectorConnectionFactory</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            KeyedPoolableObjectFactory
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/connectivity/Neo4jConnectorConnectionKey.html">Neo4jConnectorConnectionKey</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/connectivity/Neo4jConnectorConnectionManager.html">Neo4jConnectorConnectionManager</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            MuleContextAware
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Testable
+         &nbsp;&nbsp;
+    
+        
+            <a href="../java/org/mule/modules/neo4j/basic/Capabilities.html">Capabilities</a>
+         &nbsp;&nbsp;
+    
+        
+            <a href="../java/org/mule/modules/neo4j/basic/MetadataAware.html">MetadataAware</a>
+         &nbsp;&nbsp;
+    
+        
+            <a href="../java/org/mule/modules/neo4j/connection/ConnectionManager.html">ConnectionManager</a>
+         &nbsp;&nbsp;
+    
+        
+            <a href="../java/org/mule/modules/neo4j/process/ProcessAdapter.html">ProcessAdapter</a>
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/model/BaseExtensible.html">BaseExtensible</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/model/BaseEntity.html">BaseEntity</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="4">
+    
+        <a href="../java/org/mule/modules/neo4j/model/Node.html">Node</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/model/IndexedNode.html">IndexedNode</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="4">
+    
+        <a href="../java/org/mule/modules/neo4j/model/Relationship.html">Relationship</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/model/IndexedRelationship.html">IndexedRelationship</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/model/ServiceRoot.html">ServiceRoot</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/model/BatchJob.html">BatchJob</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/model/BatchJobResult.html">BatchJobResult</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/model/ConfigurableBatchJob.html">ConfigurableBatchJob</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/model/CypherQuery.html">CypherQuery</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/model/CypherQueryParams.html">CypherQueryParams</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/model/CypherQueryResult.html">CypherQueryResult</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/model/Data.html">Data</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/model/Extensions.html">Extensions</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/model/Fullpath.html">Fullpath</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/model/IndexConfiguration.html">IndexConfiguration</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/model/Index.html">Index</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/model/NewIndex.html">NewIndex</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/model/NewRelationship.html">NewRelationship</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/model/NewSchemaIndex.html">NewSchemaIndex</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/model/NewUniqueNode.html">NewUniqueNode</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/model/NewUniqueRelationship.html">NewUniqueRelationship</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/model/NodeIndexingRequest.html">NodeIndexingRequest</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/model/Path.html">Path</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/model/PathQuery.html">PathQuery</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/model/PathQueryResult.html">PathQueryResult</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/model/Plan.html">Plan</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/model/RelationshipQuery.html">RelationshipQuery</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/model/SchemaIndex.html">SchemaIndex</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/model/Stats.html">Stats</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/model/TraversalQuery.html">TraversalQuery</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/model/TraversalScript.html">TraversalScript</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/model/holders/ConfigurableBatchJobExpressionHolder.html">ConfigurableBatchJobExpressionHolder</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/model/holders/NodeExpressionHolder.html">NodeExpressionHolder</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/model/holders/RelationshipExpressionHolder.html">RelationshipExpressionHolder</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/model/holders/RelationshipQueryExpressionHolder.html">RelationshipQueryExpressionHolder</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/model/holders/TraversalScriptExpressionHolder.html">TraversalScriptExpressionHolder</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/process/NestedProcessorChain.html">NestedProcessorChain</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            NestedProcessor
+         &nbsp;&nbsp;
+    
+        
+            MuleContextAware
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/process/ProcessCallbackProcessInterceptor.html">ProcessCallbackProcessInterceptor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            <a href="../java/org/mule/modules/neo4j/process/ProcessInterceptor.html">ProcessInterceptor</a>
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/process/RetryProcessInterceptor.html">RetryProcessInterceptor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            <a href="../java/org/mule/modules/neo4j/process/ProcessInterceptor.html">ProcessInterceptor</a>
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="6">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/AbstractExpressionEvaluator.html">AbstractExpressionEvaluator</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/model/transformers/ConfigurableBatchJobExpressionHolderTransformer.html">ConfigurableBatchJobExpressionHolderTransformer</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            DiscoverableTransformer
+         &nbsp;&nbsp;
+    
+        
+            MessageTransformer
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/model/transformers/NodeExpressionHolderTransformer.html">NodeExpressionHolderTransformer</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            DiscoverableTransformer
+         &nbsp;&nbsp;
+    
+        
+            MessageTransformer
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/model/transformers/RelationshipExpressionHolderTransformer.html">RelationshipExpressionHolderTransformer</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            DiscoverableTransformer
+         &nbsp;&nbsp;
+    
+        
+            MessageTransformer
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/model/transformers/RelationshipQueryExpressionHolderTransformer.html">RelationshipQueryExpressionHolderTransformer</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            DiscoverableTransformer
+         &nbsp;&nbsp;
+    
+        
+            MessageTransformer
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/model/transformers/TraversalScriptExpressionHolderTransformer.html">TraversalScriptExpressionHolderTransformer</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            DiscoverableTransformer
+         &nbsp;&nbsp;
+    
+        
+            MessageTransformer
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/process/ManagedConnectionProcessInterceptor.html">ManagedConnectionProcessInterceptor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            <a href="../java/org/mule/modules/neo4j/process/ProcessInterceptor.html">ProcessInterceptor</a>
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="5">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/AbstractConnectedProcessor.html">AbstractConnectedProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="4">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/AbstractMessageProcessor.html">AbstractMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            FlowConstructAware
+         &nbsp;&nbsp;
+    
+        
+            MuleContextAware
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/AbstractListeningMessageProcessor.html">AbstractListeningMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            SourceCallback
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="2">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/TraverseForFullpathsWithPagingMessageProcessor.html">TraverseForFullpathsWithPagingMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            InterceptingMessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="2">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/TraverseForNodesWithPagingMessageProcessor.html">TraverseForNodesWithPagingMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            InterceptingMessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="2">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/TraverseForPathsWithPagingMessageProcessor.html">TraverseForPathsWithPagingMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            InterceptingMessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="2">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/TraverseForRelationshipsWithPagingMessageProcessor.html">TraverseForRelationshipsWithPagingMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            InterceptingMessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/AddAutoindexingPropertyMessageProcessor.html">AddAutoindexingPropertyMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/AddNodeLabelMessageProcessor.html">AddNodeLabelMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/AddNodeLabelsMessageProcessor.html">AddNodeLabelsMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/AddNodeToIndexMessageProcessor.html">AddNodeToIndexMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/CreateNodeIndexMessageProcessor.html">CreateNodeIndexMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/CreateNodeMessageProcessor.html">CreateNodeMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/CreateRelationshipIndexMessageProcessor.html">CreateRelationshipIndexMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/CreateRelationshipMessageProcessor.html">CreateRelationshipMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/CreateSchemaIndexMessageProcessor.html">CreateSchemaIndexMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/CreateUniqueNodeOrFailMessageProcessor.html">CreateUniqueNodeOrFailMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/CreateUniqueRelationshipOrFailMessageProcessor.html">CreateUniqueRelationshipOrFailMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/DeleteAutoindexingPropertyMessageProcessor.html">DeleteAutoindexingPropertyMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/DeleteNodeByIdMessageProcessor.html">DeleteNodeByIdMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/DeleteNodeIndexMessageProcessor.html">DeleteNodeIndexMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/DeleteNodeLabelMessageProcessor.html">DeleteNodeLabelMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/DeleteNodeMessageProcessor.html">DeleteNodeMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/DeleteNodePropertiesMessageProcessor.html">DeleteNodePropertiesMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/DeleteNodePropertyMessageProcessor.html">DeleteNodePropertyMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/DeleteRelationshipByIdMessageProcessor.html">DeleteRelationshipByIdMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/DeleteRelationshipIndexMessageProcessor.html">DeleteRelationshipIndexMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/DeleteRelationshipMessageProcessor.html">DeleteRelationshipMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/DeleteRelationshipPropertiesMessageProcessor.html">DeleteRelationshipPropertiesMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/DeleteRelationshipPropertyMessageProcessor.html">DeleteRelationshipPropertyMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/DeleteSchemaIndexMessageProcessor.html">DeleteSchemaIndexMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/ExecuteBatchMessageProcessor.html">ExecuteBatchMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/FindNodesByAutoIndexMessageProcessor.html">FindNodesByAutoIndexMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/FindNodesByAutoIndexQueryMessageProcessor.html">FindNodesByAutoIndexQueryMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/FindNodesByIndexMessageProcessor.html">FindNodesByIndexMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/FindNodesByQueryMessageProcessor.html">FindNodesByQueryMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/GetAutoindexingPropertiesMessageProcessor.html">GetAutoindexingPropertiesMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/GetAutoindexingStatusMessageProcessor.html">GetAutoindexingStatusMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/GetLabelsMessageProcessor.html">GetLabelsMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/GetNodeByIdMessageProcessor.html">GetNodeByIdMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/GetNodeIndexesMessageProcessor.html">GetNodeIndexesMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/GetNodeLabelsMessageProcessor.html">GetNodeLabelsMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/GetNodeRelationshipsMessageProcessor.html">GetNodeRelationshipsMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/GetNodesByLabelMessageProcessor.html">GetNodesByLabelMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/GetOrCreateUniqueNodeMessageProcessor.html">GetOrCreateUniqueNodeMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/GetOrCreateUniqueRelationshipMessageProcessor.html">GetOrCreateUniqueRelationshipMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/GetRelationshipByIdMessageProcessor.html">GetRelationshipByIdMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/GetRelationshipIndexesMessageProcessor.html">GetRelationshipIndexesMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/GetRelationshipTypesMessageProcessor.html">GetRelationshipTypesMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/GetSchemaIndexesMessageProcessor.html">GetSchemaIndexesMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/GetServiceRootMessageProcessor.html">GetServiceRootMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/RemoveNodeIndexEntriesMessageProcessor.html">RemoveNodeIndexEntriesMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/RunCypherQueryMessageProcessor.html">RunCypherQueryMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/SetAutoindexingStatusMessageProcessor.html">SetAutoindexingStatusMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/SetNodeLabelsMessageProcessor.html">SetNodeLabelsMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/SetNodePropertiesMessageProcessor.html">SetNodePropertiesMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/SetNodePropertyMessageProcessor.html">SetNodePropertyMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/SetRelationshipPropertiesMessageProcessor.html">SetRelationshipPropertiesMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/SetRelationshipPropertyMessageProcessor.html">SetRelationshipPropertyMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/TraverseForFullpathsMessageProcessor.html">TraverseForFullpathsMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/TraverseForNodesMessageProcessor.html">TraverseForNodesMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/TraverseForPathWithAlgorithmMessageProcessor.html">TraverseForPathWithAlgorithmMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/TraverseForPathsMessageProcessor.html">TraverseForPathsMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/TraverseForPathsWithAlgorithmMessageProcessor.html">TraverseForPathsWithAlgorithmMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+<tr>
+    <td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td><td class="jd-hierarchy-spacer"></td>
+    <td class="jd-hierarchy-data" colspan="3">
+    
+        <a href="../java/org/mule/modules/neo4j/processors/TraverseForRelationshipsMessageProcessor.html">TraverseForRelationshipsMessageProcessor</a>
+    
+    </td>
+    <td class="jd-hierarchy-data">
+    
+        
+            Disposable
+         &nbsp;&nbsp;
+    
+        
+            Initialisable
+         &nbsp;&nbsp;
+    
+        
+            Startable
+         &nbsp;&nbsp;
+    
+        
+            Stoppable
+         &nbsp;&nbsp;
+    
+        
+            MessageProcessor
+         &nbsp;&nbsp;
+    
+        
+            OperationMetaDataEnabled
+         &nbsp;&nbsp;
+    
+    &nbsp;
+    </td>
+</tr>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</table>
+
+</div>
+
+<div id="footer">
+Generated by <a href="http://www.mulesoft.com/devkit">Mule DevKit</a>. Document generation technology based on <a href="http://code.google.com/p/doclava/">Google's Doclava</a>.
+</div> <!-- end footer -->
+
+</div><!-- end jd-content -->
+</div><!-- end doc-content -->
+
+</div> <!-- end body-content --> 
+
+<script type="text/javascript">
+init(); /* initialize mule-developer-docs.js */
+</script>
+
+</body>
+</html>
+
