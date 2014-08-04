@@ -102,7 +102,10 @@ import org.mule.util.StringUtils;
  * </p>
  * {@sample.config ../../../doc/mule-module-neo4j.xml.sample neo4j:config-no-auth}
  * <p>
+ * {@sample.config ../../../doc/mule-module-neo4j.xml.sample neo4j:config-timeout}
+ * </p>
  * {@sample.config ../../../doc/mule-module-neo4j.xml.sample neo4j:config-auth}
+ * <p>
  * 
  * @author MuleSoft Inc.
  */
@@ -336,6 +339,14 @@ public class Neo4jConnector implements MuleContextAware
     @Optional
     private org.mule.api.transport.Connector connector;
 
+    /**
+     * The timeout in milliseconds to use to reach Neo4j
+     */
+    @Configurable
+    @Optional
+    @Default("10000")
+    private int timeout;
+
     private MuleContext muleContext;
     private String authorization;
     private String baseUri;
@@ -566,7 +577,7 @@ public class Neo4jConnector implements MuleContextAware
         }
 
         final MuleMessage response = muleContext.getClient().send(fullUri, jsonEntityOrNull,
-            requestProperties);
+            requestProperties, timeout);
 
         @SuppressWarnings("unchecked")
         final Map<String, String> responseHeaders = new CaseInsensitiveHashMap();
@@ -2487,5 +2498,13 @@ public class Neo4jConnector implements MuleContextAware
     public void setConnector(final org.mule.api.transport.Connector connector)
     {
         this.connector = connector;
+    }
+
+    public int getTimeout() {
+        return timeout;
+    }
+
+    public void setTimeout(int timeout) {
+        this.timeout = timeout;
     }
 }
